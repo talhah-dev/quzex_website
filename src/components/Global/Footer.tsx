@@ -35,12 +35,9 @@ const Footer = () => {
         <footer className="py-10 relative overflow-hidden bg-[#0A211F] text-[#E9F3E6]">
             <div
                 aria-hidden
-                className="pointer-events-none absolute inset-0 opacity-90"
-                style={{
-                    background:
-                        "radial-gradient(70% 60% at 10% 10%, rgba(216,247,130,.18) 0%, rgba(10,33,31,0) 60%), radial-gradient(60% 55% at 80% 20%, rgba(138,247,183,.14) 0%, rgba(10,33,31,0) 55%), radial-gradient(60% 60% at 50% 120%, rgba(255,255,255,.08) 0%, rgba(10,33,31,0) 55%)",
-                }}
+                className="pointer-events-none absolute inset-0 bg-[url('/footer.avif')] bg-cover bg-center opacity-[0.10]"
             />
+
 
             <div className="relative max-w-7xl xl:px-16 lg:px-8 px-4 mx-auto">
                 <div className="flex flex-col gap-6 sm:gap-12">
