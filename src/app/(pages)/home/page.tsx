@@ -1,4 +1,5 @@
 import Wrapper from "@/app/Wrapper";
+import HowWeWork from "@/components/About/HowWeWork";
 import Team from "@/components/About/Team";
 import CTA from "@/components/Global/CTA";
 import AboutSection from "@/components/Home/AboutSection";
@@ -16,14 +17,14 @@ export default function HomePage() {
             <Wrapper>
                 <HeroSection />
                 <div className="bg-[#f7f9f2]">
-                    <TrustedMarquee />
+                    {/* <TrustedMarquee /> */}
                     <AboutSection />
                     <PortfolioSection />
                     <SuccessInNumbers />
+                    <HowWeWork />
                     <Testimonials />
                     <Faq />
                     <CTA />
-                    <Team />
                 </div>
             </Wrapper>
         </div>

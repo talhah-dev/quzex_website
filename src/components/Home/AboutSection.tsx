@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import { AnimatedButton } from "../ui/AnimatedButton";
@@ -18,12 +18,12 @@ type AboutSectionProps = {
 };
 
 export default function AboutSection({
-    eyebrow = "A NEW ERA OF CREATIVE WORK",
-    heading = "The support your creative team",
-    accent = "has been asking for",
-    description = "Quzex is your dedicated development partner to expand your production capacity and strengthen your product quality—without the overhead of hiring.",
-    helper = "See me as an extension of your team: clear communication, clean architecture, and reliable delivery for websites and web apps that perform.",
-    ctaText = "Let’s talk",
+    eyebrow = "ABOUT QUZEX",
+    heading = "We build high-quality websites",
+    accent = "that match your exact needs",
+    description = "Quzex is a focused web development team specializing in website development, website redesign, and complete builds from scratch. We create fast, modern, and business-ready websites tailored to each client.",
+    helper = "With 6+ years of experience across multiple industries, we combine strategy, UI design, and clean development to deliver websites that look professional, perform smoothly, and scale with your goals.",
+    ctaText = "Start your website project",
     ctaHref = "/contact",
     imageSrc = "https://images.unsplash.com/photo-1650661926447-9efb2610f64c?q=80&w=1173&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     imageAlt = "Work preview",

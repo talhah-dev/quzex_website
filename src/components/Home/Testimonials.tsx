@@ -22,7 +22,7 @@ const Testimonials = () => {
                         <Badge variant={"outline"} className="py-1 px-3 text-sm font-normal h-7">
                             Testimonials
                         </Badge>
-                        <h2 className="text-foreground text-3xl sm:text-5xl font-medium max-w-xs sm:max-w-2xl mx-auto text-center">
+                        <h2 className="text-foreground leading-tight text-3xl sm:text-5xl font-medium max-w-xs sm:max-w-2xl mx-auto text-center">
                             What clients say about working with Quzex
                         </h2>
                     </motion.div>
