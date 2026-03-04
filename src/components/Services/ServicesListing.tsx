@@ -94,6 +94,28 @@ const services: Service[] = [
     description:
       "Upgrade your existing website with a modern look, improved user flow, and better technical performance.",
   },
+  {
+    id: 8,
+    title: "AI Blog Post Integration",
+    duration: "3-7 days",
+    rating: 4.8,
+    image:
+      "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=900&auto=format&fit=crop&q=60",
+    category: "AI Content",
+    description:
+      "Add AI-powered blog post workflows to your website so you can publish SEO-focused content faster with consistent quality.",
+  },
+  {
+    id: 9,
+    title: "AI Chatbots for Websites",
+    duration: "4-10 days",
+    rating: 4.9,
+    image:
+      "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=900&auto=format&fit=crop&q=60",
+    category: "AI Automation",
+    description:
+      "Deploy smart website chatbots to handle FAQs, capture leads, and support visitors with instant responses 24/7.",
+  },
 ];
 
 type ServicesListingProps = {
