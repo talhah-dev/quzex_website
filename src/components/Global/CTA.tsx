@@ -24,7 +24,7 @@ export default function CTA({
     buttonHref = "/contact",
 }: ImageCTASectionProps) {
     return (
-        <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <section className="px-4  max-w-7xl mx-auto">
             <div
                 className="relative overflow-hidden rounded-3xl flex items-center"
                 style={{

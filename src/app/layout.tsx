@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter_Tight, Instrument_Serif } from "next/font/google";
 import "./globals.css";
+import { SITE_CONFIG } from "@/lib/site";
 
 const interTight = Inter_Tight({
   subsets: ["latin"],
@@ -17,9 +18,9 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Quzex - Full-Stack Web Developer",
+  title: `${SITE_CONFIG.name} - Full-Stack Web Developer`,
   description:
-    "Quzex is the portfolio of Muhammad Talha, a full-stack web developer building fast, accessible, SEO-ready websites and web apps.",
+    `${SITE_CONFIG.name} is the portfolio of ${SITE_CONFIG.ownerName}, a full-stack web developer building fast, accessible, SEO-ready websites and web apps.`,
 };
 
 export default function RootLayout({

@@ -17,6 +17,9 @@ export const DEFAULT_MARQUEE_LOGOS: MarqueeLogo[] = [
     { name: "Logo", src: "/client_logos/28.webp" },
     { name: "Logo", src: "/client_logos/29.webp" },
     { name: "Logo", src: "/client_logos/1.webp" },
+    { name: "Logo", src: "/client_logos/1.webp" },
+    { name: "Logo", src: "/client_logos/27.webp" },
+    { name: "Logo", src: "/client_logos/28.webp" }
     // { name: "Logo", src: "/client_logos/logo.webp" },
     // { name: "Logo", src: "/client_logos/logo1.webp" },
     // { name: "Logo", src: "/client_logos/logo.svg" },

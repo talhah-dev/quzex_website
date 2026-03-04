@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type Logo = {
@@ -11,17 +11,17 @@ type Logo = {
 };
 
 const logos: Logo[] = [
-  { name: "Client Logo 1", src: "/client_logos/1.webp" },
-  { name: "Client Logo 2", src: "/client_logos/22.webp" },
-  { name: "Client Logo 3", src: "/client_logos/27.webp" },
-  { name: "Client Logo 4", src: "/client_logos/28.webp" },
-  { name: "Client Logo 5", src: "/client_logos/29.webp" },
-  { name: "Client Logo 6", src: "/client_logos/logo.webp" },
-  { name: "Client Logo 7", src: "/client_logos/logo1.webp" },
-  { name: "Client Logo 8", src: "/client_logos/logo.svg" },
+  { name: "Client 01", src: "/client_logos/1.webp" },
+  { name: "Client 02", src: "/client_logos/22.webp" },
+  { name: "Client 03", src: "/client_logos/27.webp" },
+  { name: "Client 04", src: "/client_logos/28.webp" },
+  { name: "Client 05", src: "/client_logos/29.webp" },
+  { name: "Client 06", src: "/client_logos/logo.webp" },
+  { name: "Client 07", src: "/client_logos/logo1.webp" },
+  { name: "Client 08", src: "/client_logos/logo.svg" },
 ];
 
-const INITIAL_VISIBLE = 4;
+const INITIAL_VISIBLE = 6;
 
 export default function ClientLogos() {
   const [showAll, setShowAll] = useState(false);
@@ -30,48 +30,60 @@ export default function ClientLogos() {
   const visibleLogos = useMemo(() => logos.slice(0, visibleCount), [visibleCount]);
 
   return (
-    <section className="w-full bg-[#f7f9f2] text-[#0A211F]">
-      <div className="mx-auto max-w-6xl px-5 py-10 md:px-10 md:py-14">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <Badge variant="outline" className="rounded-full border-[#0A211F]/20 bg-[#EDF6E8]">
-              Our clients
-            </Badge>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl">
-              Brands we have worked with
+    <section className="relative w-full py-12 text-[#0A211F] md:py-16">
+      <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-10 space-y-4 text-center">
+            <div className="flex items-center justify-center gap-2">
+              <Sparkles className="size-5 text-[#0A211F]" />
+              <span className="text-sm font-medium text-[#0A211F]/80">Client Partnerships</span>
+            </div>
+            <h2 className="text-balance text-3xl font-semibold md:text-4xl">
+              Brands that trusted our website services
             </h2>
-            <p className="mt-2 text-sm text-[#0A211F]/70">
-              Showing {visibleCount} of {logos.length} logos
+            <p className="text-center text-sm text-[#0A211F]/65">
+              More client collaborations are added as we continue delivering high-quality web
+              solutions.
             </p>
           </div>
 
-          {logos.length > INITIAL_VISIBLE ? (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setShowAll((prev) => !prev)}
-              className="rounded-xl border-[#0A211F]/20 bg-[#EDF6E8] text-[#0A211F] hover:bg-[#DDEFD2]"
-            >
-              {showAll ? "Show less" : "Show all logos"}
-            </Button>
-          ) : null}
-        </div>
+          <div className="relative overflow-hidden">
+            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-6 md:gap-x-12">
+              {visibleLogos.map((logo) => (
+                <article
+                  key={logo.src}
+                  className=""
+                >
+                  <Image
+                    src={logo.src}
+                    alt={logo.name}
+                    width={84}
+                    height={28}
+                    className="h-6 w-auto object-contain grayscale"
+                  />
+                </article>
+              ))}
+            </div>
+          </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-          {visibleLogos.map((logo) => (
-            <article
-              key={logo.src}
-              className="flex h-24 items-center justify-center rounded-2xl border border-[#0A211F]/10 bg-[#EDF6E8] p-4"
-            >
-              <Image
-                src={logo.src}
-                alt={logo.name}
-                width={140}
-                height={56}
-                className="h-10 w-auto object-contain opacity-80 grayscale"
-              />
-            </article>
-          ))}
+          <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
+            <p className="text-sm text-[#0A211F]/70">
+              Showing {visibleCount} of {logos.length} logos
+            </p>
+
+            {logos.length > INITIAL_VISIBLE ? (
+              <Button
+                type="button"
+                onClick={() => setShowAll((prev) => !prev)}
+                className="rounded-xl bg-[#0A211F] px-5 text-[#E9F3E6] hover:bg-[#143531]"
+              >
+                {showAll ? "Show less logos" : "View all logos"}
+                <ArrowRight className="ml-2 size-4" />
+              </Button>
+            ) : null}
+          </div>
+
+
         </div>
       </div>
     </section>

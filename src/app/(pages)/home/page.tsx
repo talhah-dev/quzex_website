@@ -17,7 +17,7 @@ export default function HomePage() {
             <Wrapper>
                 <HeroSection />
                 <div className="bg-[#f7f9f2]">
-                    {/* <TrustedMarquee /> */}
+                    <TrustedMarquee />
                     <AboutSection />
                     <PortfolioSection />
                     <SuccessInNumbers />
@@ -25,6 +25,7 @@ export default function HomePage() {
                     <Testimonials />
                     <Faq />
                     <CTA />
+                    <div className="md:py-10 py-4"></div>
                 </div>
             </Wrapper>
         </div>

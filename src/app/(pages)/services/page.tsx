@@ -1,5 +1,7 @@
 import Wrapper from "@/app/Wrapper";
 import HeroSection from "@/components/common/HeroSection";
+import CTA from "@/components/Global/CTA";
+import ServicesListing from "@/components/Services/ServicesListing";
 
 export default function ServicesPage() {
   return (
@@ -12,6 +14,9 @@ export default function ServicesPage() {
         secondaryButtonLabel="Contact Us"
         secondaryButtonHref="/contact"
       />
+      <ServicesListing />
+      <CTA />
+      <div className="md:py-10 py-4"></div>
     </Wrapper>
   );
 }

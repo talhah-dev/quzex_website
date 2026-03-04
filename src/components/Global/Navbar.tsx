@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
+import { SITE_CONFIG } from '@/lib/site'
 
 const links = [
     { label: 'Home', href: '/' },
@@ -52,7 +53,7 @@ export default function Navbar() {
                             }`}
                     >
                         <Link href="/" className="flex text-white font-medium italic text-3xl items-center gap-2">
-                            Quzex
+                            {SITE_CONFIG.name}
                         </Link>
 
                         <nav className="hidden md:flex items-center gap-7">
@@ -110,9 +111,9 @@ export default function Navbar() {
                             <div className="flex items-center justify-between px-4 py-3">
                                 <div className="flex items-center gap-2">
                                     <span className="h-9 w-9 rounded-xl bg-[#0A211F] text-[#E9F3E6] grid place-items-center font-semibold">
-                                        Q
+                                        {SITE_CONFIG.name.charAt(0).toUpperCase()}
                                     </span>
-                                    <span className="font-semibold tracking-tight">Quzex</span>
+                                    <span className="font-semibold tracking-tight">{SITE_CONFIG.name}</span>
                                 </div>
 
                                 <button

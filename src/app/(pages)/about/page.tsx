@@ -24,6 +24,7 @@ export default function AboutPage() {
             <Testimonials />
             <Team />
             <CTA />
+            <div className="md:py-10 py-4"></div>
         </Wrapper>
     );
 }

@@ -1,5 +1,7 @@
+﻿import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { Twitter, Linkedin, Instagram, Dribbble } from "lucide-react";
+import { SITE_CONFIG, SITE_LINKS } from "@/lib/site";
 
 type FooterData = {
     title: string;
@@ -11,21 +13,22 @@ type FooterData = {
 
 const footerSections: FooterData[] = [
     {
-        title: "Sitemap",
+        title: "Quick Links",
         links: [
-            { title: "Contact", href: "/contact" },
-            { title: "About", href: "/about" },
-            { title: "Portfolio", href: "/portfolio" },
-            { title: "Services", href: "/services" },
             { title: "Home", href: "/" },
+            { title: "About", href: "/about" },
+            { title: "Services", href: "/services" },
+            { title: "Our Work", href: "/work" },
+            { title: "Contact", href: "/contact" },
         ],
     },
     {
-        title: "Quick Links",
+        title: "Services",
         links: [
-            { title: "Web Apps (Next.js)", href: "/services/nextjs" },
-            { title: "APIs (Go + Fiber)", href: "/services/go-fiber" },
-            { title: "Performance & SEO", href: "/services/performance-seo" },
+            { title: "Website Development", href: "/services" },
+            { title: "Website Redesign", href: "/services" },
+            { title: "Full Stack Development", href: "/services" },
+            { title: "API Integration", href: "/services" },
         ],
     },
 ];
@@ -38,19 +41,17 @@ const Footer = () => {
                 className="pointer-events-none absolute inset-0 bg-[url('/footer.avif')] bg-cover bg-center opacity-[0.10]"
             />
 
-
             <div className="relative max-w-7xl xl:px-16 lg:px-8 px-4 mx-auto">
                 <div className="flex flex-col gap-6 sm:gap-12">
                     <div className="py-12 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 lg:grid-cols-12 gap-x-8 gap-y-10 px-6 xl:px-0">
                         <div className="col-span-full lg:col-span-4">
                             <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-100 ease-in-out fill-mode-both">
-                                <a href="/" className="text-[#E9F3E6] font-semibold tracking-tight">
-                                    Quzex
-                                </a>
+                                <Link href="/" className="text-[#E9F3E6] font-semibold tracking-tight">
+                                    {SITE_CONFIG.name}
+                                </Link>
 
                                 <p className="text-base font-normal text-[#E9F3E6]/70">
-                                    Quzex is the portfolio of Muhammad Talha — a full-stack developer building fast,
-                                    accessible, and SEO-ready websites and web apps with Next.js and Go (Fiber).
+                                    {`${SITE_CONFIG.name} is a professional web services brand powered by a focused team of 2-3 specialists. We build high-quality websites, redesign existing platforms, and deliver complete development solutions tailored to business goals.`}
                                 </p>
 
                                 <div className="flex items-center gap-4">
@@ -79,12 +80,12 @@ const Footer = () => {
                                     <ul className="flex flex-col gap-3">
                                         {links.map(({ title, href }) => (
                                             <li key={title}>
-                                                <a
+                                                <Link
                                                     href={href}
                                                     className="text-base font-normal text-[#E9F3E6]/70 hover:text-[#D8F782] transition-colors"
                                                 >
                                                     {title}
-                                                </a>
+                                                </Link>
                                             </li>
                                         ))}
                                     </ul>
@@ -98,24 +99,32 @@ const Footer = () => {
                                 <ul className="flex flex-col gap-3">
                                     <li>
                                         <p className="text-base font-normal text-[#E9F3E6]/70">
-                                            Remote • Available worldwide
+                                            Remote - Available worldwide
                                         </p>
                                     </li>
                                     <li>
                                         <a
-                                            href="mailto:perfectwork0022@gmail.com"
+                                            href={SITE_LINKS.mailto}
                                             className="text-base font-normal text-[#E9F3E6]/70 hover:text-[#D8F782] transition-colors"
                                         >
-                                            perfectwork0022@gmail.com
+                                            {SITE_CONFIG.email}
                                         </a>
                                     </li>
                                     <li>
                                         <a
+                                            href={SITE_LINKS.tel}
+                                            className="text-base font-normal text-[#E9F3E6]/70 hover:text-[#D8F782] transition-colors"
+                                        >
+                                            {SITE_CONFIG.phone}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <Link
                                             href="/contact"
                                             className="text-base font-normal text-[#E9F3E6]/70 hover:text-[#D8F782] transition-colors"
                                         >
                                             Get a quote
-                                        </a>
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>
@@ -125,7 +134,7 @@ const Footer = () => {
                     <Separator orientation="horizontal" className="bg-white/10" />
 
                     <p className="text-sm font-normal text-[#E9F3E6]/60 text-center animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-100 ease-in-out fill-mode-both">
-                        ©{new Date().getFullYear()} Quzex. All Rights Reserved
+                        Copyright © {new Date().getFullYear()} {SITE_CONFIG.name}. All Rights Reserved
                     </p>
                 </div>
             </div>
