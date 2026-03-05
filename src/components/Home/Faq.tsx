@@ -37,7 +37,7 @@ const FAQ_DATA = [
 export default function Faq() {
     return (
         <section>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:py-24 py-8 flex flex-col gap-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:py-20 py-8 flex flex-col md:gap-16 gap-6">
                 <div className="flex flex-col gap-4 items-center animate-in fade-in slide-in-from-top-10 duration-1000 delay-100 ease-in-out fill-mode-both">
                     <Badge
                         variant="outline"
@@ -45,7 +45,7 @@ export default function Faq() {
                     >
                         FAQs
                     </Badge>
-                    <h2 className="text-5xl font-medium text-center max-w-lg">
+                    <h2 className="text-foreground leading-tight text-3xl sm:text-5xl font-medium max-w-xs sm:max-w-2xl mx-auto text-center">
                         Questions clients ask before we start
                     </h2>
                 </div>

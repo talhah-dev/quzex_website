@@ -22,6 +22,7 @@ export default function HomePage() {
                     <PortfolioSection />
                     <SuccessInNumbers />
                     <HowWeWork />
+                    <div className="md:py-8 py-4"></div>
                     <Testimonials />
                     <Faq />
                     <CTA />

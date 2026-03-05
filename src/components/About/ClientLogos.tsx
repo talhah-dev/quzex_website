@@ -75,7 +75,7 @@ export default function ClientLogos() {
               <Button
                 type="button"
                 onClick={() => setShowAll((prev) => !prev)}
-                className="rounded-xl bg-[#0A211F] px-5 text-[#E9F3E6] hover:bg-[#143531]"
+                className="rounded-lg bg-[#0A211F] px-5 text-[#E9F3E6] hover:bg-[#143531]"
               >
                 {showAll ? "Show less logos" : "View all logos"}
                 <ArrowRight className="ml-2 size-4" />

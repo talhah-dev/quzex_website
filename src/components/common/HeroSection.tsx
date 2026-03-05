@@ -50,10 +50,10 @@ export default function HeroSection({
         </div>
       </div>
 
-      <div className="relative py-32 md:py-36">
+      <div className="relative py-26 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center w-full sm:mx-auto lg:mr-auto lg:mt-0">
-            <h1 className="mx-auto mt-10 max-w-4xl text-balance font-medium text-4xl leading-[1.15] text-[#8AF7B7] md:text-7xl">
+            <h1 className="mx-auto mt-10 max-w-4xl text-balance font-medium text-4xl leading-[1.15] tracking-wide text-[#8AF7B7] md:text-7xl">
               <TextEffect preset="fade-in-blur" speedSegment={0.3} as="span" className="inline">
                 {heading}
               </TextEffect>
@@ -65,7 +65,7 @@ export default function HeroSection({
               speedSegment={0.3}
               delay={0.2}
               as="p"
-              className="mx-auto mt-8 max-w-2xl text-lg text-[#E9F3E6]/80"
+              className="mx-auto md:mt-8 mt-4 max-w-2xl text-lg text-[#E9F3E6]/80"
             >
               {paragraph}
             </TextEffect>
@@ -82,7 +82,7 @@ export default function HeroSection({
               <AnimatedButton href={primaryButtonHref} color="light">
                 {primaryButtonLabel}
               </AnimatedButton>
-              <Link href={secondaryButtonHref} className="flex items-center gap-2">
+              <Link href={secondaryButtonHref} className="flex hover:text-[#d1f274] transition-all duration-500 items-center gap-2">
                 {secondaryButtonLabel} <ArrowRight size={18} />
               </Link>
             </AnimatedGroup>

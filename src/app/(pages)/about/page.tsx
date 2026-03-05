@@ -19,8 +19,8 @@ export default function AboutPage() {
                 secondaryButtonHref="/contact"
             />
             <WhoWeAre />
-            <CompanyEssentials />
             <ClientLogos />
+            <CompanyEssentials />
             <Testimonials />
             <Team />
             <CTA />

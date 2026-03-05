@@ -131,3 +131,18 @@
   font-family: var(--font-accent), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   font-style: italic;
 }
+
+@keyframes whatsapp-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.whatsapp-float {
+  animation: whatsapp-float 2.8s ease-in-out infinite;
+}

@@ -106,7 +106,7 @@ export default function HeroSection() {
                                     as="span"
                                     className="inline"
                                 >
-                                    Building a better web, together
+                                    Building a better web, Together
                                 </TextEffect>
 
                                 <TextEffect

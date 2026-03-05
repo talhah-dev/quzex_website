@@ -42,11 +42,11 @@ export default function HowWeWork() {
   return (
     <section className="w-full text-[#0A211F]">
       <div className="mx-auto mt-14 max-w-6xl px-5 md:mt-20 md:px-10">
-        <div className="flex flex-col items-start gap-2">
+        <div className="flex flex-col md:items-start items-center md:text-start text-center gap-2">
           <Badge variant="outline" className="rounded-full border-[#0A211F]/20 ">
             How we work
           </Badge>
-          <h2 className="text-3xl font-semibold md:text-4xl">
+          <h2 className="text-foreground leading-tight text-3xl sm:text-5xl font-medium max-w-xs sm:max-w-2xl mx-auto text-center">
             A simple, proven process
           </h2>
           <p className="max-w-2xl text-[#0A211F]/70">

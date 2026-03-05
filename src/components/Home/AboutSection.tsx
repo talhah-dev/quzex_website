@@ -77,7 +77,7 @@ export default function AboutSection({
 
                         <div
                             aria-hidden
-                            className="pointer-events-none absolute z-10  -right-10 -top-10 h-44 w-44 rounded-full bg-[radial-gradient(circle,rgba(216,247,130,.18)_0%,rgba(216,247,130,0)_60%)]"
+                            className="pointer-events-none md:block hidden absolute z-10  -right-10 -top-10 h-44 w-44 rounded-full bg-[radial-gradient(circle,rgba(216,247,130,.18)_0%,rgba(216,247,130,0)_60%)]"
                         />
                     </div>
                 </div>

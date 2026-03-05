@@ -20,7 +20,7 @@ const services: Service[] = [
   {
     id: 1,
     title: "Full Stack Development",
-    duration: "2-5 weeks",
+    duration: "1-2 weeks",
     rating: 4.9,
     image:
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&auto=format&fit=crop&q=60",
@@ -31,7 +31,7 @@ const services: Service[] = [
   {
     id: 2,
     title: "Static Website Development",
-    duration: "3-7 days",
+    duration: "2-4 days",
     rating: 4.8,
     image:
       "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=900&auto=format&fit=crop&q=60",
@@ -42,7 +42,7 @@ const services: Service[] = [
   {
     id: 3,
     title: "Frontend Development",
-    duration: "1-3 weeks",
+    duration: "2-6 days",
     rating: 4.9,
     image:
       "https://images.unsplash.com/photo-1547658719-da2b51169166?w=900&auto=format&fit=crop&q=60",
@@ -53,7 +53,7 @@ const services: Service[] = [
   {
     id: 4,
     title: "Backend Development",
-    duration: "1-4 weeks",
+    duration: "1-4 days",
     rating: 4.8,
     image:
       "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&auto=format&fit=crop&q=60",
@@ -75,7 +75,7 @@ const services: Service[] = [
   {
     id: 6,
     title: "Mobile App Development",
-    duration: "4-8 weeks",
+    duration: "2-3 weeks",
     rating: 4.7,
     image:
       "https://images.unsplash.com/photo-1551434678-e076c223a692?w=900&auto=format&fit=crop&q=60",
@@ -86,7 +86,7 @@ const services: Service[] = [
   {
     id: 7,
     title: "Website Redesign",
-    duration: "1-3 weeks",
+    duration: "1-3 days",
     rating: 4.9,
     image:
       "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=900&auto=format&fit=crop&q=60",
@@ -97,7 +97,7 @@ const services: Service[] = [
   {
     id: 8,
     title: "AI Blog Post Integration",
-    duration: "3-7 days",
+    duration: "2-3 days",
     rating: 4.8,
     image:
       "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=900&auto=format&fit=crop&q=60",
@@ -108,13 +108,24 @@ const services: Service[] = [
   {
     id: 9,
     title: "AI Chatbots for Websites",
-    duration: "4-10 days",
+    duration: "4-7 days",
     rating: 4.9,
     image:
       "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=900&auto=format&fit=crop&q=60",
     category: "AI Automation",
     description:
       "Deploy smart website chatbots to handle FAQs, capture leads, and support visitors with instant responses 24/7.",
+  },
+  {
+    id: 10,
+    title: "3D Animation and Rendering",
+    duration: "2-3 days",
+    rating: 4.8,
+    image:
+      "https://images.unsplash.com/photo-1633419461186-7d40a38105ec?w=900&auto=format&fit=crop&q=60",
+    category: "3D Experience",
+    description:
+      "We create 3D animations and web-ready renders to make your website more interactive, premium, and visually engaging.",
   },
 ];
 
@@ -126,15 +137,6 @@ export default function ServicesListing({ className }: ServicesListingProps) {
   return (
     <section className={cn("px-4 py-16 md:px-6 lg:px-8", className)}>
       <div className="mx-auto max-w-7xl">
-        <header className="mb-12 text-center">
-          <h2 className="text-balance text-3xl font-bold text-[#0A211F] md:text-4xl">
-            Website Services We Provide
-          </h2>
-          <p className="mt-4 text-[#0A211F]/70">
-            High-quality services focused on performance, design, and business goals
-          </p>
-        </header>
-
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => (
             <Card

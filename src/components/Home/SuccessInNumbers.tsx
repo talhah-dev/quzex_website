@@ -27,7 +27,7 @@ export default function SuccessInNumbers() {
             linkText: 'View selected work',
         },
         {
-            value: '2–6 weeks',
+            value: '2-6 W',
             label: 'Typical MVP timelines depending on scope.',
             href: '/contact',
             linkText: 'Get a quote',
@@ -36,7 +36,7 @@ export default function SuccessInNumbers() {
 
     return (
         <section className="bg-[#0A211F] text-[#E9F3E6]">
-            <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
+            <div className="mx-auto max-w-7xl px-6 py-10 pb-20 md:py-28">
                 <div className="text-center">
                     <p className="text-sm tracking-[0.28em] uppercase text-[#E9F3E6]">
                         Success in numbers
@@ -55,7 +55,7 @@ export default function SuccessInNumbers() {
                                 <div className="max-w-xs text-sm leading-relaxed text-[#E9F3E6] md:text-base">
                                     {s.label}
                                 </div>
-                                <div className="text-6xl text-nowrap tracking-tight text-[#E9F3E6] md:text-7xl">
+                                <div className="text-5xl lg:text-7xl text-nowrap tracking-tight text-[#E9F3E6] md:text-5xl">
                                     {s.value}
                                 </div>
                             </div>

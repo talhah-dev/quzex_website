@@ -50,21 +50,21 @@ const Footer = () => {
                                     {SITE_CONFIG.name}
                                 </Link>
 
-                                <p className="text-base font-normal text-[#E9F3E6]/70">
+                                <p className="text-base font-normal text-[#E9F3E6]/85">
                                     {`${SITE_CONFIG.name} is a professional web services brand powered by a focused team of 2-3 specialists. We build high-quality websites, redesign existing platforms, and deliver complete development solutions tailored to business goals.`}
                                 </p>
 
                                 <div className="flex items-center gap-4">
-                                    <a href="#" className="text-[#E9F3E6]/65 hover:text-[#E9F3E6] transition-colors">
+                                    <a href="#" className="text-[#E9F3E6]/85 hover:text-[#E9F3E6] transition-colors">
                                         <Twitter size={20} />
                                     </a>
-                                    <a href="#" className="text-[#E9F3E6]/65 hover:text-[#E9F3E6] transition-colors">
+                                    <a href="#" className="text-[#E9F3E6]/85 hover:text-[#E9F3E6] transition-colors">
                                         <Linkedin size={20} />
                                     </a>
-                                    <a href="#" className="text-[#E9F3E6]/65 hover:text-[#E9F3E6] transition-colors">
+                                    <a href="#" className="text-[#E9F3E6]/85 hover:text-[#E9F3E6] transition-colors">
                                         <Dribbble size={20} />
                                     </a>
-                                    <a href="#" className="text-[#E9F3E6]/65 hover:text-[#E9F3E6] transition-colors">
+                                    <a href="#" className="text-[#E9F3E6]/85 hover:text-[#E9F3E6] transition-colors">
                                         <Instagram size={20} />
                                     </a>
                                 </div>
@@ -82,7 +82,7 @@ const Footer = () => {
                                             <li key={title}>
                                                 <Link
                                                     href={href}
-                                                    className="text-base font-normal text-[#E9F3E6]/70 hover:text-[#D8F782] transition-colors"
+                                                    className="text-base font-normal text-[#E9F3E6]/85 hover:text-[#D8F782] transition-colors"
                                                 >
                                                     {title}
                                                 </Link>
@@ -98,14 +98,14 @@ const Footer = () => {
                                 <p className="text-base font-medium text-[#E9F3E6]">Contact</p>
                                 <ul className="flex flex-col gap-3">
                                     <li>
-                                        <p className="text-base font-normal text-[#E9F3E6]/70">
+                                        <p className="text-base font-normal text-[#E9F3E6]/85">
                                             Remote - Available worldwide
                                         </p>
                                     </li>
                                     <li>
                                         <a
                                             href={SITE_LINKS.mailto}
-                                            className="text-base font-normal text-[#E9F3E6]/70 hover:text-[#D8F782] transition-colors"
+                                            className="text-base font-normal text-[#E9F3E6]/85 hover:text-[#D8F782] transition-colors"
                                         >
                                             {SITE_CONFIG.email}
                                         </a>
@@ -113,7 +113,7 @@ const Footer = () => {
                                     <li>
                                         <a
                                             href={SITE_LINKS.tel}
-                                            className="text-base font-normal text-[#E9F3E6]/70 hover:text-[#D8F782] transition-colors"
+                                            className="text-base font-normal text-[#E9F3E6]/85 hover:text-[#D8F782] transition-colors"
                                         >
                                             {SITE_CONFIG.phone}
                                         </a>
@@ -121,7 +121,7 @@ const Footer = () => {
                                     <li>
                                         <Link
                                             href="/contact"
-                                            className="text-base font-normal text-[#E9F3E6]/70 hover:text-[#D8F782] transition-colors"
+                                            className="text-base font-normal text-[#E9F3E6]/85 hover:text-[#D8F782] transition-colors"
                                         >
                                             Get a quote
                                         </Link>
@@ -133,7 +133,7 @@ const Footer = () => {
 
                     <Separator orientation="horizontal" className="bg-white/10" />
 
-                    <p className="text-sm font-normal text-[#E9F3E6]/60 text-center animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-100 ease-in-out fill-mode-both">
+                    <p className="text-sm font-normal text-[#E9F3E6]/85 text-center animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-100 ease-in-out fill-mode-both">
                         Copyright © {new Date().getFullYear()} {SITE_CONFIG.name}. All Rights Reserved
                     </p>
                 </div>
