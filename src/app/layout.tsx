@@ -18,6 +18,7 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_CONFIG.siteUrl),
   title: `${SITE_CONFIG.name} - Full Stack Web Development`,
   description:
     `${SITE_CONFIG.name} is the portfolio of ${SITE_CONFIG.ownerName}, a full-stack web developer building fast, accessible, SEO-ready websites and web apps.`,
