@@ -1,10 +1,10 @@
 import Wrapper from "@/app/Wrapper";
 import HowWeWork from "@/components/About/HowWeWork";
-import Team from "@/components/About/Team";
 import CTA from "@/components/Global/CTA";
 import AboutSection from "@/components/Home/AboutSection";
 import Faq from "@/components/Home/Faq";
 import HeroSection from "@/components/Home/HeroSection";
+import PricingSection from "@/components/Home/PricingSection";
 import PortfolioSection from "@/components/Home/PortfolioSection";
 import SuccessInNumbers from "@/components/Home/SuccessInNumbers";
 import Testimonials from "@/components/Home/Testimonials";
@@ -22,6 +22,7 @@ export default function HomePage() {
                     <PortfolioSection />
                     <SuccessInNumbers />
                     <HowWeWork />
+                    <PricingSection />
                     <div className="md:py-8 py-4"></div>
                     <Testimonials />
                     <Faq />
