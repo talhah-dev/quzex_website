@@ -6,7 +6,6 @@ import ContactFormSection from "@/components/Contact/ContactFormSection";
 export default function ContactPage() {
   return (
     <Wrapper>
-      <ContactTawkChat />
       <HeroSection
         heading="Let&apos;s discuss your website project"
         paragraph="Share your requirements and we will help you plan, design, and build a high-quality website that fits your goals."
@@ -15,7 +14,9 @@ export default function ContactPage() {
         secondaryButtonLabel="View Portfolio"
         secondaryButtonHref="/portfolio"
       />
-      <ContactFormSection />
+      <div className="bg-[#f7f9f2]">
+        <ContactFormSection />
+      </div>
     </Wrapper>
   );
 }

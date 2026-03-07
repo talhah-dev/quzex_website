@@ -9,4 +9,8 @@ export const SITE_CONFIG = {
 export const SITE_LINKS = {
   mailto: `mailto:${SITE_CONFIG.email}`,
   tel: `tel:${SITE_CONFIG.phoneE164}`,
+  whatsapp: `https://wa.me/${SITE_CONFIG.phoneE164.replace("+", "")}`,
+  instagram: "#",
+  linkedin: "#",
+  facebook: "#",
 } as const;

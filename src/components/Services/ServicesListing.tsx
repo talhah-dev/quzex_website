@@ -137,13 +137,13 @@ export default function ServicesListing({ className }: ServicesListingProps) {
   return (
     <section className={cn("px-4 py-16 md:px-6 lg:px-8", className)}>
       <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => (
             <Card
               key={service.id}
-              className="group relative flex flex-col gap-2 overflow-hidden border-[#0A211F]/10 pt-0 shadow-none"
+              className="group relative flex flex-col gap-2 bg-transparent overflow-hidden border-[#0A211F]/10 pt-0 shadow-none"
             >
-              <div className="relative aspect-video overflow-hidden">
+              <div className="relative h-56 overflow-hidden sm:h-70">
                 <Image
                   src={service.image}
                   alt={`${service.title} - ${service.category}`}

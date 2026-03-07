@@ -5,32 +5,73 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import type { ReactNode } from "react";
 
-const FAQ_DATA = [
+type FaqItem = {
+    question: string;
+    answer: ReactNode;
+};
+
+const FAQ_DATA: FaqItem[] = [
     {
-        question: "What do you build at Quzex?",
-        answer:
-            "I build modern websites and web apps—landing pages, dashboards, SaaS MVPs, and custom APIs. Most projects use Next.js on the frontend and Go (Fiber) on the backend when needed.",
+        question: "What types of websites do you build?",
+        answer: (
+            <>
+                We build landing pages, business websites, dashboards, custom web pages, and
+                full-stack web platforms tailored to each client&apos;s requirements. Our services
+                also include static websites, dynamic pages, API integrations, website redesigns,
+                and complete frontend and backend development.
+            </>
+        ),
     },
     {
-        question: "What’s your typical timeline?",
-        answer:
-            "Small websites usually take 3–7 days. Landing pages and marketing sites take 1–2 weeks. MVPs typically take 2–6 weeks depending on scope, integrations, and revisions.",
+        question: "What is your typical project timeline?",
+        answer: (
+            <>
+                Timelines depend on the project scope and required functionality. Smaller websites
+                are typically completed within 3 to 4 business days, while larger or full-stack
+                projects generally take 1 to 2 weeks to complete with proper testing and launch
+                preparation.
+            </>
+        ),
     },
     {
-        question: "How do you price projects?",
-        answer:
-            "Pricing is based on scope, complexity, and delivery timeline. I can work on a fixed price for clearly defined projects, or hourly/weekly for ongoing development and iterations.",
+        question: "How is project pricing determined?",
+        answer: (
+            <>
+                Our standard packages are available in the{" "}
+                <Link
+                    href="#pricing"
+                    className="font-medium text-[#0A211F] underline underline-offset-4"
+                >
+                    pricing section
+                </Link>
+                . For custom projects, pricing is based on page count, features, integrations, and
+                the overall scope of work. If your requirements are specific, we can prepare a
+                custom quote that aligns with your project.
+            </>
+        ),
     },
     {
         question: "Do you provide support after launch?",
-        answer:
-            "Yes. I offer post-launch support for bug fixes, improvements, and new features. If you want ongoing updates, I can set up a monthly maintenance plan.",
+        answer: (
+            <>
+                Yes. We provide post-launch support to resolve technical issues, fix unexpected
+                errors, and help keep your website running smoothly. If a critical issue affects
+                your site, we aim to respond and address it within 24 hours.
+            </>
+        ),
     },
     {
-        question: "How will communication and updates work?",
-        answer:
-            "You’ll get regular updates with clear milestones. I share progress frequently (daily or a few times per week), and we can coordinate via your preferred channel (Upwork/Fiverr chat, email, Slack, or WhatsApp).",
+        question: "Can we hire your team for custom work?",
+        answer: (
+            <>
+                Yes. We work with clients on one-time builds, website redesigns, and ongoing
+                development engagements. Whether you need a complete website, additional features,
+                or long-term technical support, our team can be hired based on your requirements.
+            </>
+        ),
     },
 ];
 
@@ -68,7 +109,7 @@ export default function Faq() {
                                 <AccordionTrigger className="p-0 text-xl font-medium hover:no-underline">
                                     {faq.question}
                                 </AccordionTrigger>
-                                <AccordionContent className="p-0 text-muted-foreground text-base">
+                                <AccordionContent className="p-0 text-base text-muted-foreground">
                                     {faq.answer}
                                 </AccordionContent>
                             </AccordionItem>

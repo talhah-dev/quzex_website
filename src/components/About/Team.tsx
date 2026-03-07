@@ -1,54 +1,30 @@
 "use client";
-import { Badge } from "@/components/ui/badge";
-import { Globe, Linkedin } from "lucide-react";
-import { motion } from "motion/react";
 
-type team = {
+import { Badge } from "@/components/ui/badge";
+import { motion } from "motion/react";
+import Image from "next/image";
+
+type TeamMember = {
     name: string;
     role: string;
     image: string;
-    socials: {
-        website: string;
-        linkedin: string;
-    };
 }[];
 
-const teamData: team = [
+const teamData: TeamMember = [
     {
-        name: "Logan Dang",
-        role: "WordPress Developer",
-        image: "https://images.shadcnspace.com/assets/team/team-img-01.png",
-        socials: {
-            website: "#",
-            linkedin: "#",
-        },
+        name: "Muhammad Tlhar",
+        role: "Full Stack Developer",
+        image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1772854472/talha_du0ahk.png",
     },
     {
-        name: "Ana Belić",
-        role: "Social Media Specialist",
-        image: "https://images.shadcnspace.com/assets/team/team-img-02.png",
-        socials: {
-            website: "#",
-            linkedin: "#",
-        },
+        name: "Ammar Khalid",
+        role: "WordPress and PHP Developer",
+        image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1772854503/ammar_ubs1kx.png",
     },
     {
-        name: "Brian Hanley",
-        role: "Product Designer",
-        image: "https://images.shadcnspace.com/assets/team/team-img-03.png",
-        socials: {
-            website: "#",
-            linkedin: "#",
-        },
-    },
-    {
-        name: "Darko Stanković",
-        role: "UI Designer",
-        image: "https://images.shadcnspace.com/assets/team/team-img-04.png",
-        socials: {
-            website: "#",
-            linkedin: "#",
-        },
+        name: "Muhammad Ali",
+        role: "Graphic Designer, Ads Management, Post Management",
+        image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1772853517/ali_wkaonw.png",
     },
 ];
 
@@ -64,7 +40,9 @@ const Team = () => {
                         transition={{
                             duration: 0.8,
                             ease: [0.21, 0.47, 0.32, 0.98],
-                        }} className="max-w-xl mx-auto flex flex-col items-center justify-center text-center gap-4">
+                        }}
+                        className="max-w-xl mx-auto flex flex-col items-center justify-center text-center gap-4"
+                    >
                         <Badge variant={"outline"} className="px-3 py-1 h-auto text-sm">
                             Team
                         </Badge>
@@ -72,11 +50,11 @@ const Team = () => {
                             Meet the creative minds behind our success
                         </h2>
                     </motion.div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {teamData?.map((value, index) => {
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {teamData.map((value, index) => {
                             return (
                                 <motion.div
-                                    key={index}
+                                    key={value.name}
                                     initial={{ y: 40, opacity: 0 }}
                                     whileInView={{ y: 0, opacity: 1 }}
                                     viewport={{ once: true }}
@@ -87,38 +65,20 @@ const Team = () => {
                                     }}
                                     className="group flex flex-col items-center justify-center gap-6"
                                 >
-                                    <img
-                                        className="w-full h-full group-hover:grayscale transition-all duration-300"
+                                    <Image
+                                        className="w-full rounded-[2.5rem] transition-all duration-300 group-hover:grayscale"
                                         src={value.image}
-                                        alt="team-img"
+                                        alt={value.name}
+                                        width={900}
+                                        height={1080}
                                     />
-                                    <div className="w-full flex flex-col gap-4 items-center justify-center">
-                                        <div className="flex flex-col items-center justify-center gap-2">
-                                            <h3 className="text-2xl font-medium text-foreground">
-                                                {value.name}
-                                            </h3>
-                                            <p className="text-sm font-normal text-muted-foreground">
-                                                {value.role}
-                                            </p>
-                                        </div>
-                                        <div className="flex gap-2">
-                                            <a
-                                                href={value.socials.website}
-                                                className="p-2 hover:bg-accent/80 rounded-full"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                <Globe size={16} />
-                                            </a>
-                                            <a
-                                                href={value.socials.linkedin}
-                                                className="p-2 hover:bg-accent/80 rounded-full"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                <Linkedin size={16} />
-                                            </a>
-                                        </div>
+                                    <div className="w-full flex flex-col gap-2 items-center justify-center">
+                                        <h3 className="text-2xl font-medium text-foreground">
+                                            {value.name}
+                                        </h3>
+                                        <p className="text-center text-sm font-normal text-muted-foreground">
+                                            {value.role}
+                                        </p>
                                     </div>
                                 </motion.div>
                             );

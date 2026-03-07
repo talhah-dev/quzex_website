@@ -14,9 +14,11 @@ export default function ServicesPage() {
         secondaryButtonLabel="Contact Us"
         secondaryButtonHref="/contact"
       />
-      <ServicesListing />
-      <CTA />
-      <div className="md:py-10 py-4"></div>
+      <div className="bg-[#f7f9f2]">
+        <ServicesListing />
+        <CTA />
+        <div className="md:py-10 py-4"></div>
+      </div>
     </Wrapper>
   );
 }

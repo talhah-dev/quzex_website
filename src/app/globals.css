@@ -127,12 +127,17 @@
   }
 }
 
+* {
+  scroll-behavior: smooth;
+}
+
 .font-accent {
   font-family: var(--font-accent), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   font-style: italic;
 }
 
 @keyframes whatsapp-float {
+
   0%,
   100% {
     transform: translateY(0);
@@ -145,4 +150,19 @@
 
 .whatsapp-float {
   animation: whatsapp-float 2.8s ease-in-out infinite;
+}
+
+@keyframes pricing-ring-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.pricing-card-ring {
+  animation: pricing-ring-spin 4.5s linear infinite;
+  will-change: transform;
 }
