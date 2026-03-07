@@ -23,7 +23,7 @@ export default function HomePage() {
                     <SuccessInNumbers />
                     <HowWeWork />
                     <PricingSection />
-                    <div className="md:py-8 py-4"></div>
+                    <div className="md:py-4 py-2"></div>
                     <Testimonials />
                     <Faq />
                     <CTA />

@@ -1,34 +1,8 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { PortfolioCard, PortfolioItem } from "../ui/PortfolioCard";
-
-const portfolioData: PortfolioItem[] = [
-    {
-        image: "/portfolio/saas-dashboard.jpg",
-        title: "SaaS Analytics Dashboard",
-        tags: ["Next.js", "UI/UX", "Charts", "Performance"],
-        href: "/portfolio/saas-dashboard",
-    },
-    {
-        image: "/portfolio/ecommerce.jpg",
-        title: "Ecommerce Storefront",
-        tags: ["Next.js", "Stripe", "SEO", "Conversion"],
-        href: "/portfolio/ecommerce-storefront",
-    },
-    {
-        image: "/portfolio/api-platform.jpg",
-        title: "API Platform (Go + Fiber)",
-        tags: ["Golang", "Fiber", "PostgreSQL", "Auth"],
-        href: "/portfolio/api-platform",
-    },
-    {
-        image: "/portfolio/landing-page.jpg",
-        title: "High-Converting Landing Page",
-        tags: ["Landing Page", "Core Web Vitals", "A/B Ready", "Copy"],
-        href: "/portfolio/landing-page",
-    },
-];
+import { HOME_PORTFOLIO_ITEMS } from "@/lib/portfolio";
+import { PortfolioCard } from "../ui/PortfolioCard";
 
 export default function PortfolioSection() {
     return (
@@ -49,7 +23,7 @@ export default function PortfolioSection() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-x-7 md:gap-y-8 w-full">
-                        {portfolioData.map((item, index) => (
+                        {HOME_PORTFOLIO_ITEMS.map((item, index) => (
                             <PortfolioCard key={item.title} item={item} index={index} />
                         ))}
                     </div>

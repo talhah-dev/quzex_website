@@ -127,7 +127,7 @@ export default function HeroSection() {
                                 as="p"
                                 className="mx-auto mt-8 max-w-2xl text-lg text-[#E9F3E6]/80"
                             >
-                                I help you build beautiful, accessible, fast, and secure websites that work
+                                We help you build beautiful, accessible, fast, and secure websites that work
                                 cross-browser—and for all of your users.
                             </TextEffect>
 

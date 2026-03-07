@@ -1,15 +1,12 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import type { PortfolioItem } from "@/lib/portfolio";
 import { motion } from "motion/react";
-
-export type PortfolioItem = {
-    image: string;
-    title: string;
-    tags: string[];
-    href?: string;
-};
 
 type PortfolioCardProps = {
     item: PortfolioItem;
@@ -17,19 +14,6 @@ type PortfolioCardProps = {
 };
 
 export function PortfolioCard({ item, index = 0 }: PortfolioCardProps) {
-    const cardVariants = {
-        hidden: { opacity: 0, y: 80 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                delay: index * 0.2,
-                duration: 0.6,
-                ease: [0.42, 0, 0.58, 1],
-            },
-        },
-    };
-
     return (
         <motion.div
             initial={{ opacity: 0, y: 80 }}
@@ -41,41 +25,46 @@ export function PortfolioCard({ item, index = 0 }: PortfolioCardProps) {
             viewport={{ once: true, amount: 0.2 }}
             className="group"
         >
-            <Card className="p-0 overflow-hidden shadow-none bg-transparent border-none rounded-2xl">
-                <CardContent className="p-0 flex flex-col gap-6">
-                    <a href={item.href ?? "#"} className="relative overflow-hidden rounded-2xl">
-                        <img
-                            src={item.image}
-                            alt={item.title}
-                            width={"100%"}
-                            height={370}
-                            className="object-cover w-full h-[260px] sm:h-[320px] transition-transform duration-500 group-hover:scale-105"
-                        />
-                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
-                    </a>
-
-                    <div className="pb-6 flex flex-col gap-3">
-                        <a
-                            href={item.href ?? "#"}
-                            className="text-[#E9F3E6] text-xl sm:text-2xl font-medium w-fit hover:text-[#D8F782] transition-colors"
-                        >
-                            {item.title}
-                        </a>
-
-                        <div className="flex flex-wrap gap-2.5">
-                            {item.tags.map((tag, i) => (
-                                <Badge
-                                    key={i}
-                                    variant="outline"
-                                    className="h-7 px-3 py-1 text-sm font-normal border-white/12 text-[#E9F3E6]/80 bg-white/0"
-                                >
-                                    {tag}
-                                </Badge>
-                            ))}
+            <Link href={item.href ?? "#"} className="block">
+                <Card className="rounded-2xl border-none bg-transparent p-0 shadow-none">
+                    <CardContent className="flex flex-col gap-6 p-0">
+                        <div className="relative block h-[260px] overflow-hidden rounded-2xl sm:h-[320px]">
+                            <Image
+                                src={item.image}
+                                alt={item.title}
+                                fill
+                                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                                className="object-cover object-top transition-[object-position] duration-[5000ms] ease-linear group-hover:object-bottom"
+                            />
                         </div>
-                    </div>
-                </CardContent>
-            </Card>
+
+                        <div className="flex flex-col gap-3 pb-6">
+                            <div className="inline-flex w-fit items-center gap-2 text-[#D8F782] transition-colors group-hover:text-white">
+                                <span className="text-[11px] font-medium uppercase tracking-[0.22em]">
+                                    Visit Website
+                                </span>
+                                <ArrowUpRight className="size-4" />
+                            </div>
+
+                            <p className="w-fit text-xl font-medium text-[#E9F3E6] transition-colors group-hover:text-[#D8F782] sm:text-2xl">
+                                {item.title}
+                            </p>
+
+                            <div className="flex flex-wrap gap-2.5">
+                                {item.tags.map((tag, i) => (
+                                    <Badge
+                                        key={i}
+                                        variant="outline"
+                                        className="h-7 border-white/12 bg-white/0 px-3 py-1 text-sm font-normal text-[#E9F3E6]/80"
+                                    >
+                                        {tag}
+                                    </Badge>
+                                ))}
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </Link>
         </motion.div>
     );
 }
