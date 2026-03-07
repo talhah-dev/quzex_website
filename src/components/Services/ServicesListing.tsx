@@ -127,6 +127,17 @@ const services: Service[] = [
     description:
       "We create 3D animations and web-ready renders to make your website more interactive, premium, and visually engaging.",
   },
+  {
+    id: 11,
+    title: "Social Media Management",
+    duration: "3-7 days",
+    rating: 4.8,
+    image:
+      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=900&auto=format&fit=crop&q=60",
+    category: "Marketing",
+    description:
+      "Professional social media management to help your brand stay active, consistent, and engaging across the right platforms.",
+  },
 ];
 
 type ServicesListingProps = {
