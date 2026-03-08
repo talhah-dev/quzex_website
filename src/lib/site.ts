@@ -1,7 +1,8 @@
 export const SITE_CONFIG = {
-  name: "Quzex",
+  name: "quzex",
+  primaryDomain: "quzex.co",
   ownerName: "Muhammad Talha",
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "http://localhost:3000",
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://quzex.co",
   email: "quzex@gmail.com",
   phone: "+92 315 2666263",
   phoneE164: "+923152666263",

@@ -12,17 +12,14 @@ export type MarqueeLogo = {
 };
 
 export const DEFAULT_MARQUEE_LOGOS: MarqueeLogo[] = [
-    { name: "Logo", src: "/client_logos/1.webp" },
-    { name: "Logo", src: "/client_logos/27.webp" },
+    { name: "Logo", src: "/client_logos/29.png" },
+    { name: "Logo", src: "/client_logos/21.png" },
     { name: "Logo", src: "/client_logos/28.webp" },
     { name: "Logo", src: "/client_logos/29.webp" },
-    { name: "Logo", src: "/client_logos/1.webp" },
-    { name: "Logo", src: "/client_logos/1.webp" },
-    { name: "Logo", src: "/client_logos/27.webp" },
-    { name: "Logo", src: "/client_logos/28.webp" }
-    // { name: "Logo", src: "/client_logos/logo.webp" },
-    // { name: "Logo", src: "/client_logos/logo1.webp" },
-    // { name: "Logo", src: "/client_logos/logo.svg" },
+    { name: "Logo", src: "/client_logos/46.png" },
+    { name: "Logo", src: "/client_logos/7.png" },
+    { name: "Logo", src: "/client_logos/2.png" },
+    { name: "Logo", src: "/client_logos/14.png" }
 ];
 
 type Props = {
@@ -76,7 +73,7 @@ function MarqueeRow({
                             height={logo.height ?? 36}
                             sizes="(min-width: 768px) 140px, 120px"
                             className={cn(
-                                "h-7 w-auto md:h-24 opacity-60 grayscale brightness-0 transition-opacity duration-300 hover:opacity-90",
+                                "h-20 w-auto md:h-24 opacity-60 grayscale brightness-0 transition-opacity duration-300 hover:opacity-90",
                                 invertLogos && "invert"
                             )}
                         />
@@ -120,12 +117,12 @@ export default function TrustedMarquee({
 
     return (
         <section className={cn("w-full", className)}>
-            <div className="mx-auto max-w-7xl px-6 pt-16 md:pt-24 pb-10">
+            <div className="mx-auto max-w-7xl px-6 pt-12 md:pt-24 pb-10">
                 <div className="text-center text-sm md:text-base text-[#0a211f]">
                     {title}
                 </div>
 
-                <div className="mt-10 space-y-7">
+                <div className="md:mt-10 mt-7 md:space-y-7">
                     <MarqueeRow
                         logos={logos}
                         speedSeconds={speedSeconds}

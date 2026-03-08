@@ -1,4 +1,14 @@
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { SERVICE_ITEMS } from "@/lib/services";
 import { AnimatedButton } from "../ui/AnimatedButton";
 import { SITE_CONFIG, SITE_LINKS } from "@/lib/site";
 
@@ -51,18 +61,45 @@ export default function ContactFormSection() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label htmlFor="contact-email" className="text-sm font-medium">
-                  Email*
-                </label>
-                <input
-                  id="contact-email"
-                  name="email"
-                  type="email"
-                  required
-                  className="mt-1 h-12 w-full rounded-xl border border-[#0A211F]/20 bg-transparent px-4 text-sm text-[#0A211F] placeholder:text-[#0A211F]/45 outline-none transition focus:border-[#0A211F]/40 focus:ring-2 focus:ring-[#8AF7B7]/35"
-                  placeholder="you@example.com"
-                />
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <label htmlFor="contact-service" className="text-sm font-medium">
+                    Service Interested In*
+                  </label>
+                  <Select name="service_interest">
+                    <SelectTrigger
+                      id="contact-service"
+                      className="mt-1 h-12 w-full rounded-xl border border-[#0A211F]/20 bg-transparent px-4 text-sm text-[#0A211F] shadow-none focus-visible:border-[#0A211F]/40 focus-visible:ring-2 focus-visible:ring-[#8AF7B7]/35"
+                    >
+                      <SelectValue placeholder="Select a service" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-2xl border-[#0A211F]/10 bg-[#FCFDF8] text-[#0A211F] shadow-[0_20px_45px_-30px_rgba(10,33,31,0.4)]">
+                      <SelectGroup>
+                        <SelectLabel>Services</SelectLabel>
+                        {SERVICE_ITEMS.map((service) => (
+                          <SelectItem key={service.id} value={service.title}>
+                            {service.title}
+                          </SelectItem>
+                        ))}
+                        <SelectItem value="Other">Other</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="contact-email" className="text-sm font-medium">
+                    Email*
+                  </label>
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    required
+                    className="mt-1 h-12 w-full rounded-xl border border-[#0A211F]/20 bg-transparent px-4 text-sm text-[#0A211F] placeholder:text-[#0A211F]/45 outline-none transition focus:border-[#0A211F]/40 focus:ring-2 focus:ring-[#8AF7B7]/35"
+                    placeholder="you@example.com"
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -93,13 +130,13 @@ export default function ContactFormSection() {
                   href="#"
                   className="block text-[#0A211F]/75 transition-colors hover:text-[#0A211F]"
                 >
-                  Dribbble
+                  Whatsapp
                 </a>
                 <a
                   href="#"
                   className="block text-[#0A211F]/75 transition-colors hover:text-[#0A211F]"
                 >
-                  X / Twitter
+                  facebook
                 </a>
                 <a
                   href="#"

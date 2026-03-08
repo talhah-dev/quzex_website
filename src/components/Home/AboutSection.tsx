@@ -31,8 +31,8 @@ export default function AboutSection({
 }: AboutSectionProps) {
     return (
         <section className={cn("w-full ", className)}>
-            <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-                <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+            <div className="mx-auto max-w-7xl px-6 pb-10 md:pb-24 md:pt-24 pt-8">
+                <div className="grid md:gap-12 gap-6 lg:grid-cols-2 lg:items-center">
                     <div className="max-w-2xl">
                         <div className="flex items-center gap-4">
                             <p className="text-[11px] tracking-widest uppercase text-[#0A211F]/70">
@@ -63,7 +63,7 @@ export default function AboutSection({
 
                     <div className="relative">
                         <div className="overflow-hidden rounded-3xl z-20 bg-[#0A211F] p-2 shadow-[0_25px_70px_-40px_rgba(0,0,0,.55)]">
-                            <div className="relative overflow-hidden z-20 rounded-[1.25rem] bg-[#0A211F]">
+                            <div className="relative overflow-hidden z-20 md:rounded-[1.25rem] rounded-2xl bg-[#0A211F]">
                                 <Image
                                     src={imageSrc}
                                     alt={imageAlt}

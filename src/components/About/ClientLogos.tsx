@@ -4,30 +4,17 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-type Logo = {
-  name: string;
-  src: string;
-};
-
-const logos: Logo[] = [
-  { name: "Client 01", src: "/client_logos/1.webp" },
-  { name: "Client 02", src: "/client_logos/22.webp" },
-  { name: "Client 03", src: "/client_logos/27.webp" },
-  { name: "Client 04", src: "/client_logos/28.webp" },
-  { name: "Client 05", src: "/client_logos/29.webp" },
-  { name: "Client 06", src: "/client_logos/logo.webp" },
-  { name: "Client 07", src: "/client_logos/logo1.webp" },
-  { name: "Client 08", src: "/client_logos/logo.svg" },
-];
+import { CLIENT_LOGOS } from "@/lib/client-logos";
 
 const INITIAL_VISIBLE = 6;
 
 export default function ClientLogos() {
   const [showAll, setShowAll] = useState(false);
 
-  const visibleCount = showAll ? logos.length : Math.min(INITIAL_VISIBLE, logos.length);
-  const visibleLogos = useMemo(() => logos.slice(0, visibleCount), [visibleCount]);
+  const visibleCount = showAll
+    ? CLIENT_LOGOS.length
+    : Math.min(INITIAL_VISIBLE, CLIENT_LOGOS.length);
+  const visibleLogos = useMemo(() => CLIENT_LOGOS.slice(0, visibleCount), [visibleCount]);
 
   return (
     <section className="relative w-full py-12 text-[#0A211F] md:py-16">
@@ -68,10 +55,10 @@ export default function ClientLogos() {
 
           <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
             <p className="text-sm text-[#0A211F]/70">
-              Showing {visibleCount} of {logos.length} logos
+              Showing {visibleCount} of {CLIENT_LOGOS.length} logos
             </p>
 
-            {logos.length > INITIAL_VISIBLE ? (
+            {CLIENT_LOGOS.length > INITIAL_VISIBLE ? (
               <Button
                 type="button"
                 onClick={() => setShowAll((prev) => !prev)}

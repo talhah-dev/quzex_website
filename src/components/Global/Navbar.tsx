@@ -1,9 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import { SITE_CONFIG } from '@/lib/site'
+import { cn } from '@/lib/utils'
 
 const links = [
     { label: 'Home', href: '/' },
@@ -15,6 +18,12 @@ const links = [
 export default function Navbar() {
     const [open, setOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
+    const pathname = usePathname()
+
+    const isActiveRoute = (href: string) => {
+        if (href === '/') return pathname === '/'
+        return pathname === href || pathname.startsWith(`${href}/`)
+    }
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 10)
@@ -52,8 +61,16 @@ export default function Navbar() {
                         className={`flex items-center justify-between gap-3 transition-all duration-300 ${scrolled ? 'px-4 py-3 md:px-5' : 'px-3 py-3.5 md:px-4'
                             }`}
                     >
-                        <Link href="/" className="flex text-white font-medium italic text-3xl items-center gap-2">
-                            {SITE_CONFIG.name}
+                        <Link href="/" className="flex items-center">
+                            <Image
+                                src="/quzex.png"
+                                alt={SITE_CONFIG.name}
+                                width={470}
+                                height={207}
+                                priority
+                                className="h-10 w-auto object-contain md:h-11"
+                            />
+                            <span className="sr-only">{SITE_CONFIG.name}</span>
                         </Link>
 
                         <nav className="hidden md:flex items-center gap-7">
@@ -61,7 +78,12 @@ export default function Navbar() {
                                 <Link
                                     key={l.href}
                                     href={l.href}
-                                    className="text-sm text-[#E9F3E6] hover:text-[#fff] transition-colors"
+                                    className={cn(
+                                        'text-sm transition-colors',
+                                        isActiveRoute(l.href)
+                                            ? 'text-[#D8F782]'
+                                            : 'text-[#E9F3E6] hover:text-[#fff]'
+                                    )}
                                 >
                                     {l.label}
                                 </Link>
@@ -71,7 +93,12 @@ export default function Navbar() {
                         <div className="hidden md:flex items-center gap-3">
                             <Link
                                 href="/contact"
-                                className="inline-flex h-11 items-center rounded-full bg-[#D8F782] px-5 text-sm font-medium text-[#0A211F] transition-colors hover:bg-[#CFF06F]"
+                                className={cn(
+                                    'inline-flex h-11 items-center rounded-full px-5 text-sm font-medium transition-colors',
+                                    isActiveRoute('/contact')
+                                        ? 'bg-[#E9F3E6] text-[#0A211F]'
+                                        : 'bg-[#D8F782] text-[#0A211F] hover:bg-[#CFF06F]'
+                                )}
                             >
                                 Get a quote
                             </Link>
@@ -109,12 +136,17 @@ export default function Navbar() {
                     <div className="mx-auto max-w-7xl px-4 pt-5">
                         <div className="rounded-3xl bg-[#D8F782] text-[#0A211F] shadow-[0_30px_80px_-50px_rgba(0,0,0,.85)]">
                             <div className="flex items-center justify-between px-4 py-3">
-                                <div className="flex items-center gap-2">
-                                    <span className="h-9 w-9 rounded-xl bg-[#0A211F] text-[#E9F3E6] grid place-items-center font-semibold">
-                                        {SITE_CONFIG.name.charAt(0).toUpperCase()}
-                                    </span>
-                                    <span className="font-semibold tracking-tight">{SITE_CONFIG.name}</span>
-                                </div>
+                                <Link href="/" onClick={() => setOpen(false)} className="flex items-center">
+                                    <Image
+                                        src="/quzex.png"
+                                        alt={SITE_CONFIG.name}
+                                        width={470}
+                                        height={207}
+                                        priority
+                                        className="h-10 w-auto object-contain"
+                                    />
+                                    <span className="sr-only">{SITE_CONFIG.name}</span>
+                                </Link>
 
                                 <button
                                     type="button"
@@ -133,7 +165,12 @@ export default function Navbar() {
                                             key={l.href}
                                             href={l.href}
                                             onClick={() => setOpen(false)}
-                                            className="rounded-2xl px-4 py-3 text-base font-medium transition-colors hover:bg-black/10"
+                                            className={cn(
+                                                'rounded-2xl px-4 py-3 text-base font-medium transition-colors',
+                                                isActiveRoute(l.href)
+                                                    ? 'bg-[#0A211F] text-[#E9F3E6]'
+                                                    : 'hover:bg-black/10'
+                                            )}
                                         >
                                             {l.label}
                                         </Link>
@@ -144,7 +181,12 @@ export default function Navbar() {
                                     <Link
                                         href="/contact"
                                         onClick={() => setOpen(false)}
-                                        className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-[#0A211F] px-5 text-sm font-medium text-[#E9F3E6] transition-colors hover:bg-[#0F2D2A]"
+                                        className={cn(
+                                            'inline-flex h-12 w-full items-center justify-center rounded-2xl px-5 text-sm font-medium transition-colors',
+                                            isActiveRoute('/contact')
+                                                ? 'bg-white text-[#0A211F]'
+                                                : 'bg-[#0A211F] text-[#E9F3E6] hover:bg-[#0F2D2A]'
+                                        )}
                                     >
                                         Get a quote
                                     </Link>

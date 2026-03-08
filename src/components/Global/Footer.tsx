@@ -1,7 +1,12 @@
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaWhatsapp } from "react-icons/fa";
 import { Separator } from "@/components/ui/separator";
 import { SITE_CONFIG, SITE_LINKS } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
 type FooterData = {
     title: string;
@@ -34,6 +39,13 @@ const footerSections: FooterData[] = [
 ];
 
 const Footer = () => {
+    const pathname = usePathname();
+
+    const isActiveRoute = (href: string) => {
+        if (href === "/") return pathname === "/";
+        return pathname === href || pathname.startsWith(`${href}/`);
+    };
+
     return (
         <footer className="relative overflow-hidden bg-[#0A211F] py-10 text-[#E9F3E6]">
             <div
@@ -46,8 +58,15 @@ const Footer = () => {
                     <div className="grid grid-cols-2 gap-x-8 gap-y-10 px-6 py-12 sm:grid-cols-4 md:grid-cols-7 lg:grid-cols-12 xl:px-0">
                         <div className="col-span-full lg:col-span-4">
                             <div className="flex flex-col gap-6 animate-in fill-mode-both slide-in-from-bottom-10 fade-in duration-1000 delay-100 ease-in-out">
-                                <Link href="/" className="font-semibold tracking-tight text-[#E9F3E6]">
-                                    {SITE_CONFIG.name}
+                                <Link href="/" className="flex items-center">
+                                    <Image
+                                        src="/quzex.png"
+                                        alt={SITE_CONFIG.name}
+                                        width={470}
+                                        height={207}
+                                        className="h-12 w-auto object-contain"
+                                    />
+                                    <span className="sr-only">{SITE_CONFIG.name}</span>
                                 </Link>
 
                                 <p className="text-base font-normal text-[#E9F3E6]/85">
@@ -103,7 +122,12 @@ const Footer = () => {
                                             <li key={linkTitle}>
                                                 <Link
                                                     href={href}
-                                                    className="text-base font-normal text-[#E9F3E6]/85 transition-colors hover:text-[#D8F782]"
+                                                    className={cn(
+                                                        "text-base font-normal transition-colors",
+                                                        title === "Quick Links" && isActiveRoute(href)
+                                                            ? "text-[#D8F782]"
+                                                            : "text-[#E9F3E6]/85 hover:text-[#D8F782]"
+                                                    )}
                                                 >
                                                     {linkTitle}
                                                 </Link>
@@ -142,7 +166,12 @@ const Footer = () => {
                                     <li>
                                         <Link
                                             href="/contact"
-                                            className="text-base font-normal text-[#E9F3E6]/85 transition-colors hover:text-[#D8F782]"
+                                            className={cn(
+                                                "text-base font-normal transition-colors",
+                                                isActiveRoute("/contact")
+                                                    ? "text-[#D8F782]"
+                                                    : "text-[#E9F3E6]/85 hover:text-[#D8F782]"
+                                            )}
                                         >
                                             Get a quote
                                         </Link>
