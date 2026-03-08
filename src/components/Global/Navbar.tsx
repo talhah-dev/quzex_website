@@ -94,10 +94,7 @@ export default function Navbar() {
                             <Link
                                 href="/contact"
                                 className={cn(
-                                    'inline-flex h-11 items-center rounded-full px-5 text-sm font-medium transition-colors',
-                                    isActiveRoute('/contact')
-                                        ? 'bg-[#E9F3E6] text-[#0A211F]'
-                                        : 'bg-[#D8F782] text-[#0A211F] hover:bg-[#CFF06F]'
+                                    'inline-flex bg-[#D8F782] text-[#0A211F] hover:bg-[#CFF06F] h-11 items-center rounded-full px-5 text-sm font-medium transition-colors'
                                 )}
                             >
                                 Get a quote

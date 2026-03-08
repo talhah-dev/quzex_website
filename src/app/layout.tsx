@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter_Tight, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { SITE_CONFIG } from "@/lib/site";
+import { Toaster } from "@/components/ui/sonner";
+import Providers from "./providers/react-query-provider";
 
 const interTight = Inter_Tight({
   subsets: ["latin"],
@@ -30,7 +32,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${interTight.className} ${instrumentSerif.variable} antialiased`}>
-        {children}
+        <Providers>{children}</Providers>
+        <Toaster />
       </body>
     </html>
   );

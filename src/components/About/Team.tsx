@@ -12,18 +12,18 @@ type TeamMember = {
 
 const teamData: TeamMember = [
     {
-        name: "Muhammad Tlhar",
+        name: "Muhammad Talha",
         role: "Full Stack Developer",
         image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1772854472/talha_du0ahk.png",
     },
     {
         name: "Ammar Khalid",
-        role: "WordPress and PHP Developer",
+        role: "WordPress Developer",
         image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1772854503/ammar_ubs1kx.png",
     },
     {
         name: "Muhammad Ali",
-        role: "Graphic Designer, Ads Management, Post Management",
+        role: "Branding Expert",
         image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1772853517/ali_wkaonw.png",
     },
 ];
