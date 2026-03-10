@@ -1,36 +1,141 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# quzex
+
+`quzex` is a Next.js portfolio and agency website for website development services. It includes a public marketing site, service detail pages, a work/portfolio section, contact enquiries, and a static admin dashboard that is gradually being connected to MongoDB-backed data.
+
+## Main Pages
+
+- `/` home page
+- `/about`
+- `/services`
+- `/services/[slug]`
+- `/work`
+- `/contact`
+- `/login`
+- `/dashboard`
+
+## Admin Dashboard Pages
+
+- `/dashboard`
+- `/dashboard/inquiries`
+- `/dashboard/portfolio`
+- `/dashboard/portfolio/new`
+- `/dashboard/client-logos`
+- `/dashboard/services`
+- `/dashboard/settings`
+
+## Tech Stack
+
+- Next.js App Router
+- React 19
+- TypeScript
+- Tailwind CSS
+- React Query
+- Mongoose
+- Vercel Blob
+- Sonner
+- Lucide React
+
+## Features
+
+- reusable hero sections
+- dynamic service detail pages
+- MongoDB-backed contact enquiry flow
+- MongoDB-backed portfolio API
+- MongoDB-backed client logo API
+- admin portfolio upload flow
+- admin client logo upload flow
+- portfolio category filters
+- WhatsApp floating button
+- sitemap and robots support
+
+## Environment Variables
+
+Create a `.env` file with the required values:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+BLOB_READ_WRITE_TOKEN=your_vercel_blob_token
+NEXT_PUBLIC_SITE_URL=https://quzex.co
+```
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Useful Commands
 
-## Learn More
+```bash
+npm run dev
+npm run build
+npm run start
+npm run lint
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```text
+src/
+  app/
+    (pages)/
+    api/
+  components/
+    About/
+    Auth/
+    Contact/
+    Dashboard/
+    Global/
+    Home/
+    Services/
+    Work/
+    common/
+    ui/
+  lib/
+  models/
+  types/
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## API Overview
 
-## Deploy on Vercel
+### User APIs
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `POST /api/users/contact`
+- `GET /api/users/client-logos`
+- `GET /api/users/portfolio`
+- `GET /api/users/portfolio/:category`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Admin APIs
+
+- `GET /api/admin/inquiries`
+- `PATCH /api/admin/inquiries/:id`
+- `DELETE /api/admin/inquiries/:id`
+- `POST /api/admin/client-logos`
+- `GET /api/admin/client-logos`
+- `PATCH /api/admin/client-logos/:id`
+- `DELETE /api/admin/client-logos/:id`
+- `POST /api/admin/portfolio`
+
+### Upload API
+
+- `POST /api/upload`
+
+## Notes
+
+- Public portfolio and client-logo sections are now driven from database APIs.
+- The dashboard still contains some static UI actions that are not fully connected yet.
+- Client-logo uploads are optimized before upload on the frontend.
