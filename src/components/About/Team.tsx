@@ -18,7 +18,7 @@ const teamData: TeamMember = [
     },
     {
         name: "Ammar Khalid",
-        role: "Senior Project Manager",
+        role: "Project Manager and Developer",
         image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1772854503/ammar_ubs1kx.png",
     },
     {

@@ -21,3 +21,7 @@ export type CreatePortfolioCardPayload = Pick<
   PortfolioCard,
   "title" | "image" | "tags" | "category" | "href" | "priority" | "showOnHome"
 >;
+
+export type UpdatePortfolioCardPayload = CreatePortfolioCardPayload & {
+  id: string;
+};

@@ -16,15 +16,15 @@ export function getServiceBySlug(slug: string) {
 export const SERVICE_ITEMS: ServiceItem[] = [
   {
     id: 1,
-    slug: "full-stack-development",
-    title: "Full Stack Development",
-    duration: "1-2 weeks",
+    slug: "dynamic-website-development",
+    title: "Dynamic Website Development",
+    duration: "4-7 days",
     rating: 4.9,
     image:
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&  auto=format&fit=crop&q=60",
     category: "Development",
     description:
-      "Complete web solutions from frontend to backend with clean architecture, strong performance, and scalable code.",
+      "Dynamic websites with interactive features, admin control, database connectivity, and flexible functionality built around your business needs.",
   },
   {
     id: 2,
@@ -37,18 +37,6 @@ export const SERVICE_ITEMS: ServiceItem[] = [
     category: "Websites",
     description:
       "Fast, lightweight static websites that are SEO-friendly, secure, and ideal for business presence and landing pages.",
-  },
-  {
-    id: 3,
-    slug: "frontend-development",
-    title: "Frontend Development",
-    duration: "2-6 days",
-    rating: 4.9,
-    image:
-      "https://images.unsplash.com/photo-1547658719-da2b51169166?w=900&auto=format&fit=crop&q=60",
-    category: "Frontend",
-    description:
-      "Modern user interfaces with smooth interactions, responsive layouts, and accessible design for all devices.",
   },
   {
     id: 4,

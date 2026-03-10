@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getPortfolioCards } from "@/lib/api/portfolio";
+import PortfolioSectionSkeleton from "@/components/Home/PortfolioSectionSkeleton";
 import { PortfolioCard } from "../ui/PortfolioCard";
 
 type PortfolioSectionProps = {
@@ -71,11 +72,7 @@ export default function PortfolioSection({ selectedCategory = "" }: PortfolioSec
                         ))}
                     </div>
 
-                    {isLoading ? (
-                        <div className="w-full rounded-2xl border border-white/12 bg-white/5 px-6 py-10 text-center text-sm text-[#E9F3E6]/72">
-                            Loading portfolio projects...
-                        </div>
-                    ) : null}
+                    {isLoading ? <PortfolioSectionSkeleton /> : null}
 
                     {isError ? (
                         <div className="w-full rounded-2xl border border-[#C24141]/20 bg-[#401919] px-6 py-10 text-center text-sm text-[#FFD8D8]">

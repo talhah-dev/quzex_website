@@ -3,10 +3,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
-import { PencilLine, Plus, Trash2 } from "lucide-react";
+import { PencilLine, Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getPortfolioCards } from "@/lib/api/portfolio";
+import DeletePortfolioDialog from "@/components/Dashboard/Portfolio/DeletePortfolioDialog";
 
 export default function DashboardPortfolio() {
   const { data, isLoading, isError } = useQuery({
@@ -168,20 +169,21 @@ export default function DashboardPortfolio() {
                       </div>
 
                       <div className="flex flex-wrap gap-2">
-                        <button
+                        <Button
+                          asChild
                           type="button"
+                          variant="outline"
                           className="inline-flex items-center gap-2 rounded-lg border border-[#0A211F]/10 bg-white px-3 py-2 text-xs font-medium text-[#0A211F] transition-colors hover:bg-[#EDF6E8]"
                         >
-                          <PencilLine className="size-3.5" />
-                          <span>Edit</span>
-                        </button>
-                        <button
-                          type="button"
-                          className="inline-flex items-center gap-2 rounded-lg border border-[#C24141]/15 bg-[#FFF5F5] px-3 py-2 text-xs font-medium text-[#C24141] transition-colors hover:bg-[#FEEBEB]"
-                        >
-                          <Trash2 className="size-3.5" />
-                          <span>Delete</span>
-                        </button>
+                          <Link href={`/dashboard/portfolio/${item._id}/edit`}>
+                            <PencilLine className="size-3.5" />
+                            <span>Edit</span>
+                          </Link>
+                        </Button>
+                        <DeletePortfolioDialog
+                          portfolioId={item._id}
+                          portfolioTitle={item.title}
+                        />
                       </div>
                     </div>
                   </div>
