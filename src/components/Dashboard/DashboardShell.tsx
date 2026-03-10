@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -11,6 +15,7 @@ import {
   Settings,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { logoutAdmin } from "@/lib/api/auth";
 import { SITE_CONFIG } from "@/lib/site";
 import { Button } from "../ui/button";
 
@@ -44,6 +49,15 @@ type DashboardShellProps = {
 };
 
 export default function DashboardShell({ activeItem, children }: DashboardShellProps) {
+  const router = useRouter();
+  const { mutate, isPending } = useMutation({
+    mutationFn: logoutAdmin,
+    onSuccess: () => {
+      router.push("/login");
+      router.refresh();
+    },
+  });
+
   return (
     <section className="min-h-screen bg-[#eef3e8] text-[#0A211F]">
       <div className="lg:pl-[280px]">
@@ -92,8 +106,10 @@ export default function DashboardShell({ activeItem, children }: DashboardShellP
               <Button
                 variant={"destructive"}
                 className="w-full cursor-pointer"
+                disabled={isPending}
+                onClick={() => mutate()}
               >
-                Log out <LogOut />
+                {isPending ? "Logging out..." : "Log out"} <LogOut />
               </Button>
             </div>
           </div>

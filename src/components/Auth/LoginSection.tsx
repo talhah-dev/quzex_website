@@ -1,6 +1,36 @@
+"use client";
+
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
+import { loginAdmin } from "@/lib/api/auth";
 
 export default function LoginSection() {
+    const router = useRouter();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: loginAdmin,
+        onSuccess: (response) => {
+            toast.success(response.message || "Login successful.");
+            router.push("/dashboard");
+        },
+        onError: (error: Error) => {
+            toast.error(error.message || "Unable to login.");
+        },
+    });
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        mutate({
+            email,
+            password,
+        });
+    };
+
     return (
         <section className="relative flex min-h-screen items-center overflow-hidden bg-[#f7f9f2] px-4 py-16 md:px-6 lg:px-8">
             <div
@@ -29,7 +59,7 @@ export default function LoginSection() {
                         </div>
                     </div>
 
-                    <form className="mt-8 space-y-6">
+                    <form onSubmit={handleSubmit} className="mt-8 space-y-6">
                         <div className="space-y-2">
                             <label htmlFor="login-email" className="text-sm font-medium text-[#0A211F]">
                                 Email
@@ -40,6 +70,8 @@ export default function LoginSection() {
                                 type="email"
                                 autoComplete="email"
                                 placeholder="you@example.com"
+                                value={email}
+                                onChange={(event) => setEmail(event.target.value)}
                                 className="h-12 w-full rounded-xl border border-[#0A211F]/20 bg-transparent px-4 text-sm text-[#0A211F] placeholder:text-[#0A211F]/45 outline-none transition focus:border-[#0A211F]/40 focus:ring-2 focus:ring-[#8AF7B7]/35"
                             />
                         </div>
@@ -54,15 +86,18 @@ export default function LoginSection() {
                                 type="password"
                                 autoComplete="current-password"
                                 placeholder="Enter your password"
+                                value={password}
+                                onChange={(event) => setPassword(event.target.value)}
                                 className="h-12 w-full rounded-xl border border-[#0A211F]/20 bg-transparent px-4 text-sm text-[#0A211F] placeholder:text-[#0A211F]/45 outline-none transition focus:border-[#0A211F]/40 focus:ring-2 focus:ring-[#8AF7B7]/35"
                             />
                         </div>
 
                         <button
                             type="submit"
+                            disabled={isPending}
                             className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-[#0A211F] px-6 text-sm font-medium text-[#E9F3E6] transition-colors hover:bg-[#143531]"
                         >
-                            Sign In
+                            {isPending ? "Signing In..." : "Sign In"}
                         </button>
                     </form>
                 </div>
