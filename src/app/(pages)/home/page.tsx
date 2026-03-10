@@ -11,8 +11,15 @@ import Testimonials from "@/components/Home/Testimonials";
 import TrustedMarquee from "@/components/Home/TrustedMarquee";
 import { DEFAULT_PRICING_PLANS } from "@/lib/pricing";
 
+type HomePageProps = {
+    searchParams: Promise<{
+        category?: string;
+    }>;
+};
 
-export default function HomePage() {
+export default async function HomePage({ searchParams }: HomePageProps) {
+    const { category } = await searchParams;
+
     return (
         <div className="">
             <Wrapper>
@@ -20,7 +27,7 @@ export default function HomePage() {
                 <div className="bg-[#f7f9f2]">
                     <TrustedMarquee />
                     <AboutSection />
-                    <PortfolioSection />
+                    <PortfolioSection selectedCategory={category} />
                     <SuccessInNumbers />
                     <HowWeWork />
                     <div className="md:py-5 py-2"></div>

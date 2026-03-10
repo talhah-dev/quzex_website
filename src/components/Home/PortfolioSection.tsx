@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
@@ -9,11 +8,12 @@ import { Button } from "@/components/ui/button";
 import { getPortfolioCards } from "@/lib/api/portfolio";
 import { PortfolioCard } from "../ui/PortfolioCard";
 
-export default function PortfolioSection() {
-    const router = useRouter();
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
-    const activeCategory = searchParams.get("category") || "";
+type PortfolioSectionProps = {
+    selectedCategory?: string;
+};
+
+export default function PortfolioSection({ selectedCategory = "" }: PortfolioSectionProps) {
+    const activeCategory = selectedCategory;
     const { data, isLoading, isError } = useQuery({
         queryKey: ["portfolio-cards", "home"],
         queryFn: () => getPortfolioCards(),
@@ -36,13 +36,6 @@ export default function PortfolioSection() {
         [displayedCategory, portfolioCards]
     );
 
-    function handleCategoryChange(category: string) {
-        const params = new URLSearchParams(searchParams.toString());
-        params.set("category", category);
-        const queryString = params.toString();
-        router.push(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false });
-    }
-
     return (
         <section className="bg-[#0A211F] py-14 text-[#E9F3E6] md:py-20">
             <div className="mx-auto max-w-7xl px-4 lg:px-8 xl:px-16">
@@ -63,10 +56,9 @@ export default function PortfolioSection() {
 
                     <div className="mb-8 flex flex-wrap items-center justify-center gap-3">
                         {categories.map((category) => (
-                            <button
+                            <Link
                                 key={category}
-                                type="button"
-                                onClick={() => handleCategoryChange(category)}
+                                href={`/home?category=${encodeURIComponent(category)}`}
                                 className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
                                     displayedCategory === category
                                         ? "border-[#D8F782] bg-[#D8F782] text-[#0A211F]"
@@ -74,7 +66,7 @@ export default function PortfolioSection() {
                                 }`}
                             >
                                 {category}
-                            </button>
+                            </Link>
                         ))}
                     </div>
 

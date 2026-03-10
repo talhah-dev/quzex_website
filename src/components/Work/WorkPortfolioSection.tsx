@@ -4,15 +4,13 @@ import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { ArrowUpRight, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getPortfolioCards } from "@/lib/api/portfolio";
 
 export default function WorkPortfolioSection() {
     const [query, setQuery] = useState("");
-    const router = useRouter();
-    const pathname = usePathname();
     const searchParams = useSearchParams();
     const categoryParam = searchParams.get("category");
     const activeCategory = categoryParam || "All";
@@ -37,19 +35,6 @@ export default function WorkPortfolioSection() {
         });
     }, [portfolioCards, query]);
 
-    function handleCategoryChange(category: string) {
-        const params = new URLSearchParams(searchParams.toString());
-
-        if (category === "All") {
-            params.delete("category");
-        } else {
-            params.set("category", category);
-        }
-
-        const queryString = params.toString();
-        router.push(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false });
-    }
-
     return (
         <section className="bg-[#f7f9f2] py-14 text-[#0A211F] md:py-20">
             <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 lg:px-8 xl:px-16">
@@ -66,17 +51,16 @@ export default function WorkPortfolioSection() {
                     </div>
                     <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
                         {["All", ...categories].map((category) => (
-                            <button
+                            <Link
                                 key={category}
-                                type="button"
-                                onClick={() => handleCategoryChange(category)}
+                                href={category === "All" ? "/work" : `/work?category=${encodeURIComponent(category)}`}
                                 className={`rounded-full border px-4 py-2 text-xs font-medium transition-colors ${activeCategory === category
                                         ? "border-[#0A211F] bg-[#0A211F] text-[#E9F3E6]"
                                         : "border-[#0A211F]/12 bg-white text-[#0A211F]/70 hover:bg-[#EDF6E8]"
                                     }`}
                             >
                                 {category}
-                            </button>
+                            </Link>
                         ))}
                     </div>
                 </div>
