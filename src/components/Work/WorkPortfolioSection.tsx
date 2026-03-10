@@ -4,16 +4,17 @@ import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { ArrowUpRight, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getPortfolioCards } from "@/lib/api/portfolio";
 
-export default function WorkPortfolioSection() {
+type WorkPortfolioSectionProps = {
+    selectedCategory?: string;
+};
+
+export default function WorkPortfolioSection({ selectedCategory = "" }: WorkPortfolioSectionProps) {
     const [query, setQuery] = useState("");
-    const searchParams = useSearchParams();
-    const categoryParam = searchParams.get("category");
-    const activeCategory = categoryParam || "All";
+    const activeCategory = selectedCategory || "All";
     const { data, isLoading, isError } = useQuery({
         queryKey: ["portfolio-cards", activeCategory],
         queryFn: () =>
@@ -54,6 +55,7 @@ export default function WorkPortfolioSection() {
                             <Link
                                 key={category}
                                 href={category === "All" ? "/work" : `/work?category=${encodeURIComponent(category)}`}
+                                scroll={false}
                                 className={`rounded-full border px-4 py-2 text-xs font-medium transition-colors ${activeCategory === category
                                         ? "border-[#0A211F] bg-[#0A211F] text-[#E9F3E6]"
                                         : "border-[#0A211F]/12 bg-white text-[#0A211F]/70 hover:bg-[#EDF6E8]"

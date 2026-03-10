@@ -59,6 +59,7 @@ export default function PortfolioSection({ selectedCategory = "" }: PortfolioSec
                             <Link
                                 key={category}
                                 href={`/home?category=${encodeURIComponent(category)}`}
+                                scroll={false}
                                 className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
                                     displayedCategory === category
                                         ? "border-[#D8F782] bg-[#D8F782] text-[#0A211F]"
