@@ -1,9 +1,11 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { Eye, Trash2 } from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Eye, Mail, MessageCircle } from "lucide-react";
+import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
-import { getAdminInquiries } from "@/lib/api/contact";
+import { getAdminInquiries, updateInquiryStatus } from "@/lib/api/contact";
+import DeleteInquiryDialog from "@/components/Dashboard/Inquiries/DeleteInquiryDialog";
 import DashboardInquiriesSkeleton from "@/components/Dashboard/Inquiries/DashboardInquiriesSkeleton";
 
 function formatInquiryDate(date?: string) {
@@ -26,10 +28,35 @@ function formatStatus(status?: string) {
   return status.charAt(0).toUpperCase() + status.slice(1);
 }
 
+function getWhatsAppLink(name: string, phone: string) {
+  const phoneNumber = phone.replace(/\D/g, "");
+  const message = encodeURIComponent(`Hello ${name}, regarding your website enquiry.`);
+
+  return `https://wa.me/${phoneNumber}?text=${message}`;
+}
+
+function getEmailLink(name: string, email: string, service: string) {
+  const subject = encodeURIComponent(`Regarding your ${service} enquiry`);
+  const body = encodeURIComponent(`Hello ${name},\n\nThank you for your enquiry.`);
+
+  return `mailto:${email}?subject=${subject}&body=${body}`;
+}
+
 export default function DashboardInquiries() {
+  const queryClient = useQueryClient();
   const { data: inquiries = [], isLoading, isError } = useQuery({
     queryKey: ["admin-inquiries"],
     queryFn: getAdminInquiries,
+  });
+  const { mutate: markAsRead, isPending: isUpdatingStatus } = useMutation({
+    mutationFn: (id: string) => updateInquiryStatus(id, "reviewed"),
+    onSuccess: (data) => {
+      toast.success(data.message || "Inquiry marked as reviewed.");
+      queryClient.invalidateQueries({ queryKey: ["admin-inquiries"] });
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Unable to update inquiry.");
+    },
   });
 
   return (
@@ -151,6 +178,12 @@ export default function DashboardInquiries() {
                       <div className="flex flex-wrap gap-2 border-t border-[#0A211F]/10 pt-3">
                         <button
                           type="button"
+                          disabled={isReviewed || isUpdatingStatus}
+                          onClick={() => {
+                            if (!isReviewed) {
+                              markAsRead(inquiry._id);
+                            }
+                          }}
                           className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
                             isReviewed
                               ? "border border-[#0A211F]/10 bg-white text-[#0A211F]/62"
@@ -158,15 +191,30 @@ export default function DashboardInquiries() {
                           }`}
                         >
                           <Eye className="size-3.5" />
-                          <span>{isReviewed ? "Already Read" : "Read"}</span>
+                          <span>
+                            {isReviewed ? "Reviewed" : isUpdatingStatus ? "Updating..." : "Read"}
+                          </span>
                         </button>
-                        <button
-                          type="button"
-                          className="inline-flex items-center gap-2 rounded-lg border border-[#C24141]/15 bg-[#FFF5F5] px-3 py-2 text-xs font-medium text-[#C24141] transition-colors hover:bg-[#FEEBEB]"
+                        <a
+                          href={getEmailLink(inquiry.name, inquiry.email, inquiry.service)}
+                          className="inline-flex items-center gap-2 rounded-lg border border-[#0A211F]/10 bg-white px-3 py-2 text-xs font-medium text-[#0A211F] transition-colors hover:bg-[#EDF6E8]"
                         >
-                          <Trash2 className="size-3.5" />
-                          <span>Delete</span>
-                        </button>
+                          <Mail className="size-3.5" />
+                          <span>Email</span>
+                        </a>
+                        <a
+                          href={getWhatsAppLink(inquiry.name, inquiry.phone)}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-2 rounded-lg border border-[#25D366]/20 bg-[#EAFBF1] px-3 py-2 text-xs font-medium text-[#18884A] transition-colors hover:bg-[#DCF7E8]"
+                        >
+                          <MessageCircle className="size-3.5" />
+                          <span>WhatsApp</span>
+                        </a>
+                        <DeleteInquiryDialog
+                          inquiryId={inquiry._id}
+                          inquiryName={inquiry.name}
+                        />
                       </div>
                     </div>
                   </div>

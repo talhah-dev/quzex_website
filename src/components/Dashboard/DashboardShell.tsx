@@ -59,6 +59,9 @@ export default function DashboardShell({ activeItem, children }: DashboardShellP
                 Admin Panel
               </Badge>
 
+              <Link href={"/work"}>work</Link>
+
+
               <div className="space-y-2">
                 <p className="text-2xl font-semibold tracking-tight">{SITE_CONFIG.name}</p>
                 <p className="max-w-xs text-sm leading-relaxed text-[#E9F3E6]/68">

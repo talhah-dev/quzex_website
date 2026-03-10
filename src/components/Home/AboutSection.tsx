@@ -19,10 +19,10 @@ type AboutSectionProps = {
 
 export default function AboutSection({
     eyebrow = "ABOUT QUZEX",
-    heading = "We build high-quality websites",
-    accent = "that match your exact needs",
-    description = "Quzex is a focused web development team specializing in website development, website redesign, and complete builds from scratch. We create fast, modern, and business-ready websites tailored to each client.",
-    helper = "With 6+ years of experience across multiple industries, we combine strategy, UI design, and clean development to deliver websites that look professional, perform smoothly, and scale with your goals.",
+    heading = "Everything your brand needs to lead",
+    accent = "all in one place.",
+    description = "We aren’t just a dev shop, we’re your full-stack digital partners. From high-performance code and sleek UI design to strategic marketing and AI-driven automation, we build the engine that powers your growth.",
+    helper = "With 6+ years of experience, we’ve learned that a great website is only the beginning. You need a cohesive strategy. We combine clean development with bold branding and the latest AI tools to ensure your business doesn't just exist online, it dominates.",
     ctaText = "Start your website project",
     ctaHref = "/contact",
     imageSrc = "https://images.unsplash.com/photo-1650661926447-9efb2610f64c?q=80&w=1173&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -41,7 +41,7 @@ export default function AboutSection({
                             <span className="h-px flex-1 bg-[#0A211F]/20" />
                         </div>
 
-                        <h2 className="mt-10 text-balance text-4xl font-medium leading-[1.05] text-[#0A211F] sm:text-5xl md:text-6xl">
+                        <h2 className="mt-10 text-balance text-4xl font-medium leading-[1.2] text-[#0A211F] sm:text-5xl md:text-6xl">
                             {heading}{" "}
                             <span className="font-accent text-[#0A211F]">{accent}</span>
                         </h2>
@@ -69,7 +69,7 @@ export default function AboutSection({
                                     alt={imageAlt}
                                     width={1200}
                                     height={800}
-                                    className="h-auto w-full object-cover w-full md:h-[30rem] opacity-95"
+                                    className="h-auto w-full object-cover w-full md:h-[35rem] opacity-95"
                                     priority={false}
                                 />
                             </div>

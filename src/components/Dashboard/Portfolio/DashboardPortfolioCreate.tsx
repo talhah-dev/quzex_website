@@ -2,8 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import { ArrowLeft, ArrowUpRight, ImagePlus, Plus } from "lucide-react";
+import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,22 +18,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { createPortfolioCard } from "@/lib/api/portfolio";
+import { uploadFile } from "@/lib/api/upload";
+import { PORTFOLIO_CATEGORIES } from "@/lib/portfolio";
+import type { CreatePortfolioCardPayload, PortfolioCardCategory } from "@/types";
 
 const fallbackImage =
   "https://res.cloudinary.com/deo5ex1zo/image/upload/v1772881618/screencapture-stragthmond-vercel-app-2026-03-07-16_07_40_jswtb3.png";
 
 export default function DashboardPortfolioCreate() {
+  const router = useRouter();
   const [title, setTitle] = useState("Project title preview");
   const [priority, setPriority] = useState("1");
   const [liveLink, setLiveLink] = useState("https://example.com");
   const [tags, setTags] = useState("Business Website, Responsive, Modern UI, Custom Build");
   const [homeVisibility, setHomeVisibility] = useState<"home" | "work-only">("work-only");
-  const [category, setCategory] = useState("Business Website");
+  const [category, setCategory] = useState<PortfolioCardCategory>("Development");
   const [description, setDescription] = useState(
     "A short project summary will appear here as you prepare the portfolio item."
   );
   const [imageMode, setImageMode] = useState<"upload" | "url">("upload");
   const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -77,9 +86,52 @@ export default function DashboardPortfolioCreate() {
       URL.revokeObjectURL(uploadedImageUrl);
     }
 
+    setImageFile(file);
     const objectUrl = URL.createObjectURL(file);
     setUploadedImageUrl(objectUrl);
   }
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => {
+      let finalImage = imageUrl.trim();
+
+      if (imageMode === "upload") {
+        if (!imageFile) {
+          throw new Error("Please upload a portfolio image.");
+        }
+
+        const uploaded = await uploadFile({
+          file: imageFile,
+          folder: "portfolio",
+        });
+
+        finalImage = uploaded.url;
+      }
+
+      if (!finalImage) {
+        throw new Error("Please provide a portfolio image.");
+      }
+
+      const payload: CreatePortfolioCardPayload = {
+        title: title.trim(),
+        image: finalImage,
+        tags: previewTags,
+        category,
+        href: liveLink.trim() || undefined,
+        priority: Number.parseInt(priority, 10) || 1,
+        showOnHome: homeVisibility === "home",
+      };
+
+      return createPortfolioCard(payload);
+    },
+    onSuccess: (data) => {
+      toast.success(data.message || "Portfolio card created successfully.");
+      router.push("/dashboard/portfolio");
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Unable to create portfolio card.");
+    },
+  });
 
   return (
     <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
@@ -181,13 +233,21 @@ export default function DashboardPortfolioCreate() {
 
             <div className="grid gap-2">
               <Label htmlFor="portfolio-category">Project category</Label>
-              <Input
-                id="portfolio-category"
-                name="portfolio_category"
-                placeholder="Business Website"
+              <Select
                 value={category}
-                onChange={(event) => setCategory(event.target.value)}
-              />
+                onValueChange={(value) => setCategory(value as PortfolioCardCategory)}
+              >
+                <SelectTrigger id="portfolio-category" className="h-11 w-full rounded-xl border-[#0A211F]/12 bg-white text-[#0A211F]">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent className="border-[#0A211F]/10 bg-white">
+                  {PORTFOLIO_CATEGORIES.map((item) => (
+                    <SelectItem key={item} value={item}>
+                      {item}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="grid gap-2 md:col-span-2">
@@ -253,6 +313,7 @@ export default function DashboardPortfolioCreate() {
                   <p className="text-xs text-[#0A211F]/58">
                     Add a project screenshot or cover image for the portfolio card.
                   </p>
+                  {imageFile ? <p className="text-xs font-medium text-[#0A211F]">{imageFile.name}</p> : null}
                 </div>
                 <input
                   id="portfolio-upload"
@@ -280,10 +341,12 @@ export default function DashboardPortfolioCreate() {
           <div className="flex flex-wrap items-center gap-3 border-t border-[#0A211F]/10 pt-5">
             <Button
               type="button"
+              disabled={isPending}
+              onClick={() => mutate()}
               className="rounded-xl bg-[#0A211F] px-5 text-[#E9F3E6] hover:bg-[#143531]"
             >
               <Plus className="size-4" />
-              Save Portfolio
+              {isPending ? "Saving..." : "Save Portfolio"}
             </Button>
             <Button
               asChild
@@ -340,6 +403,10 @@ export default function DashboardPortfolioCreate() {
                 <p className="text-xl font-medium text-[#E9F3E6] sm:text-2xl">
                   {title || "Project title preview"}
                 </p>
+
+                <div className="inline-flex w-fit rounded-full border border-[#D8F782]/20 bg-[#0A211F]/85 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[#D8F782]">
+                  {category}
+                </div>
 
                 <div className="flex flex-wrap gap-2.5">
                   {(previewTags.length ? previewTags : ["Business Website", "Responsive"]).map(

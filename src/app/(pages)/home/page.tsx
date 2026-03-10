@@ -9,6 +9,7 @@ import PortfolioSection from "@/components/Home/PortfolioSection";
 import SuccessInNumbers from "@/components/Home/SuccessInNumbers";
 import Testimonials from "@/components/Home/Testimonials";
 import TrustedMarquee from "@/components/Home/TrustedMarquee";
+import { DEFAULT_PRICING_PLANS } from "@/lib/pricing";
 
 
 export default function HomePage() {
@@ -22,7 +23,13 @@ export default function HomePage() {
                     <PortfolioSection />
                     <SuccessInNumbers />
                     <HowWeWork />
-                    <PricingSection />
+                    <div className="md:py-5 py-2"></div>
+                    <PricingSection
+                        badgeLabel="Pricing plans"
+                        heading="Affordable pricing"
+                        description="Choose the package that fits your website needs, from a simple landing page to a full multi-page business website."
+                        plans={DEFAULT_PRICING_PLANS}
+                    />
                     <div className="md:py-4 py-2"></div>
                     <Testimonials />
                     <Faq />

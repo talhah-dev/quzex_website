@@ -5,11 +5,18 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import type { PortfolioItem } from "@/lib/portfolio";
 import { motion } from "motion/react";
 
+type PortfolioCardItem = {
+    image: string;
+    title: string;
+    tags: string[];
+    category: string;
+    href?: string;
+};
+
 type PortfolioCardProps = {
-    item: PortfolioItem;
+    item: PortfolioCardItem;
     index?: number;
 };
 
@@ -36,6 +43,9 @@ export function PortfolioCard({ item, index = 0 }: PortfolioCardProps) {
                                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                                 className="object-cover object-top transition-[object-position] duration-[5000ms] ease-linear group-hover:object-bottom"
                             />
+                            <div className="pointer-events-none absolute left-3 top-3 inline-flex rounded-full border border-[#D8F782]/20 bg-[#0A211F]/85 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[#D8F782] backdrop-blur-sm">
+                                {item.category}
+                            </div>
                         </div>
 
                         <div className="flex flex-col gap-3 pb-6">

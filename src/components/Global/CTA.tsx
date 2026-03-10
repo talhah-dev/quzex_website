@@ -14,7 +14,7 @@ type ImageCTASectionProps = {
 };
 
 export default function CTA({
-    backgroundImage = "/cta.avif",
+    backgroundImage = "/22.png",
     eyebrow = "LET’S BUILD YOUR NEXT PROJECT",
     titleTop = "Now imagine this",
     accentText = "creative power",
@@ -30,7 +30,7 @@ export default function CTA({
                 style={{
                     backgroundImage: `url(${backgroundImage})`,
                     backgroundSize: "cover",
-                    backgroundPosition: "center",
+                    // backgroundPosition: "center",
                 }}
             >
                 <div className="relative z-10 w-full">

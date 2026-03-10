@@ -1,27 +1,54 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ArrowUpRight, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { PORTFOLIO_ITEMS } from "@/lib/portfolio";
+import { getPortfolioCards } from "@/lib/api/portfolio";
 
 export default function WorkPortfolioSection() {
     const [query, setQuery] = useState("");
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const categoryParam = searchParams.get("category");
+    const activeCategory = categoryParam || "All";
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ["portfolio-cards", activeCategory],
+        queryFn: () =>
+            getPortfolioCards(activeCategory === "All" ? undefined : activeCategory),
+    });
+    const portfolioCards = useMemo(() => data?.items ?? [], [data]);
+    const categories = useMemo(() => data?.categories ?? [], [data]);
 
     const filteredProjects = useMemo(() => {
         const normalizedQuery = query.trim().toLowerCase();
 
         if (!normalizedQuery) {
-            return PORTFOLIO_ITEMS;
+            return portfolioCards;
         }
 
-        return PORTFOLIO_ITEMS.filter((item) => {
-            const searchableText = `${item.title} ${item.tags.join(" ")}`.toLowerCase();
+        return portfolioCards.filter((item) => {
+            const searchableText = `${item.title} ${item.category} ${item.tags.join(" ")}`.toLowerCase();
             return searchableText.includes(normalizedQuery);
         });
-    }, [query]);
+    }, [portfolioCards, query]);
+
+    function handleCategoryChange(category: string) {
+        const params = new URLSearchParams(searchParams.toString());
+
+        if (category === "All") {
+            params.delete("category");
+        } else {
+            params.set("category", category);
+        }
+
+        const queryString = params.toString();
+        router.push(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false });
+    }
 
     return (
         <section className="bg-[#f7f9f2] py-14 text-[#0A211F] md:py-20">
@@ -37,19 +64,40 @@ export default function WorkPortfolioSection() {
                             className="h-12 w-full rounded-full border border-[#0A211F]/12 bg-white pl-11 pr-4 text-sm text-[#0A211F] outline-none transition-colors placeholder:text-[#0A211F]/40 focus:border-[#0A211F]/25"
                         />
                     </div>
-                    <div className="inline-flex w-fit items-center gap-2 self-start rounded-full border border-[#0A211F]/12 bg-white px-4 py-2 text-sm font-medium text-[#0A211F] sm:self-auto">
-                        <span className="inline-flex min-w-8 items-center justify-center rounded-full bg-[#0A211F] px-2 py-1 text-xs font-semibold text-[#E9F3E6]">
-                            {String(filteredProjects.length).padStart(2, "0")}
-                        </span>
-                        <span>Showing portfolio items</span>
+                    <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+                        {["All", ...categories].map((category) => (
+                            <button
+                                key={category}
+                                type="button"
+                                onClick={() => handleCategoryChange(category)}
+                                className={`rounded-full border px-4 py-2 text-xs font-medium transition-colors ${activeCategory === category
+                                        ? "border-[#0A211F] bg-[#0A211F] text-[#E9F3E6]"
+                                        : "border-[#0A211F]/12 bg-white text-[#0A211F]/70 hover:bg-[#EDF6E8]"
+                                    }`}
+                            >
+                                {category}
+                            </button>
+                        ))}
                     </div>
                 </div>
 
-                {filteredProjects.length > 0 ? (
+                {isLoading ? (
+                    <div className="rounded-[2rem] border border-[#0A211F]/10 bg-white px-6 py-12 text-center text-[#0A211F]/70">
+                        Loading portfolio projects...
+                    </div>
+                ) : null}
+
+                {isError ? (
+                    <div className="rounded-[2rem] border border-[#C24141]/15 bg-[#FFF5F5] px-6 py-12 text-center text-[#C24141]">
+                        Unable to load portfolio projects right now.
+                    </div>
+                ) : null}
+
+                {!isLoading && !isError && filteredProjects.length > 0 ? (
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         {filteredProjects.map((item) => (
                             <article
-                                key={item.title}
+                                key={item._id}
                                 className="group overflow-hidden rounded-[1rem] border border-[#0A211F]/10 bg-white p-2 shadow-[0_18px_45px_-35px_rgba(10,33,31,0.35)]"
                             >
                                 <Link href={item.href ?? "#"} className="block">
@@ -63,7 +111,7 @@ export default function WorkPortfolioSection() {
                                         />
                                         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0A211F]/10 via-transparent to-transparent" />
                                         <div className="pointer-events-none absolute left-2 top-2 inline-flex min-w-8 items-center justify-center rounded-full bg-[#0A211F] px-2 py-1.5 text-xs font-medium tracking-[0.1em] text-[#E9F3E6]">
-                                            {String(item.priority).padStart(2, "0")}
+                                            {item.category}
                                         </div>
                                     </div>
 
@@ -95,11 +143,13 @@ export default function WorkPortfolioSection() {
                             </article>
                         ))}
                     </div>
-                ) : (
+                ) : null}
+
+                {!isLoading && !isError && filteredProjects.length === 0 ? (
                     <div className="rounded-[2rem] border border-[#0A211F]/10 bg-white px-6 py-12 text-center text-[#0A211F]/70">
                         No matching projects found for your search.
                     </div>
-                )}
+                ) : null}
             </div>
         </section>
     );

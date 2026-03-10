@@ -1,5 +1,9 @@
 import axios from "axios";
-import type { ContactInquiryRecord, CreateContactInquiryPayload } from "@/types";
+import type {
+  ContactInquiryRecord,
+  ContactInquiryStatus,
+  CreateContactInquiryPayload,
+} from "@/types";
 
 type CreateContactResponse = {
     success: boolean;
@@ -34,4 +38,26 @@ export async function getAdminInquiries() {
     }
 
     return res.data.data ?? [];
+}
+
+export async function updateInquiryStatus(id: string, status: ContactInquiryStatus) {
+    const res = await axios.patch<CreateContactResponse>(`/api/admin/inquiries/${id}`, {
+        status,
+    });
+
+    if (!res.data?.success) {
+        throw new Error(res.data?.message || "Failed to update inquiry");
+    }
+
+    return res.data;
+}
+
+export async function deleteInquiry(id: string) {
+    const res = await axios.delete<CreateContactResponse>(`/api/admin/inquiries/${id}`);
+
+    if (!res.data?.success) {
+        throw new Error(res.data?.message || "Failed to delete inquiry");
+    }
+
+    return res.data;
 }

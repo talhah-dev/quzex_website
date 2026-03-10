@@ -1,20 +1,27 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CLIENT_LOGOS } from "@/lib/client-logos";
+import { getClientLogos } from "@/lib/api/client-logo";
 
-const INITIAL_VISIBLE = 6;
+const INITIAL_VISIBLE = 18;
 
 export default function ClientLogos() {
   const [showAll, setShowAll] = useState(false);
+  const { data = [] } = useQuery({
+    queryKey: ["client-logos"],
+    queryFn: getClientLogos,
+  });
+
+  const logos = data;
 
   const visibleCount = showAll
-    ? CLIENT_LOGOS.length
-    : Math.min(INITIAL_VISIBLE, CLIENT_LOGOS.length);
-  const visibleLogos = useMemo(() => CLIENT_LOGOS.slice(0, visibleCount), [visibleCount]);
+    ? logos.length
+    : Math.min(INITIAL_VISIBLE, logos.length);
+  const visibleLogos = logos.slice(0, visibleCount);
 
   return (
     <section className="relative w-full py-12 text-[#0A211F] md:py-16">
@@ -38,7 +45,7 @@ export default function ClientLogos() {
             <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-6 md:gap-x-12">
               {visibleLogos.map((logo) => (
                 <article
-                  key={logo.src}
+                  key={logo.id}
                   className=""
                 >
                   <Image
@@ -46,7 +53,8 @@ export default function ClientLogos() {
                     alt={logo.name}
                     width={84}
                     height={28}
-                    className="h-6 w-auto object-contain grayscale"
+                    unoptimized
+                    className="h-20 md:h-30 w-auto object-contain brightness-70 grayscale opacity-65 md:h-10 h-6"
                   />
                 </article>
               ))}
@@ -55,10 +63,10 @@ export default function ClientLogos() {
 
           <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
             <p className="text-sm text-[#0A211F]/70">
-              Showing {visibleCount} of {CLIENT_LOGOS.length} logos
+              Showing {visibleCount} of {logos.length} logos
             </p>
 
-            {CLIENT_LOGOS.length > INITIAL_VISIBLE ? (
+            {logos.length > INITIAL_VISIBLE ? (
               <Button
                 type="button"
                 onClick={() => setShowAll((prev) => !prev)}

@@ -1,5 +1,6 @@
 export type ServiceItem = {
   id: number;
+  slug: string;
   title: string;
   duration: string;
   rating: number;
@@ -8,20 +9,26 @@ export type ServiceItem = {
   description: string;
 };
 
+export function getServiceBySlug(slug: string) {
+  return SERVICE_ITEMS.find((service) => service.slug === slug);
+}
+
 export const SERVICE_ITEMS: ServiceItem[] = [
   {
     id: 1,
+    slug: "full-stack-development",
     title: "Full Stack Development",
     duration: "1-2 weeks",
     rating: 4.9,
     image:
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&auto=format&fit=crop&q=60",
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&  auto=format&fit=crop&q=60",
     category: "Development",
     description:
       "Complete web solutions from frontend to backend with clean architecture, strong performance, and scalable code.",
   },
   {
     id: 2,
+    slug: "static-website-development",
     title: "Static Website Development",
     duration: "2-4 days",
     rating: 4.8,
@@ -33,6 +40,7 @@ export const SERVICE_ITEMS: ServiceItem[] = [
   },
   {
     id: 3,
+    slug: "frontend-development",
     title: "Frontend Development",
     duration: "2-6 days",
     rating: 4.9,
@@ -44,6 +52,7 @@ export const SERVICE_ITEMS: ServiceItem[] = [
   },
   {
     id: 4,
+    slug: "backend-development",
     title: "Backend Development",
     duration: "1-4 days",
     rating: 4.8,
@@ -55,6 +64,7 @@ export const SERVICE_ITEMS: ServiceItem[] = [
   },
   {
     id: 5,
+    slug: "database-design-and-integration",
     title: "Database Design and Integration",
     duration: "3-10 days",
     rating: 4.8,
@@ -66,6 +76,7 @@ export const SERVICE_ITEMS: ServiceItem[] = [
   },
   {
     id: 6,
+    slug: "mobile-app-development",
     title: "Mobile App Development",
     duration: "2-3 weeks",
     rating: 4.7,
@@ -77,6 +88,7 @@ export const SERVICE_ITEMS: ServiceItem[] = [
   },
   {
     id: 7,
+    slug: "website-redesign",
     title: "Website Redesign",
     duration: "1-3 days",
     rating: 4.9,
@@ -88,6 +100,7 @@ export const SERVICE_ITEMS: ServiceItem[] = [
   },
   {
     id: 8,
+    slug: "ai-blog-post-integration",
     title: "AI Blog Post Integration",
     duration: "2-3 days",
     rating: 4.8,
@@ -99,6 +112,7 @@ export const SERVICE_ITEMS: ServiceItem[] = [
   },
   {
     id: 9,
+    slug: "ai-chatbots-for-websites",
     title: "AI Chatbots for Websites",
     duration: "4-7 days",
     rating: 4.9,
@@ -110,6 +124,7 @@ export const SERVICE_ITEMS: ServiceItem[] = [
   },
   {
     id: 10,
+    slug: "3d-animation-and-rendering",
     title: "3D Animation and Rendering",
     duration: "2-3 days",
     rating: 4.8,
@@ -121,6 +136,7 @@ export const SERVICE_ITEMS: ServiceItem[] = [
   },
   {
     id: 11,
+    slug: "social-media-management",
     title: "Social Media Management",
     duration: "3-7 days",
     rating: 4.8,

@@ -49,10 +49,10 @@ export default function HeroSection() {
     }, [])
 
     const clientLogos = [
-        { name: 'Nvidia', src: 'https://images.unsplash.com/photo-1615109398623-88346a601842?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-        { name: 'GitHub', src: 'https://images.unsplash.com/photo-1615109398623-88346a601842?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-        { name: 'Nike', src: 'https://images.unsplash.com/photo-1615109398623-88346a601842?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-        { name: 'OpenAI', src: 'https://images.unsplash.com/photo-1615109398623-88346a601842?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+        { name: 'client1', src: '/clients/client3.jpeg' },
+        { name: 'client2', src: '/clients/client1.jpeg' },
+        { name: 'client3', src: '/clients/client4.jpeg' },
+        { name: 'client4', src: '/clients/client2.jpeg' },
     ]
 
     return (
@@ -99,14 +99,15 @@ export default function HeroSection() {
                                 </Link>
                             </AnimatedGroup>
 
-                            <h1 className="mx-auto mt-10 max-w-4xl text-balance font-medium text-4xl leading-[1.15] text-[#8AF7B7] md:text-7xl">
+                            <h1 className="mx-auto mt-10 max-w-4xl text-balance font-medium text-4xl leading-[1.3] text-[#8AF7B7] md:text-6xl">
                                 <TextEffect
                                     preset="fade-in-blur"
                                     speedSegment={0.3}
                                     as="span"
                                     className="inline"
                                 >
-                                    Building a better web, Together
+                                    We're here to transform your vision
+                                    into a
                                 </TextEffect>
 
                                 <TextEffect
@@ -116,7 +117,7 @@ export default function HeroSection() {
                                     as="span"
                                     className="inline font-accent"
                                 >
-                                    &nbsp;fast and secure
+                                    &nbsp;powerful digital brand.
                                 </TextEffect>
                             </h1>
                             <TextEffect
@@ -127,8 +128,7 @@ export default function HeroSection() {
                                 as="p"
                                 className="mx-auto mt-8 max-w-2xl text-lg text-[#E9F3E6]/80"
                             >
-                                We help you build beautiful, accessible, fast, and secure websites that work
-                                cross-browser—and for all of your users.
+                                Think us as your own personal digital team. From the first line of code to your launch strategy, we've got your back every step of the way.
                             </TextEffect>
 
                             <AnimatedGroup

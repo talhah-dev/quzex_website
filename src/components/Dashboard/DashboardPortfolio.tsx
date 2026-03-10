@@ -1,11 +1,22 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
 import { PencilLine, Plus, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { HOME_PORTFOLIO_ITEMS, PORTFOLIO_ITEMS } from "@/lib/portfolio";
+import { getPortfolioCards } from "@/lib/api/portfolio";
 
 export default function DashboardPortfolio() {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["portfolio-cards"],
+    queryFn: () => getPortfolioCards(),
+  });
+  const portfolioCards = data?.items ?? [];
+
+  const homeVisibleCount = portfolioCards.filter((item) => item.showOnHome).length;
+
   return (
     <div className="grid gap-6">
       <section className="overflow-hidden rounded-xl border border-[#0A211F]/10 bg-white p-6 shadow-[0_24px_60px_-40px_rgba(10,33,31,0.35)] sm:p-8">
@@ -23,8 +34,7 @@ export default function DashboardPortfolio() {
                   Portfolio dashboard
                 </h1>
                 <p className="max-w-3xl text-sm leading-relaxed text-[#0A211F]/68 sm:text-base">
-                  Review how many portfolio projects are currently available and which ones are
-                  visible on the frontend.
+                  Review the portfolio projects uploaded through the admin dashboard.
                 </p>
               </div>
             </div>
@@ -45,7 +55,7 @@ export default function DashboardPortfolio() {
             <article className="rounded-2xl border border-[#0A211F]/10 bg-[#f7f9f2] p-5">
               <p className="text-sm font-medium text-[#0A211F]/52">Total Portfolio Items</p>
               <p className="mt-3 text-4xl font-semibold tracking-tight text-[#0A211F]">
-                {String(PORTFOLIO_ITEMS.length).padStart(2, "0")}
+                {String(portfolioCards.length).padStart(2, "0")}
               </p>
               <p className="mt-4 text-sm leading-relaxed text-[#0A211F]/62">
                 Total projects currently stored in your portfolio dashboard.
@@ -55,7 +65,7 @@ export default function DashboardPortfolio() {
             <article className="rounded-2xl border border-[#0A211F]/10 bg-[#f7f9f2] p-5">
               <p className="text-sm font-medium text-[#0A211F]/52">Showing On Home</p>
               <p className="mt-3 text-4xl font-semibold tracking-tight text-[#0A211F]">
-                {String(HOME_PORTFOLIO_ITEMS.length).padStart(2, "0")}
+                {String(homeVisibleCount).padStart(2, "0")}
               </p>
               <p className="mt-4 text-sm leading-relaxed text-[#0A211F]/62">
                 Portfolio items currently marked to appear on the homepage.
@@ -63,10 +73,12 @@ export default function DashboardPortfolio() {
             </article>
 
             <article className="rounded-2xl border border-[#0A211F]/10 bg-[#f7f9f2] p-5">
-              <p className="text-sm font-medium text-[#0A211F]/52">Frontend Coverage</p>
-              <p className="mt-3 text-4xl font-semibold tracking-tight text-[#0A211F]">100%</p>
+              <p className="text-sm font-medium text-[#0A211F]/52">Visible On Work Page</p>
+              <p className="mt-3 text-4xl font-semibold tracking-tight text-[#0A211F]">
+                {String(portfolioCards.length).padStart(2, "0")}
+              </p>
               <p className="mt-4 text-sm leading-relaxed text-[#0A211F]/62">
-                All current portfolio projects are visible in the frontend work section.
+                Active portfolio projects currently available in the dashboard list.
               </p>
             </article>
           </div>
@@ -79,81 +91,105 @@ export default function DashboardPortfolio() {
             Portfolio List
           </p>
           <h2 className="text-2xl font-semibold text-[#0A211F]">
-            Portfolio items currently shown on the frontend
+            Uploaded portfolio projects
           </h2>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          {PORTFOLIO_ITEMS.map((item) => (
-            <article
-              key={item.title}
-              className="overflow-hidden rounded-xl border border-[#0A211F]/10 bg-[#f7f9f2] p-3"
-            >
-              <div className="flex flex-col gap-4 sm:flex-row">
-                <div className="relative h-36 md:h-45 w-full overflow-hidden rounded-lg sm:w-44">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    sizes="(min-width: 768px) 176px, 100vw"
-                    className="object-cover object-top"
-                  />
-                </div>
+        {isLoading ? (
+          <div className="rounded-xl border border-[#0A211F]/10 bg-[#f7f9f2] p-5 text-sm text-[#0A211F]/62">
+            Loading portfolio cards...
+          </div>
+        ) : null}
 
-                <div className="flex flex-1 flex-col justify-between gap-4">
-                  <div className="space-y-2">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="rounded-full bg-[#0A211F] px-3 py-1 text-xs font-semibold tracking-[0.18em] text-[#E9F3E6]">
-                        {String(item.priority).padStart(2, "0")}
-                      </span>
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-medium ${
-                          item.showOnHome
-                            ? "bg-[#D8F782] text-[#0A211F]"
-                            : "bg-white text-[#0A211F]/60"
-                        }`}
-                      >
-                        {item.showOnHome ? "Home Visible" : "Work Only"}
-                      </span>
-                    </div>
+        {isError ? (
+          <div className="rounded-xl border border-[#C24141]/15 bg-[#FFF5F5] p-5 text-sm text-[#C24141]">
+            Unable to load portfolio cards right now.
+          </div>
+        ) : null}
 
-                    <h3 className="text-lg font-semibold text-[#0A211F]">{item.title}</h3>
+        {!isLoading && !isError && portfolioCards.length === 0 ? (
+          <div className="rounded-xl border border-[#0A211F]/10 bg-[#f7f9f2] p-5 text-sm text-[#0A211F]/62">
+            No portfolio cards have been uploaded yet.
+          </div>
+        ) : null}
+
+        {!isLoading && !isError && portfolioCards.length > 0 ? (
+          <div className="grid gap-4 md:grid-cols-2">
+            {portfolioCards.map((item) => (
+              <article
+                key={item._id}
+                className="overflow-hidden rounded-xl border border-[#0A211F]/10 bg-[#f7f9f2] p-3"
+              >
+                <div className="flex flex-col gap-4 sm:flex-row">
+                  <div className="relative h-36 w-full overflow-hidden rounded-lg md:h-45 sm:w-44">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      unoptimized
+                      sizes="(min-width: 768px) 176px, 100vw"
+                      className="object-cover object-top"
+                    />
                   </div>
 
-                  <div className="space-y-3">
-                    <div className="flex flex-wrap gap-2">
-                      {item.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full border border-[#0A211F]/10 bg-white px-3 py-1 text-xs font-medium text-[#0A211F]/62"
-                        >
-                          {tag}
+                  <div className="flex flex-1 flex-col justify-between gap-4">
+                    <div className="space-y-2">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="rounded-full bg-[#0A211F] px-3 py-1 text-xs font-semibold tracking-[0.18em] text-[#E9F3E6]">
+                          {String(item.priority ?? 0).padStart(2, "0")}
                         </span>
-                      ))}
+                        <span
+                          className={`rounded-full px-3 py-1 text-xs font-medium ${
+                            item.showOnHome
+                              ? "bg-[#D8F782] text-[#0A211F]"
+                              : "bg-white text-[#0A211F]/60"
+                          }`}
+                        >
+                          {item.showOnHome ? "Home Visible" : "Work Only"}
+                        </span>
+                        <span className="rounded-full border border-[#0A211F]/10 bg-white px-3 py-1 text-xs font-medium text-[#0A211F]/62">
+                          {item.category}
+                        </span>
+                      </div>
+
+                      <h3 className="text-lg font-semibold text-[#0A211F]">{item.title}</h3>
                     </div>
 
-                    <div className="flex flex-wrap gap-2">
-                      <button
-                        type="button"
-                        className="inline-flex items-center gap-2 rounded-lg border border-[#0A211F]/10 bg-white px-3 py-2 text-xs font-medium text-[#0A211F] transition-colors hover:bg-[#EDF6E8]"
-                      >
-                        <PencilLine className="size-3.5" />
-                        <span>Edit</span>
-                      </button>
-                      <button
-                        type="button"
-                        className="inline-flex items-center gap-2 rounded-lg border border-[#C24141]/15 bg-[#FFF5F5] px-3 py-2 text-xs font-medium text-[#C24141] transition-colors hover:bg-[#FEEBEB]"
-                      >
-                        <Trash2 className="size-3.5" />
-                        <span>Delete</span>
-                      </button>
+                    <div className="space-y-3">
+                      <div className="flex flex-wrap gap-2">
+                        {item.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full border border-[#0A211F]/10 bg-white px-3 py-1 text-xs font-medium text-[#0A211F]/62"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          className="inline-flex items-center gap-2 rounded-lg border border-[#0A211F]/10 bg-white px-3 py-2 text-xs font-medium text-[#0A211F] transition-colors hover:bg-[#EDF6E8]"
+                        >
+                          <PencilLine className="size-3.5" />
+                          <span>Edit</span>
+                        </button>
+                        <button
+                          type="button"
+                          className="inline-flex items-center gap-2 rounded-lg border border-[#C24141]/15 bg-[#FFF5F5] px-3 py-2 text-xs font-medium text-[#C24141] transition-colors hover:bg-[#FEEBEB]"
+                        >
+                          <Trash2 className="size-3.5" />
+                          <span>Delete</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </article>
-          ))}
-        </div>
+              </article>
+            ))}
+          </div>
+        ) : null}
       </section>
     </div>
   );

@@ -13,22 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { DEFAULT_PRICING_PLANS, type PricingPlan } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
-
-type Feature = {
-  label: string;
-  included: boolean;
-};
-
-type PricingPlan = {
-  tier: string;
-  title: string;
-  priceUsd: number;
-  summary: string;
-  delivery: string;
-  features: Feature[];
-  featured?: boolean;
-};
 
 type CurrencyCode = "USD" | "EUR" | "PKR";
 
@@ -66,68 +52,28 @@ function formatPrice(amountUsd: number, currency: CurrencyCode) {
   return priceFormatters[currency].format(amountUsd * conversionRates[currency]);
 }
 
-const plans: PricingPlan[] = [
-  {
-    tier: "Starter",
-    title: "3-Page Starter Pack",
-    priceUsd: 25,
-    summary:
-      "Responsive website + 3 custom pages + source code + GitHub or Netlify free hosting + 10 days support",
-    delivery: "3-day delivery",
-    features: [
-      { label: "3 pages", included: true },
-      { label: "Design customization", included: true },
-      { label: "Content upload", included: true },
-      { label: "Responsive design", included: true },
-      { label: "Source code", included: true },
-      { label: "Detailed code comments", included: false },
-    ],
-  },
-  {
-    tier: "Standard",
-    title: "5-Page Silver Pack",
-    priceUsd: 35,
-    summary:
-      "Responsive + Animations + Google maps + GitHub or Netlify free hosting + 5 pages + 18 Days Support",
-    delivery: "4-day delivery",
-    featured: true,
-    features: [
-      { label: "5 pages", included: true },
-      { label: "Design customization", included: true },
-      { label: "Content upload", included: true },
-      { label: "Responsive design", included: true },
-      { label: "Source code", included: true },
-      { label: "Detailed code comments", included: true },
-    ],
-  },
-  {
-    tier: "Premium",
-    title: "8-Page Pro Pack",
-    priceUsd: 50,
-    summary:
-      "Responsive + Animations + Google maps + GitHub or Netlify free hosting + 8 pages + 30 Days Support",
-    delivery: "6-day delivery",
-    features: [
-      { label: "8 pages", included: true },
-      { label: "Design customization", included: true },
-      { label: "Content upload", included: true },
-      { label: "Responsive design", included: true },
-      { label: "Source code", included: true },
-      { label: "Detailed code comments", included: true },
-    ],
-  },
-];
-
 type PricingSectionProps = {
   className?: string;
+  sectionId?: string;
+  badgeLabel: string;
+  heading: string;
+  description: string;
+  plans: PricingPlan[];
 };
 
-export default function PricingSection({ className }: PricingSectionProps) {
+export default function PricingSection({
+  className,
+  sectionId = "pricing",
+  badgeLabel,
+  heading,
+  description,
+  plans,
+}: PricingSectionProps) {
   const [currency, setCurrency] = useState<CurrencyCode>("USD");
 
   return (
     <section
-      id="pricing"
+      id={sectionId}
       className={cn("bg-[#f7f9f2] px-4 py-16 md:px-6 lg:px-8 scroll-mt-24", className)}
     >
       <div className="mx-auto max-w-7xl">
@@ -137,14 +83,13 @@ export default function PricingSection({ className }: PricingSectionProps) {
               variant="outline"
               className="h-auto rounded-full border-0 bg-transparent px-3 py-1 text-sm text-[#0A211F] outline outline-[#0A211F]/12"
             >
-              Pricing plans
+              {badgeLabel}
             </Badge>
             <h2 className="mx-auto max-w-xs text-balance text-3xl font-medium leading-tight text-[#0A211F] sm:max-w-2xl sm:text-5xl">
-              Affordable pricing
+              {heading}
             </h2>
             <p className="mx-auto max-w-2xl text-base leading-relaxed text-[#0A211F]/70 md:text-lg">
-              Choose the package that fits your website needs, from a simple landing page to a
-              full multi-page business website.
+              {description}
             </p>
           </header>
 
@@ -267,3 +212,5 @@ export default function PricingSection({ className }: PricingSectionProps) {
     </section>
   );
 }
+
+export { DEFAULT_PRICING_PLANS };

@@ -42,7 +42,7 @@ export default function HowWeWork() {
   return (
     <section className="w-full text-[#0A211F]">
       <div className="mx-auto mt-14 max-w-6xl px-5 md:mt-20 md:px-10">
-        <div className="flex flex-col md:items-start items-center md:text-start text-center gap-2">
+        <div className="flex flex-col items-center text-center gap-2">
           <Badge variant="outline" className="rounded-full border-[#0A211F]/20 ">
             How we work
           </Badge>
