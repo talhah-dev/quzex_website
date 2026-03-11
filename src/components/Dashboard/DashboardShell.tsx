@@ -14,6 +14,7 @@ import {
   Mail,
   Settings,
 } from "lucide-react";
+import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { logoutAdmin } from "@/lib/api/auth";
 import { SITE_CONFIG } from "@/lib/site";
@@ -52,9 +53,13 @@ export default function DashboardShell({ activeItem, children }: DashboardShellP
   const router = useRouter();
   const { mutate, isPending } = useMutation({
     mutationFn: logoutAdmin,
-    onSuccess: () => {
-      router.push("/login");
+    onSuccess: (data) => {
+      toast.success(data.message || "Logged out successfully.");
+      router.replace("/login");
       router.refresh();
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Unable to logout right now.");
     },
   });
 

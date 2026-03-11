@@ -6,15 +6,15 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
   const session = token ? await verifyAdminSessionToken(token) : null;
-  const isAuthPage = pathname === "/login" || pathname === "/signup";
-  const isDashboardPage = pathname.startsWith("/dashboard");
+  const isLoginPage = pathname === "/login";
+  const isProtectedPage = pathname.startsWith("/dashboard") || pathname === "/signup";
 
-  if (isDashboardPage && !session) {
+  if (isProtectedPage && !session) {
     const loginUrl = new URL("/login", request.url);
     return NextResponse.redirect(loginUrl);
   }
 
-  if (isAuthPage && session) {
+  if (isLoginPage && session) {
     const dashboardUrl = new URL("/dashboard", request.url);
     return NextResponse.redirect(dashboardUrl);
   }

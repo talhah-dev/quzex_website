@@ -1,22 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "@/lib/dbConnect";
 import SiteSettingsModel from "@/models/SiteSettings";
-import { SITE_CONFIG, SITE_LINKS } from "@/lib/site";
 import type { UpsertSiteSettingsPayload } from "@/types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-const defaultSettings: UpsertSiteSettingsPayload = {
-  ownerName: SITE_CONFIG.ownerName,
-  email: SITE_CONFIG.email,
-  phone: SITE_CONFIG.phone,
-  phoneE164: SITE_CONFIG.phoneE164,
-  whatsapp: SITE_LINKS.whatsapp,
-  instagram: SITE_LINKS.instagram,
-  linkedin: SITE_LINKS.linkedin,
-  facebook: SITE_LINKS.facebook,
-};
 
 export async function GET() {
   try {
@@ -24,16 +12,9 @@ export async function GET() {
 
     const settings = await SiteSettingsModel.findOne().sort({ createdAt: 1 });
 
-    if (!settings) {
-      return NextResponse.json({
-        success: true,
-        data: defaultSettings,
-      });
-    }
-
     return NextResponse.json({
       success: true,
-      data: settings,
+      data: settings ?? null,
     });
   } catch (error) {
     console.error("GET /api/admin/settings error:", error);

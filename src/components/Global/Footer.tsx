@@ -2,10 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaWhatsapp } from "react-icons/fa";
 import { Separator } from "@/components/ui/separator";
-import { SITE_CONFIG, SITE_LINKS } from "@/lib/site";
+import { getPublicSettings } from "@/lib/api/settings";
+import { SITE_CONFIG } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 type FooterData = {
@@ -40,6 +42,16 @@ const footerSections: FooterData[] = [
 
 const Footer = () => {
     const pathname = usePathname();
+    const { data: settings } = useQuery({
+        queryKey: ["public-settings"],
+        queryFn: getPublicSettings,
+    });
+    const emailHref = settings?.email ? `mailto:${settings.email}` : "#";
+    const phoneHref = settings?.phoneE164
+        ? `tel:${settings.phoneE164}`
+        : settings?.phone
+            ? `tel:${settings.phone}`
+            : "#";
 
     const isActiveRoute = (href: string) => {
         if (href === "/") return pathname === "/";
@@ -76,7 +88,7 @@ const Footer = () => {
 
                                 <div className="flex items-center gap-4">
                                     <a
-                                        href={SITE_LINKS.instagram}
+                                        href={settings?.instagram || "#"}
                                         className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
                                         target="_blank"
                                         rel="noopener noreferrer"
@@ -84,7 +96,7 @@ const Footer = () => {
                                         <FaInstagram size={20} />
                                     </a>
                                     <a
-                                        href={SITE_LINKS.linkedin}
+                                        href={settings?.linkedin || "#"}
                                         className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
                                         target="_blank"
                                         rel="noopener noreferrer"
@@ -92,7 +104,7 @@ const Footer = () => {
                                         <FaLinkedinIn size={20} />
                                     </a>
                                     <a
-                                        href={SITE_LINKS.whatsapp}
+                                        href={settings?.whatsapp || "#"}
                                         className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
                                         target="_blank"
                                         rel="noopener noreferrer"
@@ -100,7 +112,7 @@ const Footer = () => {
                                         <FaWhatsapp size={20} />
                                     </a>
                                     <a
-                                        href={SITE_LINKS.facebook}
+                                        href={settings?.facebook || "#"}
                                         className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
                                         target="_blank"
                                         rel="noopener noreferrer"
@@ -149,18 +161,18 @@ const Footer = () => {
                                     </li>
                                     <li>
                                         <a
-                                            href={SITE_LINKS.mailto}
+                                            href={emailHref}
                                             className="text-base font-normal text-[#E9F3E6]/85 transition-colors hover:text-[#D8F782]"
                                         >
-                                            {SITE_CONFIG.email}
+                                            {settings?.email || ""}
                                         </a>
                                     </li>
                                     <li>
                                         <a
-                                            href={SITE_LINKS.tel}
+                                            href={phoneHref}
                                             className="text-base font-normal text-[#E9F3E6]/85 transition-colors hover:text-[#D8F782]"
                                         >
-                                            {SITE_CONFIG.phone}
+                                            {settings?.phone || ""}
                                         </a>
                                     </li>
                                     <li>

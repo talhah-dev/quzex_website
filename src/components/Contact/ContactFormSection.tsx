@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -14,12 +14,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { createContact } from "@/lib/api/contact";
+import { getPublicSettings } from "@/lib/api/settings";
 import { SERVICE_ITEMS } from "@/lib/services";
-import { SITE_CONFIG, SITE_LINKS } from "@/lib/site";
 import type { CreateContactInquiryPayload } from "@/types";
 import { ArrowUpRight } from "lucide-react";
 
 export default function ContactFormSection() {
+  const { data: settings } = useQuery({
+    queryKey: ["public-settings"],
+    queryFn: getPublicSettings,
+  });
   const [name, setName] = useState<CreateContactInquiryPayload["name"]>("");
   const [email, setEmail] = useState<CreateContactInquiryPayload["email"]>("");
   const [phone, setPhone] = useState<CreateContactInquiryPayload["phone"]>("");
@@ -105,7 +109,7 @@ export default function ContactFormSection() {
                     value={phone}
                     onChange={(event) => setPhone(event.target.value)}
                     className="mt-1 h-12 w-full rounded-xl border border-[#0A211F]/20 bg-transparent px-4 text-sm text-[#0A211F] placeholder:text-[#0A211F]/45 outline-none transition focus:border-[#0A211F]/40 focus:ring-2 focus:ring-[#8AF7B7]/35"
-                    placeholder={SITE_CONFIG.phone}
+                    placeholder={settings?.phone || "Your phone number"}
                   />
                 </div>
               </div>
@@ -190,7 +194,7 @@ export default function ContactFormSection() {
             <div className="flex h-full flex-col justify-between gap-14">
               <div className="space-y-4 text-sm font-medium md:text-base">
                 <a
-                  href={SITE_LINKS.whatsapp}
+                  href={settings?.whatsapp || "#"}
                   className="block text-[#0A211F]/75 transition-colors hover:text-[#0A211F]"
                   target="_blank"
                   rel="noreferrer"
@@ -198,7 +202,7 @@ export default function ContactFormSection() {
                   Whatsapp
                 </a>
                 <a
-                  href={SITE_LINKS.facebook}
+                  href={settings?.facebook || "#"}
                   className="block text-[#0A211F]/75 transition-colors hover:text-[#0A211F]"
                   target="_blank"
                   rel="noreferrer"
@@ -206,7 +210,7 @@ export default function ContactFormSection() {
                   Facebook
                 </a>
                 <a
-                  href={SITE_LINKS.linkedin}
+                  href={settings?.linkedin || "#"}
                   className="block text-[#0A211F]/75 transition-colors hover:text-[#0A211F]"
                   target="_blank"
                   rel="noreferrer"
@@ -219,19 +223,25 @@ export default function ContactFormSection() {
                 <div className="border-b border-[#0A211F]/25 pb-3">
                   <p className="text-sm text-[#0A211F]/60">Email</p>
                   <a
-                    href={SITE_LINKS.mailto}
+                    href={settings?.email ? `mailto:${settings.email}` : "#"}
                     className="mt-1 block text-base font-semibold text-[#0A211F]/85 transition-colors hover:text-[#0A211F]"
                   >
-                    {SITE_CONFIG.email}
+                    {settings?.email || ""}
                   </a>
                 </div>
                 <div className="border-b border-[#0A211F]/25 pb-3">
                   <p className="text-sm text-[#0A211F]/60">Phone</p>
                   <a
-                    href={SITE_LINKS.tel}
+                    href={
+                      settings?.phoneE164
+                        ? `tel:${settings.phoneE164}`
+                        : settings?.phone
+                          ? `tel:${settings.phone}`
+                          : "#"
+                    }
                     className="mt-1 block text-base font-semibold text-[#0A211F]/85 transition-colors hover:text-[#0A211F]"
                   >
-                    {SITE_CONFIG.phone}
+                    {settings?.phone || ""}
                   </a>
                 </div>
               </div>

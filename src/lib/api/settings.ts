@@ -4,17 +4,17 @@ import type { SiteSettingsRecord, UpsertSiteSettingsPayload } from "@/types";
 type SiteSettingsResponse = {
   success: boolean;
   message?: string;
-  data?: SiteSettingsRecord | UpsertSiteSettingsPayload;
+  data?: SiteSettingsRecord | UpsertSiteSettingsPayload | null;
 };
 
 export async function getAdminSettings() {
   const response = await axios.get<SiteSettingsResponse>("/api/admin/settings");
 
-  if (!response.data?.success || !response.data.data) {
+  if (!response.data?.success) {
     throw new Error(response.data?.message || "Failed to load website settings");
   }
 
-  return response.data.data;
+  return response.data.data ?? null;
 }
 
 export async function updateAdminSettings(payload: UpsertSiteSettingsPayload) {
@@ -25,4 +25,14 @@ export async function updateAdminSettings(payload: UpsertSiteSettingsPayload) {
   }
 
   return response.data;
+}
+
+export async function getPublicSettings() {
+  const response = await axios.get<SiteSettingsResponse>("/api/users/settings");
+
+  if (!response.data?.success) {
+    throw new Error(response.data?.message || "Failed to load website settings");
+  }
+
+  return response.data.data ?? null;
 }

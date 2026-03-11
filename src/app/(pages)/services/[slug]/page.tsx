@@ -6,8 +6,12 @@ import HeroSection from "@/components/common/HeroSection";
 import CTA from "@/components/Global/CTA";
 import PricingSection from "@/components/Home/PricingSection";
 import { Button } from "@/components/ui/button";
-import { DEFAULT_PRICING_PLANS } from "@/lib/pricing";
-import { SERVICE_ITEMS, getServiceBySlug } from "@/lib/services";
+import connectToDatabase from "@/lib/dbConnect";
+import type { PricingPlan } from "@/lib/pricing";
+import ServiceModel from "@/models/Service";
+
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 type ServiceDetailPageProps = {
   params: Promise<{
@@ -15,31 +19,81 @@ type ServiceDetailPageProps = {
   }>;
 };
 
-function getServiceHighlights(serviceTitle: string) {
-  return [
-    `${serviceTitle} planned around your exact business requirements`,
-    "Clean implementation with performance and responsive behavior in mind",
-    "Structured delivery process with clear communication and review support",
-  ];
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
-export async function generateStaticParams() {
-  return SERVICE_ITEMS.map((service) => ({
-    slug: service.slug,
-  }));
+function formatLongDescription(content?: string) {
+  const value = String(content || "").trim();
+
+  if (!value) {
+    return "";
+  }
+
+  const withoutScripts = value.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "");
+
+  if (/<[a-z][\s\S]*>/i.test(withoutScripts)) {
+    return withoutScripts;
+  }
+
+  return withoutScripts
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => `<p>${escapeHtml(line)}</p>`)
+    .join("");
 }
 
-export default async function ServiceDetailPage({
-  params,
-}: ServiceDetailPageProps) {
+function buildPricingPlans(service: {
+  pricingPlans?: Array<{
+    name: string;
+    price: number;
+    description: string;
+    deliveryTime?: string;
+    features?: string[];
+    isRecommended?: boolean;
+  }>;
+}): PricingPlan[] {
+  return Array.isArray(service.pricingPlans)
+    ? service.pricingPlans.map((plan) => ({
+        tier: plan.isRecommended ? "Standard" : plan.name,
+        title: plan.name,
+        priceUsd: plan.price,
+        summary: plan.description,
+        delivery: plan.deliveryTime || "Custom timeline",
+        featured: Boolean(plan.isRecommended),
+        features: Array.isArray(plan.features)
+          ? plan.features.map((feature) => ({
+              label: feature,
+              included: true,
+            }))
+          : [],
+      }))
+    : [];
+}
+
+export default async function ServiceDetailPage({ params }: ServiceDetailPageProps) {
   const { slug } = await params;
-  const service = getServiceBySlug(slug);
+
+  await connectToDatabase();
+
+  const service = await ServiceModel.findOne({
+    slug,
+    isActive: true,
+    showOnServicesPage: true,
+  }).lean();
 
   if (!service) {
     notFound();
   }
 
-  const highlights = getServiceHighlights(service.title);
+  const pricingPlans = buildPricingPlans(service);
+  const formattedLongDescription = formatLongDescription(service.longDescription || service.description);
 
   return (
     <Wrapper>
@@ -68,17 +122,17 @@ export default async function ServiceDetailPage({
             <div className="grid gap-6 p-6 sm:p-8">
               <div>
                 <p className="text-sm font-medium uppercase tracking-[0.18em] text-[#0A211F]/45">
-                  Service Overview
+                  {service.overviewTitle || "Service Overview"}
                 </p>
                 <h2 className="mt-2 text-3xl font-semibold text-[#0A211F]">
                   Built for quality, speed, and long-term use
                 </h2>
               </div>
 
-              <p className="text-base leading-8 text-[#0A211F]/70">
-                {service.description} This service is delivered with a practical process focused on
-                business goals, clean design, and dependable development quality.
-              </p>
+              <div
+                className="space-y-3 text-base leading-8 text-[#0A211F]/70 [&_a]:font-medium [&_a]:text-[#0A211F] [&_a]:underline [&_em]:italic [&_h2]:text-3xl [&_h2]:font-semibold [&_h2]:leading-tight [&_h2]:text-[#0A211F] [&_h2]:mt-2 [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:leading-tight [&_h3]:text-[#0A211F] [&_h3]:mt-2 [&_p]:mb-4 [&_strong]:font-semibold [&_u]:underline"
+                dangerouslySetInnerHTML={{ __html: formattedLongDescription }}
+              />
 
               <div className="grid gap-4 sm:grid-cols-3">
                 <div className="rounded-xl border border-[#0A211F]/10 bg-[#f7f9f2] p-4">
@@ -97,7 +151,9 @@ export default async function ServiceDetailPage({
                   <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#0A211F]/45">
                     Delivery
                   </p>
-                  <p className="mt-2 text-lg font-semibold text-[#0A211F]">Custom Scope</p>
+                  <p className="mt-2 text-lg font-semibold text-[#0A211F]">
+                    {service.deliveryLabel || "Custom Scope"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -109,9 +165,9 @@ export default async function ServiceDetailPage({
                 What You Get
               </p>
               <ul className="mt-5 grid gap-4">
-                {highlights.map((highlight) => (
+                {(service.highlights || []).map((highlight, index) => (
                   <li
-                    key={highlight}
+                    key={`${highlight}-${index}`}
                     className="rounded-xl border border-[#0A211F]/10 bg-[#f7f9f2] px-4 py-4 text-sm leading-7 text-[#0A211F]/72"
                   >
                     {highlight}
@@ -125,11 +181,11 @@ export default async function ServiceDetailPage({
                 Next Step
               </p>
               <h3 className="mt-2 text-2xl font-semibold text-[#0A211F]">
-                Discuss your requirements for this service
+                {service.nextStepTitle || "Discuss your requirements for this service"}
               </h3>
               <p className="mt-3 text-sm leading-7 text-[#0A211F]/68">
-                If this service matches your project, we can discuss scope, timeline, and the best
-                way to deliver it for your website or platform.
+                {service.nextStepDescription ||
+                  "If this service matches your project, we can discuss scope, timeline, and the best way to deliver it for your website or platform."}
               </p>
 
               <div className="mt-6 grid gap-3">
@@ -152,12 +208,17 @@ export default async function ServiceDetailPage({
         </div>
       </section>
 
-      <PricingSection
-        badgeLabel="Pricing plans"
-        heading={`Pricing for ${service.title}`}
-        description={`Choose the package that fits your ${service.title.toLowerCase()} requirements, timeline, and business goals.`}
-        plans={DEFAULT_PRICING_PLANS}
-      />
+      {pricingPlans.length > 0 ? (
+        <PricingSection
+          badgeLabel="Pricing plans"
+          heading={service.pricingHeading || `Pricing for ${service.title}`}
+          description={
+            service.pricingDescription ||
+            `Choose the package that fits your ${service.title.toLowerCase()} requirements, timeline, and business goals.`
+          }
+          plans={pricingPlans}
+        />
+      ) : null}
 
       <div className="bg-[#f7f9f2]">
         <CTA />

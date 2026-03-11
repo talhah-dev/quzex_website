@@ -1,13 +1,19 @@
-import { SITE_CONFIG } from "@/lib/site";
-import Link from "next/link";
-import { FaWhatsapp } from "react-icons/fa";
+"use client";
 
-const whatsappHref = `https://wa.me/${SITE_CONFIG.phoneE164.replace(/\D/g, "")}`;
+import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { FaWhatsapp } from "react-icons/fa";
+import { getPublicSettings } from "@/lib/api/settings";
 
 export default function WhatsAppFloating() {
+  const { data: settings } = useQuery({
+    queryKey: ["public-settings"],
+    queryFn: getPublicSettings,
+  });
+
   return (
     <Link
-      href={whatsappHref}
+      href={settings?.whatsapp || "#"}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"

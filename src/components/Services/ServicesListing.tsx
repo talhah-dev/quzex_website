@@ -1,10 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { SERVICE_ITEMS } from "@/lib/services";
+import { getServices } from "@/lib/api/services";
 import { cn } from "@/lib/utils";
 
 type ServicesListingProps = {
@@ -12,13 +15,37 @@ type ServicesListingProps = {
 };
 
 export default function ServicesListing({ className }: ServicesListingProps) {
+  const { data: services = [], isLoading, isError } = useQuery({
+    queryKey: ["services"],
+    queryFn: getServices,
+  });
+
   return (
     <section className={cn("px-4 py-16 md:px-6 lg:px-8", className)}>
       <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {SERVICE_ITEMS.map((service) => (
+        {isLoading ? (
+          <div className="rounded-2xl border border-[#0A211F]/10 bg-white p-6 text-sm text-[#0A211F]/70">
+            Loading services...
+          </div>
+        ) : null}
+
+        {isError ? (
+          <div className="rounded-2xl border border-[#d9485f]/15 bg-[#fff5f5] p-6 text-sm text-[#8a1c2f]">
+            Unable to load services right now.
+          </div>
+        ) : null}
+
+        {!isLoading && !isError && services.length === 0 ? (
+          <div className="rounded-2xl border border-[#0A211F]/10 bg-white p-6 text-sm text-[#0A211F]/70">
+            No services are available right now.
+          </div>
+        ) : null}
+
+        {!isLoading && !isError && services.length > 0 ? (
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {services.map((service) => (
             <Card
-              key={service.id}
+              key={service._id}
               className="group relative flex flex-col gap-2 bg-transparent overflow-hidden border-[#0A211F]/10 pt-0 shadow-none"
             >
               <Link href={`/services/${service.slug}`} className="block">
@@ -64,8 +91,9 @@ export default function ServicesListing({ className }: ServicesListingProps) {
                 </Button>
               </CardFooter>
             </Card>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : null}
       </div>
     </section>
   );

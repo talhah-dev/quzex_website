@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter_Tight, Instrument_Serif } from "next/font/google";
 import "./globals.css";
-import { SITE_CONFIG } from "@/lib/site";
 import { Toaster } from "@/components/ui/sonner";
 import Providers from "./providers/react-query-provider";
 
@@ -20,10 +19,23 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_CONFIG.siteUrl),
-  title: `${SITE_CONFIG.name} - Full Stack Web Development`,
+  metadataBase: new URL("https://quzex.co"),
+  title: "quzex - Website Development and Digital Solutions",
   description:
-    `${SITE_CONFIG.name} is the portfolio of ${SITE_CONFIG.ownerName}, a full-stack web developer building fast, accessible, SEO-ready websites and web apps.`,
+    "quzex provides professional website development, static and dynamic websites, website redesign, backend systems, database integration, AI solutions, and digital services for modern businesses.",
+  keywords: [
+    "website development",
+    "dynamic website development",
+    "static website development",
+    "website redesign",
+    "backend development",
+    "database integration",
+    "AI chatbot integration",
+    "AI blog post integration",
+    "mobile app development",
+    "social media management",
+    "quzex",
+  ],
 };
 
 export default function RootLayout({
