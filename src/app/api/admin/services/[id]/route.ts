@@ -85,7 +85,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
 
     const pricingPlans: ServicePricingPlan[] = Array.isArray(body.pricingPlans)
       ? body.pricingPlans
-          .map((plan) => {
+          .map((plan: unknown) => {
             const currentPlan = (plan || {}) as Record<string, unknown>;
 
             return {
