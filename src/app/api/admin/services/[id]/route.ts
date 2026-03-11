@@ -99,7 +99,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
               isRecommended: Boolean(currentPlan.isRecommended),
             };
           })
-          .filter((plan) => plan.name && plan.description)
+          .filter((plan: ServicePricingPlan) => plan.name && plan.description)
       : [];
 
     await connectToDatabase();
