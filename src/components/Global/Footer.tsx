@@ -25,6 +25,7 @@ const footerSections: FooterData[] = [
             { title: "Home", href: "/" },
             { title: "About", href: "/about" },
             { title: "Services", href: "/services" },
+            { title: "Blog", href: "/blog" },
             { title: "Our Work", href: "/work" },
             { title: "Contact", href: "/contact" },
         ],

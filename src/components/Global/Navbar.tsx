@@ -15,7 +15,11 @@ const links = [
     { label: 'Our Work', href: '/work' },
 ]
 
-export default function Navbar() {
+type NavbarProps = {
+    forceBackground?: boolean
+}
+
+export default function Navbar({ forceBackground = false }: NavbarProps) {
     const [open, setOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
     const pathname = usePathname()
@@ -52,13 +56,13 @@ export default function Navbar() {
         <header className="fixed top-0 left-0 right-0 z-50 px-4 pt-5">
             <div className={`mx-auto transition-all duration-300 ${scrolled ? 'max-w-6xl' : 'max-w-7xl'}`}>
                 <div
-                    className={`rounded-2xl transition-all duration-300 ${scrolled
+                    className={`rounded-2xl transition-all duration-300 ${(scrolled || forceBackground)
                         ? 'bg-[#0A211F]/65 backdrop-blur border border-white/10 shadow-[0_20px_60px_-40px_rgba(0,0,0,.8)]'
                         : 'bg-transparent border border-transparent'
                         }`}
                 >
                     <div
-                        className={`flex items-center justify-between gap-3 transition-all duration-300 ${scrolled ? 'px-4 py-3 md:px-5' : 'px-3 py-3.5 md:px-4'
+                        className={`flex items-center justify-between gap-3 transition-all duration-300 ${(scrolled || forceBackground) ? 'px-4 py-3 md:px-5' : 'px-3 py-3.5 md:px-4'
                             }`}
                     >
                         <Link href="/" className="flex items-center">
