@@ -1,129 +1,173 @@
-"use client";
+﻿"use client";
 
-import { useRef } from "react";
+import { useMemo, useState } from "react";
+import Image from "next/image";
+import { Headphones, Play, Quote, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { motion, useInView } from "motion/react";
+import { AnimatedButton } from "@/components/ui/AnimatedButton";
+import { COUNTRY_FLAG_IMAGES, COUNTRY_LABELS } from "@/lib/countries";
+import { REVIEW_ITEMS, type ReviewCategory } from "@/lib/testimonials";
 
 const Testimonials = () => {
-    const sectionRef = useRef<HTMLElement>(null);
-    const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const [activeCategory, setActiveCategory] = useState<"All" | ReviewCategory>("All");
 
-    return (
-        <section ref={sectionRef} className="py-10">
-            <div className="max-w-7xl mx-auto px-4 xl:px-16">
-                <div className="flex flex-col items-center self-stretch gap-12">
-                    <motion.div
-                        initial={{ opacity: 0, y: -32 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -32 }}
-                        transition={{ duration: 0.7, ease: "easeInOut" }}
-                        className="flex flex-col items-center justify-center gap-2 sm:gap-4"
-                    >
-                        <Badge variant={"outline"} className="py-1 px-3 text-sm font-normal h-7">
-                            Testimonials
-                        </Badge>
-                        <h2 className="text-foreground leading-tight text-3xl sm:text-5xl font-medium max-w-xs sm:max-w-2xl mx-auto text-center">
-                            What clients say about working with Quzex
-                        </h2>
-                    </motion.div>
+  const categories = useMemo(
+    () => ["All", ...new Set(REVIEW_ITEMS.map((item) => item.category))] as Array<"All" | ReviewCategory>,
+    []
+  );
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 w-full">
-                        <motion.div
-                            initial={{ opacity: 0, y: 40 }}
-                            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-                            transition={{ duration: 1, delay: 0.2, ease: "easeInOut" }}
-                            className="col-span-1 lg:col-span-8"
-                        >
-                            <Card className="bg-[url('https://images.shadcnspace.com/assets/backgrounds/testimonials-userBg-01.webp')] object-cover bg-center bg-cover bg-no-repeat border border-border h-full w-full md:min-h-96 p-8 md:pe-16 rounded-2xl">
-                                <CardContent className="flex flex-col items-start justify-between gap-24 p-0 h-full">
-                                    <p className="text-white/70 text-base font-normal">Client story</p>
-                                    <div className="flex flex-col gap-6">
-                                        <p className="text-white text-xl lg:text-2xl font-medium">
-                                            Quzex delivered a clean, fast website with excellent communication throughout.
-                                            The work was on time, polished, and easy to maintain after launch.
-                                        </p>
-                                        <div>
-                                            <p className="text-white text-base font-medium">Ayesha Khan</p>
-                                            <p className="text-white/70 text-sm font-normal">Founder, SaaS Startup</p>
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
+  const filteredReviews =
+    activeCategory === "All"
+      ? REVIEW_ITEMS
+      : REVIEW_ITEMS.filter((item) => item.category === activeCategory);
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 40 }}
-                            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-                            transition={{ duration: 1, delay: 0.2, ease: "easeInOut" }}
-                            className="col-span-1 lg:col-span-4"
-                        >
-                            <Card className="bg-[#0a211f] border border-border h-full w-full md:min-h-96 p-8 rounded-2xl">
-                                <CardContent className="flex flex-col items-start justify-between gap-24 p-0 h-full">
-                                    <p className="text-white/70 text-base font-normal">Facts & numbers</p>
-                                    <div className="flex flex-col items-start gap-4">
-                                        <p className="text-white text-4xl lg:text-5xl font-medium">95%</p>
-                                        <p className="text-white text-xl lg:text-2xl font-medium">
-                                            clients rate communication and delivery as excellent.
-                                        </p>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
+  return (
+    <section className="py-12 md:py-16">
+      <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 xl:px-16">
+        <div className="mx-auto max-w-3xl text-center">
+          <Badge variant="outline" className="h-7 px-3 py-1 text-sm font-normal">
+            Testimonials
+          </Badge>
+          <h2 className="mt-4 text-3xl font-medium leading-tight text-[#0A211F] sm:text-5xl">
+            Client reviews from teams across multiple countries
+          </h2>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-[#0A211F]/70">
+            We work with clients in different markets, so this section highlights how website
+            development, redesign, AI, and campaign work are received across regions.
+          </p>
+        </div>
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 40 }}
-                            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-                            transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
-                            className="col-span-1 lg:col-span-4"
-                        >
-                            <Card className="bg-gray-950 border border-border h-full w-full p-8 rounded-2xl">
-                                <CardContent className="flex flex-col items-start justify-between gap-6 p-0 h-full">
-                                    <div className="flex flex-col items-start gap-2">
-                                        <p className="text-white/70 text-base font-normal">Client feedback</p>
-                                        <p className="text-white text-xl lg:text-2xl font-medium">
-                                            Performance, SEO, and responsiveness improved immediately. The site feels
-                                            premium and loads fast on every device.
-                                        </p>
-                                    </div>
-                                    <img
-                                        src="https://images.shadcnspace.com/assets/backgrounds/testimonials-bg-01.webp"
-                                        alt="background-img"
-                                        width={"100%"}
-                                        height={220}
-                                    />
-                                </CardContent>
-                            </Card>
-                        </motion.div>
+        <div className="flex flex-col gap-4">
+          <div className="flex justify-center">
+            <div className="flex flex-wrap justify-center gap-3">
+              {categories.map((category) => {
+                const isActive = category === activeCategory;
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 40 }}
-                            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-                            transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
-                            className="col-span-1 lg:col-span-8"
-                        >
-                            <Card className="bg-primary/10 dark:bg-white/10 border border-border h-full w-full p-8 rounded-2xl">
-                                <CardContent className="flex flex-col items-start justify-between gap-24 p-0 h-full">
-                                    <div className="flex flex-col items-start gap-2">
-                                        <p className="text-primary/70 text-base font-normal">Client story</p>
-                                        <p className="text-card-foreground text-xl lg:text-2xl font-medium">
-                                            “Quzex handled the full build smoothly—from planning to launch. The frontend is
-                                            clean, the API is solid, and everything is easy for our team to extend.”
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <p className="text-card-foreground text-base font-medium">Daniel Foster</p>
-                                        <p className="text-muted-foreground text-sm font-normal">
-                                            Product Manager, Remote Team
-                                        </p>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-                    </div>
-                </div>
+                return (
+                  <button
+                    key={category}
+                    type="button"
+                    onClick={() => setActiveCategory(category)}
+                    className={[
+                      "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+                      isActive
+                        ? "border-[#0A211F] bg-[#0A211F] text-[#E9F3E6]"
+                        : "border-[#0A211F]/12 bg-[#EDF6E8] text-[#0A211F] hover:bg-[#E4F2DD]",
+                    ].join(" ")}
+                  >
+                    {category}
+                  </button>
+                );
+              })}
             </div>
-        </section>
-    );
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {filteredReviews.map((review) => (
+              <Card
+                key={review.id}
+                className="h-full rounded-[28px] border border-[#0A211F]/10 bg-[#F7F9F2] shadow-none"
+              >
+                <CardContent className="flex h-full flex-col px-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#0A211F] text-sm font-semibold text-[#E9F3E6]">
+                        {review.profileImage ? (
+                          <Image
+                            src={review.profileImage}
+                            alt={review.name}
+                            fill
+                            sizes="48px"
+                            className="object-cover"
+                          />
+                        ) : (
+                          <span>{review.name.charAt(0).toUpperCase()}</span>
+                        )}
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-[#0A211F]">{review.name}</p>
+                        <p className="text-sm text-[#0A211F]/62">{review.timeAgo}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-end gap-2">
+                      <Badge className="rounded-full bg-[#D8F782] px-3 py-1 text-xs font-medium text-[#0A211F] hover:bg-[#D8F782]">
+                        {review.category}
+                      </Badge>
+                      <div className="inline-flex items-center gap-2 rounded-full border border-[#0A211F]/10 bg-[#F7F9F2] px-3 py-1 text-xs font-medium text-[#0A211F]">
+                        <Image
+                          src={COUNTRY_FLAG_IMAGES[review.flag]}
+                          alt={`${review.country} flag`}
+                          width={20}
+                          height={14}
+                          className="h-[14px] w-5 rounded-[2px] object-cover"
+                        />
+                        <span>{COUNTRY_LABELS[review.flag]}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 flex items-center gap-2 text-sm text-[#0A211F]/62">
+                    <span className="capitalize">{review.type} review</span>
+                  </div>
+
+                  {review.type === "audio" ? (
+                    <div className="mt-5 rounded-[24px] bg-[#0A211F] p-5 text-[#E9F3E6]">
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#D8F782] text-[#0A211F]">
+                            <Play className="h-4 w-4 fill-current" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium">Audio feedback</p>
+                            <p className="text-xs text-[#E9F3E6]/60">{review.duration} voice review</p>
+                          </div>
+                        </div>
+                        <Headphones className="h-4 w-4 text-[#D8F782]" />
+                      </div>
+
+                      <div className="mt-5 flex h-10 items-end gap-1">
+                        {review.waveform.map((barHeight, index) => (
+                          <span
+                            key={`${review.id}-${index}`}
+                            className="w-full rounded-full bg-[#D8F782]/85"
+                            style={{ height: `${barHeight}px` }}
+                          />
+                        ))}
+                      </div>
+
+                      <p className="mt-4 text-sm leading-7 text-[#E9F3E6]/78">{review.review}</p>
+                    </div>
+                  ) : (
+                    <div className="mt-5 flex flex-1 flex-col rounded-[24px] bg-[#EDF6E8] px-5 py-5">
+                      <Quote className="h-5 w-5 text-[#0A211F]/40" />
+                      <p className="mt-4 flex-1 text-base leading-8 text-[#0A211F]/78">{review.review}</p>
+                    </div>
+                  )}
+
+                  <div className="mt-6 flex items-center justify-between">
+                    <div className="flex items-center gap-1 text-[#F4B400]">
+                      {Array.from({ length: 5 }).map((_, index) => (
+                        <Star key={`${review.id}-star-${index}`} className="h-4 w-4 fill-current" />
+                      ))}
+                    </div>
+                    <p className="text-sm font-semibold text-[#0A211F]">{review.rating}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="flex justify-center pt-5 md:pt-10">
+            <AnimatedButton href="/reviews" color="dark">
+              View all reviews
+            </AnimatedButton>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default Testimonials;

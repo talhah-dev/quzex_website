@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   LogOut,
   Mail,
+  MessageSquareQuote,
   Settings,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -26,6 +27,7 @@ type DashboardNavKey =
   | "clientLogos"
   | "services"
   | "enquiries"
+  | "testimonials"
   | "settings";
 
 type SidebarLink = {
@@ -41,6 +43,7 @@ const sidebarLinks: SidebarLink[] = [
   { label: "Client Logos", href: "/dashboard/client-logos", icon: Images, key: "clientLogos" },
   { label: "Services", href: "/dashboard/services", icon: Briefcase, key: "services" },
   { label: "Enquiries", href: "/dashboard/inquiries", icon: Mail, key: "enquiries" },
+  { label: "Testimonials", href: "/dashboard/testimonials", icon: MessageSquareQuote, key: "testimonials" },
   { label: "Settings", href: "/dashboard/settings", icon: Settings, key: "settings" },
 ];
 
@@ -125,3 +128,4 @@ export default function DashboardShell({ activeItem, children }: DashboardShellP
     </section>
   );
 }
+
