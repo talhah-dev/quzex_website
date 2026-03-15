@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+﻿import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
@@ -22,6 +22,12 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "flagcdn.com",
         pathname: "/**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "3000",
+        pathname: "/_next/image",
       },
     ],
   },

@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState, type ChangeEvent } from "react";
-import { ArrowLeft, Headphones, ImagePlus, Plus, Quote, Star } from "lucide-react";
+import { ArrowLeft, Headphones, ImagePlus, PencilLine, Quote, Star } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,37 +24,54 @@ import {
   COUNTRY_OPTIONS,
   type CountryCode,
 } from "@/lib/countries";
-import { createTestimonial } from "@/lib/api/testimonials";
+import { getAdminTestimonial, updateTestimonial } from "@/lib/api/testimonials";
 import { uploadFile } from "@/lib/api/upload";
-import { type CreateTestimonialPayload, type TestimonialCategory } from "@/types";
+import { normalizeImageSrc } from "@/lib/normalize-image-src";
+import { type TestimonialCategory, type UpdateTestimonialPayload } from "@/types";
 
 const reviewCategories: TestimonialCategory[] = ["Development", "Redesign", "AI", "Marketing"];
 
-export default function DashboardTestimonialCreate() {
+type DashboardTestimonialEditProps = {
+  testimonialId: string;
+};
+
+export default function DashboardTestimonialEdit({
+  testimonialId,
+}: DashboardTestimonialEditProps) {
   const router = useRouter();
-  const [name, setName] = useState("New client name");
-  const [timeAgo, setTimeAgo] = useState(() =>
-    new Date().toLocaleString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-    })
-  );
+  const queryClient = useQueryClient();
+  const [name, setName] = useState("");
+  const [timeAgo, setTimeAgo] = useState("");
   const [country, setCountry] = useState<CountryCode>("US");
   const [category, setCategory] = useState<TestimonialCategory>("Development");
   const [rating, setRating] = useState("5.0");
   const [reviewType, setReviewType] = useState<"text" | "audio">("text");
-  const [reviewText, setReviewText] = useState(
-    "Write the testimonial here so you can prepare how it will look on the website."
-  );
-  const [imageMode, setImageMode] = useState<"upload" | "url">("upload");
+  const [reviewText, setReviewText] = useState("");
+  const [imageMode, setImageMode] = useState<"upload" | "url">("url");
   const [imageUrl, setImageUrl] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [currentAudioUrl, setCurrentAudioUrl] = useState("");
+  const [initialized, setInitialized] = useState(false);
 
-  const hasAudio = reviewType === "audio" ? Boolean(audioFile) : true;
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["testimonial", testimonialId],
+    queryFn: () => getAdminTestimonial(testimonialId),
+  });
+
+  if (data && !initialized) {
+    setName(data.name || "");
+    setTimeAgo(data.timeAgo || "");
+    setCountry(data.flag || "US");
+    setCategory(data.category || "Development");
+    setRating(data.rating || "5.0");
+    setReviewType(data.type || "text");
+    setReviewText(data.review || "");
+    setImageUrl(data.profileImage || "");
+    setCurrentAudioUrl(data.audioUrl || "");
+    setInitialized(true);
+  }
+  const hasAudio = reviewType === "audio" ? Boolean(audioFile || currentAudioUrl) : true;
   const isFormValid =
     Boolean(name.trim()) &&
     Boolean(timeAgo.trim()) &&
@@ -85,7 +102,7 @@ export default function DashboardTestimonialCreate() {
   const { mutate, isPending } = useMutation({
     mutationFn: async () => {
       let finalProfileImage = imageUrl.trim();
-      let finalAudioUrl = "";
+      let finalAudioUrl = currentAudioUrl.trim();
 
       if (imageMode === "upload" && imageFile) {
         const uploadedImage = await uploadFile({
@@ -96,11 +113,7 @@ export default function DashboardTestimonialCreate() {
         finalProfileImage = uploadedImage.url;
       }
 
-      if (reviewType === "audio") {
-        if (!audioFile) {
-          throw new Error("Please upload an audio file.");
-        }
-
+      if (reviewType === "audio" && audioFile) {
         const uploadedAudio = await uploadFile({
           file: audioFile,
           folder: "testimonials/audio",
@@ -109,7 +122,12 @@ export default function DashboardTestimonialCreate() {
         finalAudioUrl = uploadedAudio.url;
       }
 
-      const payload: CreateTestimonialPayload = {
+      if (reviewType === "audio" && !finalAudioUrl) {
+        throw new Error("Please upload an audio file.");
+      }
+
+      const payload: UpdateTestimonialPayload = {
+        id: testimonialId,
         name: name.trim(),
         country: COUNTRY_LABELS[country],
         flag: country,
@@ -122,16 +140,36 @@ export default function DashboardTestimonialCreate() {
         audioUrl: reviewType === "audio" ? finalAudioUrl : undefined,
       };
 
-      return createTestimonial(payload);
+      return updateTestimonial(payload);
     },
-    onSuccess: (data) => {
-      toast.success(data.message || "Review created successfully.");
+    onSuccess: (response) => {
+      toast.success(response.message || "Review updated successfully.");
+      queryClient.invalidateQueries({ queryKey: ["testimonials"] });
+      queryClient.invalidateQueries({ queryKey: ["testimonial", testimonialId] });
       router.push("/dashboard/testimonials");
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Unable to create review.");
+      toast.error(error.message || "Unable to update review.");
     },
   });
+
+  if (isLoading || !initialized) {
+    return (
+      <div className="rounded-xl border border-[#0A211F]/10 bg-white p-6 text-sm text-[#0A211F]/62 shadow-[0_24px_60px_-40px_rgba(10,33,31,0.35)]">
+        Loading review details...
+      </div>
+    );
+  }
+
+  if (isError || !data) {
+    return (
+      <div className="rounded-xl border border-[#C24141]/15 bg-[#FFF5F5] p-6 text-sm text-[#C24141] shadow-[0_24px_60px_-40px_rgba(10,33,31,0.35)]">
+        Unable to load this review right now.
+      </div>
+    );
+  }
+
+  const previewImageSrc = normalizeImageSrc(imageMode === "url" ? imageUrl : "");
 
   return (
     <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
@@ -154,15 +192,14 @@ export default function DashboardTestimonialCreate() {
                 variant="outline"
                 className="rounded-full border-[#0A211F]/12 bg-[#EDF6E8] px-3 py-1 text-[#0A211F]"
               >
-                New Review
+                Edit Review
               </Badge>
               <div className="space-y-2">
                 <h1 className="text-2xl font-medium leading-tight text-[#0A211F] sm:text-4xl">
-                  Add new testimonial
+                  Update testimonial
                 </h1>
                 <p className="max-w-3xl text-sm leading-relaxed text-[#0A211F]/68 sm:text-base">
-                  Prepare a new testimonial entry with reviewer details, country flag, rating, and text or
-                  audio-style review content.
+                  Edit the reviewer details, media, and content that appear in your testimonials.
                 </p>
               </div>
             </div>
@@ -171,32 +208,17 @@ export default function DashboardTestimonialCreate() {
           <div className="grid gap-5 md:grid-cols-2">
             <div className="grid gap-2">
               <Label htmlFor="reviewer-name">Client name</Label>
-              <Input
-                id="reviewer-name"
-                placeholder="James Turner"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-              />
+              <Input id="reviewer-name" value={name} onChange={(event) => setName(event.target.value)} />
             </div>
 
             <div className="grid gap-2">
               <Label htmlFor="review-time">Review time</Label>
-              <Input
-                id="review-time"
-                placeholder="Current time"
-                value={timeAgo}
-                onChange={(event) => setTimeAgo(event.target.value)}
-              />
+              <Input id="review-time" value={timeAgo} onChange={(event) => setTimeAgo(event.target.value)} />
             </div>
 
             <div className="grid gap-2">
               <Label htmlFor="review-rating">Rating</Label>
-              <Input
-                id="review-rating"
-                placeholder="5.0"
-                value={rating}
-                onChange={(event) => setRating(event.target.value)}
-              />
+              <Input id="review-rating" value={rating} onChange={(event) => setRating(event.target.value)} />
             </div>
 
             <div className="grid gap-2">
@@ -243,7 +265,7 @@ export default function DashboardTestimonialCreate() {
               <div className="space-y-1">
                 <Label htmlFor="review-upload">Profile image</Label>
                 <p className="text-xs text-[#0A211F]/58">
-                  Upload an image by default, or switch to paste an image URL.
+                  Keep the current profile image URL or switch to upload a new one.
                 </p>
               </div>
 
@@ -284,7 +306,7 @@ export default function DashboardTestimonialCreate() {
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-[#0A211F]">Upload profile image</p>
                   <p className="text-xs text-[#0A211F]/58">
-                    Add the client profile image used in the testimonial card.
+                    Add a new client profile image if you want to replace the current one.
                   </p>
                   {imageFile ? <p className="text-xs font-medium text-[#0A211F]">{imageFile.name}</p> : null}
                 </div>
@@ -299,12 +321,7 @@ export default function DashboardTestimonialCreate() {
             ) : (
               <div className="grid gap-2">
                 <Label htmlFor="review-image-url">Profile image URL</Label>
-                <Input
-                  id="review-image-url"
-                  placeholder="https://example.com/profile-image.jpg"
-                  value={imageUrl}
-                  onChange={(event) => setImageUrl(event.target.value)}
-                />
+                <Input id="review-image-url" value={imageUrl} onChange={(event) => setImageUrl(event.target.value)} />
               </div>
             )}
           </div>
@@ -339,9 +356,13 @@ export default function DashboardTestimonialCreate() {
                   <div className="space-y-1">
                     <p className="text-sm font-medium text-[#0A211F]">Upload the audio here</p>
                     <p className="text-xs text-[#0A211F]/58">
-                      Add the client audio review file that you want to show in this testimonial.
+                      Add a new audio file if you want to replace the current review audio.
                     </p>
-                    {audioFile ? <p className="text-xs font-medium text-[#0A211F]">{audioFile.name}</p> : null}
+                    {audioFile ? (
+                      <p className="text-xs font-medium text-[#0A211F]">{audioFile.name}</p>
+                    ) : currentAudioUrl ? (
+                      <p className="text-xs font-medium text-[#0A211F]">Current audio is already connected</p>
+                    ) : null}
                   </div>
                   <input
                     id="review-audio-upload"
@@ -359,7 +380,6 @@ export default function DashboardTestimonialCreate() {
               <textarea
                 id="review-text"
                 rows={6}
-                placeholder="Write the testimonial or a short description for the audio review here."
                 value={reviewText}
                 onChange={(event) => setReviewText(event.target.value)}
                 className="min-h-32 rounded-xl border border-[#0A211F]/12 bg-white px-3 py-3 text-sm text-[#0A211F] outline-none transition-[border-color,box-shadow] placeholder:text-[#0A211F]/40 focus:border-[#0A211F]/28 focus:ring-4 focus:ring-[#0A211F]/6"
@@ -374,8 +394,8 @@ export default function DashboardTestimonialCreate() {
               onClick={() => mutate()}
               className="rounded-xl bg-[#0A211F] px-5 text-[#E9F3E6] hover:bg-[#143531] disabled:cursor-not-allowed disabled:opacity-60"
             >
-              <Plus className="size-4" />
-              {isPending ? "Saving..." : "Save Review"}
+              <PencilLine className="size-4" />
+              {isPending ? "Saving..." : "Update Review"}
             </Button>
             <Button
               asChild
@@ -408,8 +428,8 @@ export default function DashboardTestimonialCreate() {
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-3">
                 <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-[#0A211F]">
-                  {imageMode === "url" && imageUrl.trim() ? (
-                    <Image src={imageUrl} alt={name} fill sizes="48px" className="object-cover" unoptimized />
+                  {previewImageSrc ? (
+                    <Image src={previewImageSrc} alt={name} fill sizes="48px" className="object-cover" unoptimized />
                   ) : imageFile ? (
                     <div className="flex h-full w-full items-center justify-center text-[10px] font-medium text-[#E9F3E6]">
                       IMG
@@ -452,7 +472,11 @@ export default function DashboardTestimonialCreate() {
                     <div>
                       <p className="text-sm font-medium">Audio review</p>
                       <p className="text-xs text-[#E9F3E6]/60">
-                        {audioFile ? audioFile.name : "Audio file will appear here"}
+                        {audioFile
+                          ? audioFile.name
+                          : currentAudioUrl
+                            ? "Current audio file is connected"
+                            : "Audio file will appear here"}
                       </p>
                     </div>
                   </div>
@@ -471,3 +495,4 @@ export default function DashboardTestimonialCreate() {
     </div>
   );
 }
+
