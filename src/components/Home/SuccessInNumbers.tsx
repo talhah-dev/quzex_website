@@ -13,12 +13,12 @@ type StatItem = {
 export default function SuccessInNumbers() {
     const stats: StatItem[] = [
         {
-            value: '50+',
-            label: 'Projects delivered to this day and counting.',
+            value: '300+',
+            label: 'Projects completed across websites, apps, and custom digital solutions.',
         },
         {
-            value: '6+',
-            label: 'Years building production web apps and APIs.',
+            value: '120+',
+            label: 'Happy clients served with a focus on long-term trust and satisfaction.',
         },
         {
             value: '100%',
@@ -27,8 +27,8 @@ export default function SuccessInNumbers() {
             linkText: 'View selected work',
         },
         {
-            value: '2-6 W',
-            label: 'Typical MVP timelines depending on scope.',
+            value: '99%',
+            label: 'Projects delivered on time with transparent updates at every step.',
             href: '/contact',
             linkText: 'Get a quote',
         },

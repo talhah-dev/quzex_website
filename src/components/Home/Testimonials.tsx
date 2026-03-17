@@ -160,12 +160,12 @@ const Testimonials = ({ showCta = true, showIntro = true }: TestimonialsProps) =
                             )}
                           </div>
                           <div>
-                            <p className="text-sm font-semibold text-[#0A211F]">{review.name}</p>
-                            <p className="text-sm text-[#0A211F]/62">{review.timeAgo}</p>
+                            <p className="text-sm text-nowrap line-clamp-1 font-semibold text-[#0A211F]">{review.name}</p>
+                            <p className="text-xs text-[#0A211F]/62 text-nowrap">{review.timeAgo}</p>
                           </div>
                         </div>
 
-                        <div className="flex flex-wrap items-center justify-end gap-2">
+                        <div className="flex flex-col items-end justify-end gap-2">
                           <Badge className="rounded-full bg-[#D8F782] px-3 py-1 text-xs font-medium text-[#0A211F] hover:bg-[#D8F782]">
                             {review.category}
                           </Badge>

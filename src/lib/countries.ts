@@ -1,5 +1,5 @@
-﻿export const COUNTRY_OPTIONS = [
-  { code: "AE", name: "United Arab Emirates" },
+export const COUNTRY_OPTIONS = [
+  { code: "AE", name: "UAE" },
   { code: "AU", name: "Australia" },
   { code: "BD", name: "Bangladesh" },
   { code: "BE", name: "Belgium" },
