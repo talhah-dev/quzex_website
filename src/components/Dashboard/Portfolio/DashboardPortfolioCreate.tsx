@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import { ArrowLeft, ArrowUpRight, ImagePlus, Plus } from "lucide-react";
@@ -18,8 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { createPortfolioCard } from "@/lib/api/portfolio";
+import { createPortfolioCard, getPortfolioCards } from "@/lib/api/portfolio";
 import { uploadFile } from "@/lib/api/upload";
+import { compressImageFile } from "@/lib/compress-image";
 import { PORTFOLIO_CATEGORIES } from "@/lib/portfolio";
 import type { CreatePortfolioCardPayload, PortfolioCardCategory } from "@/types";
 
@@ -29,7 +30,8 @@ const fallbackImage =
 export default function DashboardPortfolioCreate() {
   const router = useRouter();
   const [title, setTitle] = useState("Project title preview");
-  const [priority, setPriority] = useState("1");
+  const [priority, setPriority] = useState("");
+  const [isPriorityEdited, setIsPriorityEdited] = useState(false);
   const [liveLink, setLiveLink] = useState("https://example.com");
   const [tags, setTags] = useState("Business Website, Responsive, Modern UI, Custom Build");
   const [homeVisibility, setHomeVisibility] = useState<"home" | "work-only">("work-only");
@@ -42,6 +44,23 @@ export default function DashboardPortfolioCreate() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
   const isMarketingProject = category === "Marketing";
+
+  const { data: portfolioData } = useQuery({
+    queryKey: ["portfolio-cards", "admin-create-default"],
+    queryFn: () => getPortfolioCards(),
+  });
+
+  const highestPriority = useMemo(() => {
+    const items = portfolioData?.items ?? [];
+
+    return items.reduce((maxValue, item) => {
+      const itemPriority = typeof item.priority === "number" ? item.priority : 0;
+      return itemPriority > maxValue ? itemPriority : maxValue;
+    }, 0);
+  }, [portfolioData]);
+
+  const nextPriority = highestPriority + 1;
+  const priorityValue = isPriorityEdited ? priority : String(nextPriority);
 
   useEffect(() => {
     return () => {
@@ -72,24 +91,33 @@ export default function DashboardPortfolioCreate() {
   }, [tags]);
 
   const previewPriority = useMemo(() => {
-    const parsedValue = Number.parseInt(priority, 10);
-    return String(Number.isNaN(parsedValue) ? 1 : Math.max(parsedValue, 1)).padStart(2, "0");
-  }, [priority]);
+    const parsedValue = Number.parseInt(priorityValue, 10);
+    return String(Number.isNaN(parsedValue) ? nextPriority : Math.max(parsedValue, 1)).padStart(
+      2,
+      "0"
+    );
+  }, [nextPriority, priorityValue]);
 
-  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
+  async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
     if (!file) {
       return;
     }
 
+    const optimizedFile = await compressImageFile(file, 500);
+
     if (uploadedImageUrl) {
       URL.revokeObjectURL(uploadedImageUrl);
     }
 
-    setImageFile(file);
-    const objectUrl = URL.createObjectURL(file);
+    setImageFile(optimizedFile);
+    const objectUrl = URL.createObjectURL(optimizedFile);
     setUploadedImageUrl(objectUrl);
+
+    if (optimizedFile.size < file.size) {
+      toast.success("Portfolio image optimized before upload.");
+    }
   }
 
   const { mutate, isPending } = useMutation({
@@ -113,13 +141,15 @@ export default function DashboardPortfolioCreate() {
         throw new Error("Please provide a portfolio image.");
       }
 
+      const parsedPriority = Number.parseInt(priorityValue, 10);
+
       const payload: CreatePortfolioCardPayload = {
         title: title.trim(),
         image: finalImage,
         tags: previewTags,
         category,
         href: isMarketingProject ? undefined : liveLink.trim() || undefined,
-        priority: Number.parseInt(priority, 10) || 1,
+        priority: Number.isNaN(parsedPriority) ? nextPriority : Math.max(parsedPriority, 1),
         showOnHome: homeVisibility === "home",
       };
 
@@ -188,10 +218,16 @@ export default function DashboardPortfolioCreate() {
                 name="portfolio_priority"
                 type="number"
                 min="1"
-                placeholder="1"
-                value={priority}
-                onChange={(event) => setPriority(event.target.value)}
+                placeholder={String(nextPriority)}
+                value={priorityValue}
+                onChange={(event) => {
+                  setIsPriorityEdited(true);
+                  setPriority(event.target.value);
+                }}
               />
+              <p className="text-xs text-[#0A211F]/58">
+                Previous highest priority: {highestPriority}. New project default: {nextPriority}.
+              </p>
             </div>
 
             <div className="grid gap-2 md:col-span-2">

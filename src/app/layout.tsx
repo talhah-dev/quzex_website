@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter_Tight, Instrument_Serif } from "next/font/google";
-import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { buildOrganizationSchema, stringifyJsonLd } from "@/lib/seo";
 import Providers from "./providers/react-query-provider";
+import "./globals.css";
 
 const interTight = Inter_Tight({
   subsets: ["latin"],
@@ -41,9 +42,15 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const organizationSchema = buildOrganizationSchema();
+
   return (
     <html lang="en">
       <body className={`${interTight.className} ${instrumentSerif.variable} antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: stringifyJsonLd(organizationSchema) }}
+        />
         <Providers>{children}</Providers>
         <Toaster />
       </body>

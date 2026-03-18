@@ -49,7 +49,7 @@ export default function ServicesListing({ className }: ServicesListingProps) {
               className="group relative flex flex-col gap-2 bg-transparent overflow-hidden border-[#0A211F]/10 pt-0 shadow-none"
             >
               <Link href={`/services/${service.slug}`} className="block">
-                <div className="relative h-56 overflow-hidden sm:h-70">
+                <div className="relative aspect-[16/9] overflow-hidden">
                   <Image
                     src={service.image}
                     alt={`${service.title} - ${service.category}`}

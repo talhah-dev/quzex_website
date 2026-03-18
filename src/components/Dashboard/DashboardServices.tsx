@@ -111,8 +111,8 @@ export default function DashboardServices() {
               key={service._id}
               className="overflow-hidden rounded-xl border border-[#0A211F]/10 bg-[#f7f9f2] p-3"
             >
-              <div className="flex flex-col gap-4 sm:flex-row">
-                <div className="relative h-36 w-full overflow-hidden rounded-lg sm:w-44">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 items-center">
+                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
                   <Image
                     src={service.image}
                     alt={service.title}
@@ -134,7 +134,7 @@ export default function DashboardServices() {
                     </div>
 
                     <h3 className="text-lg font-semibold text-[#0A211F]">{service.title}</h3>
-                    <p className="text-sm leading-relaxed text-[#0A211F]/62">
+                    <p className="text-sm line-clamp-2 leading-relaxed text-[#0A211F]/62">
                       {service.description}
                     </p>
                   </div>

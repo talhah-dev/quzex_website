@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import { getAdminPortfolioCard, updatePortfolioCard } from "@/lib/api/portfolio";
 import { uploadFile } from "@/lib/api/upload";
+import { compressImageFile } from "@/lib/compress-image";
 import { PORTFOLIO_CATEGORIES } from "@/lib/portfolio";
 import type { PortfolioCardCategory, UpdatePortfolioCardPayload } from "@/types";
 
@@ -103,20 +104,26 @@ export default function DashboardPortfolioEdit({
     return String(Number.isNaN(parsedValue) ? 1 : Math.max(parsedValue, 1)).padStart(2, "0");
   }, [priority]);
 
-  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
+  async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
     if (!file) {
       return;
     }
 
+    const optimizedFile = await compressImageFile(file, 500);
+
     if (uploadedImageUrl) {
       URL.revokeObjectURL(uploadedImageUrl);
     }
 
-    setImageFile(file);
-    const objectUrl = URL.createObjectURL(file);
+    setImageFile(optimizedFile);
+    const objectUrl = URL.createObjectURL(optimizedFile);
     setUploadedImageUrl(objectUrl);
+
+    if (optimizedFile.size < file.size) {
+      toast.success("Portfolio image optimized before upload.");
+    }
   }
 
   function handleDraftChange<K extends keyof PortfolioDraft>(
