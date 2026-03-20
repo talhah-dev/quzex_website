@@ -4,6 +4,8 @@ import HeroSection from "@/components/common/HeroSection";
 import CTA from "@/components/Global/CTA";
 import ServicesListing from "@/components/Services/ServicesListing";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = buildPageMetadata({
   title: "Services | quzex",
   description:
