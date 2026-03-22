@@ -21,11 +21,14 @@ export const metadata = buildPageMetadata({
 type WorkPageProps = {
   searchParams: Promise<{
     category?: string;
+    page?: string;
+    search?: string;
   }>;
 };
 
 export default async function WorkPage({ searchParams }: WorkPageProps) {
-  const { category } = await searchParams;
+  const { category, page, search } = await searchParams;
+  const selectedPage = Number.parseInt(page || "1", 10);
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: "Home", path: "/" },
     { name: "Work", path: "/work" },
@@ -38,7 +41,11 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
         dangerouslySetInnerHTML={{ __html: stringifyJsonLd(breadcrumbSchema) }}
       />
       <WorkHeroSection />
-      <WorkPortfolioSection selectedCategory={category} />
+      <WorkPortfolioSection
+        selectedCategory={category}
+        selectedPage={Number.isFinite(selectedPage) && selectedPage > 0 ? selectedPage : 1}
+        selectedSearch={search || ""}
+      />
     </Wrapper>
   );
 }

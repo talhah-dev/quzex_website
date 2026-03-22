@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   Briefcase,
+  FileText,
   FolderKanban,
   Images,
   LayoutDashboard,
@@ -26,6 +27,7 @@ type DashboardNavKey =
   | "portfolio"
   | "clientLogos"
   | "services"
+  | "blog"
   | "enquiries"
   | "testimonials"
   | "settings";
@@ -42,6 +44,7 @@ const sidebarLinks: SidebarLink[] = [
   { label: "Portfolio", href: "/dashboard/portfolio", icon: FolderKanban, key: "portfolio" },
   { label: "Client Logos", href: "/dashboard/client-logos", icon: Images, key: "clientLogos" },
   { label: "Services", href: "/dashboard/services", icon: Briefcase, key: "services" },
+  { label: "Blog", href: "/dashboard/blog", icon: FileText, key: "blog" },
   { label: "Enquiries", href: "/dashboard/inquiries", icon: Mail, key: "enquiries" },
   { label: "Testimonials", href: "/dashboard/testimonials", icon: MessageSquareQuote, key: "testimonials" },
   { label: "Settings", href: "/dashboard/settings", icon: Settings, key: "settings" },
@@ -128,4 +131,3 @@ export default function DashboardShell({ activeItem, children }: DashboardShellP
     </section>
   );
 }
-

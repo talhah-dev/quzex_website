@@ -17,7 +17,21 @@ type PortfolioCardListResponse = {
   data?: {
     items: PortfolioCardRecord[];
     categories: string[];
+    pagination: {
+      page: number;
+      limit: number;
+      totalItems: number;
+      totalPages: number;
+      hasNextPage: boolean;
+      hasPreviousPage: boolean;
+    };
   };
+};
+
+type GetPortfolioCardsOptions = {
+  page?: number;
+  limit?: number;
+  search?: string;
 };
 
 export async function createPortfolioCard(payload: CreatePortfolioCardPayload) {
@@ -71,11 +85,18 @@ export async function updatePortfolioCard(payload: UpdatePortfolioCardPayload) {
   return response.data;
 }
 
-export async function getPortfolioCards(category?: string) {
+export async function getPortfolioCards(category?: string, options?: GetPortfolioCardsOptions) {
   const response = await axios.get<PortfolioCardListResponse>(
     category
       ? `/api/users/portfolio/${encodeURIComponent(category)}`
-      : "/api/users/portfolio"
+      : "/api/users/portfolio",
+    {
+      params: {
+        page: options?.page,
+        limit: options?.limit,
+        search: options?.search,
+      },
+    }
   );
 
   if (!response.data?.success) {
@@ -85,5 +106,13 @@ export async function getPortfolioCards(category?: string) {
   return response.data.data ?? {
     items: [],
     categories: [],
+    pagination: {
+      page: 1,
+      limit: options?.limit ?? 12,
+      totalItems: 0,
+      totalPages: 1,
+      hasNextPage: false,
+      hasPreviousPage: false,
+    },
   };
 }

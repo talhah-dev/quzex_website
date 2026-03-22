@@ -46,16 +46,20 @@ export default function ServiceRichTextEditor({
     editorRef.current?.focus();
   }
 
+  function syncEditor() {
+    onChange(editorRef.current?.innerHTML || "");
+  }
+
   function runCommand(command: string, commandValue?: string) {
     focusEditor();
     document.execCommand(command, false, commandValue);
-    onChange(editorRef.current?.innerHTML || "");
+    syncEditor();
   }
 
   function insertHtml(html: string) {
     focusEditor();
     document.execCommand("insertHTML", false, html);
-    onChange(editorRef.current?.innerHTML || "");
+    syncEditor();
   }
 
   function insertLink() {
@@ -68,12 +72,49 @@ export default function ServiceRichTextEditor({
     runCommand("createLink", url);
   }
 
+  function insertTable() {
+    insertHtml(
+      '<table><thead><tr><th>Heading 1</th><th>Heading 2</th></tr></thead><tbody><tr><td>Value 1</td><td>Value 2</td></tr><tr><td>Value 3</td><td>Value 4</td></tr></tbody></table><p></p>'
+    );
+  }
+
+  function highlightText() {
+    focusEditor();
+    document.execCommand("styleWithCSS", false, "true");
+    document.execCommand("hiliteColor", false, "#FFF2A8");
+    syncEditor();
+  }
+
   return (
     <div className="grid gap-3 md:col-span-2">
       <Label htmlFor={id}>{label}</Label>
 
       <div className="rounded-2xl border border-[#0A211F]/10 bg-[#f7f9f2] p-3">
         <div className="mb-3 flex flex-wrap gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => runCommand("formatBlock", "p")}
+            className="h-9 border-[#0A211F]/12 bg-white px-3 text-xs font-medium text-[#0A211F] hover:bg-[#EDF6E8]"
+          >
+            Paragraph
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => runCommand("formatBlock", "h2")}
+            className="h-9 border-[#0A211F]/12 bg-white px-3 text-[#0A211F] hover:bg-[#EDF6E8]"
+          >
+            <Heading2 className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => runCommand("formatBlock", "h3")}
+            className="h-9 border-[#0A211F]/12 bg-white px-3 text-[#0A211F] hover:bg-[#EDF6E8]"
+          >
+            <Heading3 className="size-4" />
+          </Button>
           <Button
             type="button"
             variant="outline"
@@ -101,18 +142,34 @@ export default function ServiceRichTextEditor({
           <Button
             type="button"
             variant="outline"
-            onClick={() => runCommand("formatBlock", "h2")}
-            className="h-9 border-[#0A211F]/12 bg-white px-3 text-[#0A211F] hover:bg-[#EDF6E8]"
+            onClick={highlightText}
+            className="h-9 border-[#0A211F]/12 bg-white px-3 text-xs font-medium text-[#0A211F] hover:bg-[#EDF6E8]"
           >
-            <Heading2 className="size-4" />
+            Highlight
           </Button>
           <Button
             type="button"
             variant="outline"
-            onClick={() => runCommand("formatBlock", "h3")}
-            className="h-9 border-[#0A211F]/12 bg-white px-3 text-[#0A211F] hover:bg-[#EDF6E8]"
+            onClick={() => runCommand("insertUnorderedList")}
+            className="h-9 border-[#0A211F]/12 bg-white px-3 text-xs font-medium text-[#0A211F] hover:bg-[#EDF6E8]"
           >
-            <Heading3 className="size-4" />
+            Bullet List
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => runCommand("insertOrderedList")}
+            className="h-9 border-[#0A211F]/12 bg-white px-3 text-xs font-medium text-[#0A211F] hover:bg-[#EDF6E8]"
+          >
+            Numbered List
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={insertTable}
+            className="h-9 border-[#0A211F]/12 bg-white px-3 text-xs font-medium text-[#0A211F] hover:bg-[#EDF6E8]"
+          >
+            Table
           </Button>
           <Button
             type="button"
@@ -145,7 +202,7 @@ export default function ServiceRichTextEditor({
             contentEditable
             suppressContentEditableWarning
             onInput={(event) => onChange(event.currentTarget.innerHTML)}
-            className="min-h-44 w-full rounded-xl border border-[#0A211F]/12 bg-white px-3 py-3 text-sm text-[#0A211F] outline-none transition-[border-color,box-shadow] focus:border-[#0A211F]/28 focus:ring-4 focus:ring-[#0A211F]/6 [&_a]:font-medium [&_a]:text-[#0A211F] [&_a]:underline [&_em]:italic [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:leading-tight [&_h2]:text-[#0A211F] [&_h2]:my-2 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:leading-tight [&_h3]:text-[#0A211F] [&_h3]:my-2 [&_p]:mb-3 [&_strong]:font-semibold [&_u]:underline"
+            className="min-h-52 w-full rounded-xl border border-[#0A211F]/12 bg-white px-3 py-3 text-sm text-[#0A211F] outline-none transition-[border-color,box-shadow] focus:border-[#0A211F]/28 focus:ring-4 focus:ring-[#0A211F]/6 [&_a]:font-medium [&_a]:text-[#0A211F] [&_a]:underline [&_em]:italic [&_h2]:my-2 [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:leading-tight [&_h2]:text-[#0A211F] [&_h3]:my-2 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:leading-tight [&_h3]:text-[#0A211F] [&_li]:ml-5 [&_ol]:mb-3 [&_ol]:list-decimal [&_p]:mb-3 [&_strong]:font-semibold [&_table]:my-4 [&_table]:w-full [&_table]:border-collapse [&_td]:border [&_td]:border-[#0A211F]/12 [&_td]:px-3 [&_td]:py-2 [&_th]:border [&_th]:border-[#0A211F]/12 [&_th]:bg-[#EDF6E8] [&_th]:px-3 [&_th]:py-2 [&_th]:text-left [&_u]:underline [&_ul]:mb-3 [&_ul]:list-disc"
           />
         </div>
 
@@ -154,7 +211,7 @@ export default function ServiceRichTextEditor({
             Preview
           </p>
           <div
-            className="space-y-3 text-sm leading-8 text-[#0A211F]/72 [&_a]:font-medium [&_a]:text-[#0A211F] [&_a]:underline [&_em]:italic [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:leading-tight [&_h2]:text-[#0A211F] [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:leading-tight [&_h3]:text-[#0A211F] [&_p]:mb-3 [&_strong]:font-semibold [&_u]:underline"
+            className="space-y-3 text-sm leading-8 text-[#0A211F]/72 [&_a]:font-medium [&_a]:text-[#0A211F] [&_a]:underline [&_em]:italic [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:leading-tight [&_h2]:text-[#0A211F] [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:leading-tight [&_h3]:text-[#0A211F] [&_li]:ml-5 [&_ol]:mb-3 [&_ol]:list-decimal [&_p]:mb-3 [&_strong]:font-semibold [&_table]:my-4 [&_table]:w-full [&_table]:border-collapse [&_td]:border [&_td]:border-[#0A211F]/12 [&_td]:px-3 [&_td]:py-2 [&_th]:border [&_th]:border-[#0A211F]/12 [&_th]:bg-[#EDF6E8] [&_th]:px-3 [&_th]:py-2 [&_th]:text-left [&_u]:underline [&_ul]:mb-3 [&_ul]:list-disc"
             dangerouslySetInnerHTML={{ __html: previewMarkup(value) }}
           />
         </div>
