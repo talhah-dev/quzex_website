@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, type ChangeEvent } from "react";
-import { ArrowLeft, ArrowUpRight, ImagePlus, Plus } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ImagePlus, LoaderCircle, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -29,25 +29,25 @@ const fallbackImage =
 
 export default function DashboardPortfolioCreate() {
   const router = useRouter();
-  const [title, setTitle] = useState("Project title preview");
+  const [title, setTitle] = useState("");
   const [priority, setPriority] = useState("");
   const [isPriorityEdited, setIsPriorityEdited] = useState(false);
-  const [liveLink, setLiveLink] = useState("https://example.com");
-  const [tags, setTags] = useState("Business Website, Responsive, Modern UI, Custom Build");
+  const [liveLink, setLiveLink] = useState("");
+  const [tags, setTags] = useState("");
   const [homeVisibility, setHomeVisibility] = useState<"home" | "work-only">("work-only");
   const [category, setCategory] = useState<PortfolioCardCategory>("Development");
-  const [description, setDescription] = useState(
-    "A short project summary will appear here as you prepare the portfolio item."
-  );
+  const [description, setDescription] = useState("");
   const [imageMode, setImageMode] = useState<"upload" | "url">("upload");
   const [imageUrl, setImageUrl] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+  const [isPreparingImage, setIsPreparingImage] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const isMarketingProject = category === "Marketing";
 
   const { data: portfolioData } = useQuery({
     queryKey: ["portfolio-cards", "admin-create-default"],
-    queryFn: () => getPortfolioCards(),
+    queryFn: () => getPortfolioCards(undefined, { page: 1, limit: 10000 }),
   });
 
   const highestPriority = useMemo(() => {
@@ -98,6 +98,10 @@ export default function DashboardPortfolioCreate() {
     );
   }, [nextPriority, priorityValue]);
 
+  const hasImageSource = imageMode === "upload" ? Boolean(imageFile) : Boolean(imageUrl.trim());
+  const isCreateDisabled = !title.trim() || !hasImageSource || isPreparingImage || isUploadingImage;
+  const isImageBusy = isPreparingImage || isUploadingImage;
+
   async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
@@ -105,18 +109,27 @@ export default function DashboardPortfolioCreate() {
       return;
     }
 
-    const optimizedFile = await compressImageFile(file, 500);
+    try {
+      setIsPreparingImage(true);
+      const optimizedFile = await compressImageFile(file, 500);
 
-    if (uploadedImageUrl) {
-      URL.revokeObjectURL(uploadedImageUrl);
-    }
+      if (uploadedImageUrl) {
+        URL.revokeObjectURL(uploadedImageUrl);
+      }
 
-    setImageFile(optimizedFile);
-    const objectUrl = URL.createObjectURL(optimizedFile);
-    setUploadedImageUrl(objectUrl);
+      setImageFile(optimizedFile);
+      const objectUrl = URL.createObjectURL(optimizedFile);
+      setUploadedImageUrl(objectUrl);
 
-    if (optimizedFile.size < file.size) {
-      toast.success("Portfolio image optimized before upload.");
+      if (optimizedFile.size < file.size) {
+        toast.success("Portfolio image optimized before upload.");
+      }
+    } catch (error) {
+      console.error("Portfolio image preparation error:", error);
+      toast.error("Unable to prepare the portfolio image right now.");
+    } finally {
+      setIsPreparingImage(false);
+      event.target.value = "";
     }
   }
 
@@ -129,12 +142,18 @@ export default function DashboardPortfolioCreate() {
           throw new Error("Please upload a portfolio image.");
         }
 
-        const uploaded = await uploadFile({
-          file: imageFile,
-          folder: "portfolio",
-        });
+        setIsUploadingImage(true);
 
-        finalImage = uploaded.url;
+        try {
+          const uploaded = await uploadFile({
+            file: imageFile,
+            folder: "portfolio",
+          });
+
+          finalImage = uploaded.url;
+        } finally {
+          setIsUploadingImage(false);
+        }
       }
 
       if (!finalImage) {
@@ -264,7 +283,10 @@ export default function DashboardPortfolioCreate() {
 
             <div className="grid gap-2">
               <Label htmlFor="portfolio-home-visibility">Homepage visibility</Label>
-              <Select value={homeVisibility} onValueChange={(value) => setHomeVisibility(value as "home" | "work-only")}>
+              <Select
+                value={homeVisibility}
+                onValueChange={(value) => setHomeVisibility(value as "home" | "work-only")}
+              >
                 <SelectTrigger
                   id="portfolio-home-visibility"
                   className="h-11 w-full rounded-xl border-[#0A211F]/12 bg-white text-[#0A211F]"
@@ -284,7 +306,10 @@ export default function DashboardPortfolioCreate() {
                 value={category}
                 onValueChange={(value) => setCategory(value as PortfolioCardCategory)}
               >
-                <SelectTrigger id="portfolio-category" className="h-11 w-full rounded-xl border-[#0A211F]/12 bg-white text-[#0A211F]">
+                <SelectTrigger
+                  id="portfolio-category"
+                  className="h-11 w-full rounded-xl border-[#0A211F]/12 bg-white text-[#0A211F]"
+                >
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent className="border-[#0A211F]/10 bg-white">
@@ -324,23 +349,25 @@ export default function DashboardPortfolioCreate() {
               <div className="inline-flex rounded-xl border border-[#0A211F]/10 bg-white p-1">
                 <button
                   type="button"
+                  disabled={isImageBusy || isPending}
                   onClick={() => setImageMode("upload")}
                   className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
                     imageMode === "upload"
                       ? "bg-[#0A211F] text-[#E9F3E6]"
                       : "text-[#0A211F]/62 hover:bg-[#EDF6E8]"
-                  }`}
+                  } ${isImageBusy || isPending ? "cursor-not-allowed opacity-60" : ""}`}
                 >
                   Upload Image
                 </button>
                 <button
                   type="button"
+                  disabled={isImageBusy || isPending}
                   onClick={() => setImageMode("url")}
                   className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
                     imageMode === "url"
                       ? "bg-[#0A211F] text-[#E9F3E6]"
                       : "text-[#0A211F]/62 hover:bg-[#EDF6E8]"
-                  }`}
+                  } ${isImageBusy || isPending ? "cursor-not-allowed opacity-60" : ""}`}
                 >
                   Use Image URL
                 </button>
@@ -350,17 +377,39 @@ export default function DashboardPortfolioCreate() {
             {imageMode === "upload" ? (
               <label
                 htmlFor="portfolio-upload"
-                className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-[#0A211F]/18 bg-white px-4 py-10 text-center transition-colors hover:border-[#0A211F]/28 hover:bg-[#EDF6E8]"
+                className={`flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-[#0A211F]/18 bg-white px-4 py-10 text-center transition-colors ${
+                  isImageBusy || isPending
+                    ? "cursor-not-allowed opacity-70"
+                    : "cursor-pointer hover:border-[#0A211F]/28 hover:bg-[#EDF6E8]"
+                }`}
               >
                 <div className="inline-flex rounded-xl bg-[#0A211F] p-3 text-[#E9F3E6]">
-                  <ImagePlus className="size-5" />
+                  {isImageBusy ? (
+                    <LoaderCircle className="size-5 animate-spin" />
+                  ) : (
+                    <ImagePlus className="size-5" />
+                  )}
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm font-medium text-[#0A211F]">Upload portfolio image</p>
-                  <p className="text-xs text-[#0A211F]/58">
-                    Add a project screenshot or cover image for the portfolio card.
+                  <p className="text-sm font-medium text-[#0A211F]">
+                    {isPreparingImage
+                      ? "Preparing portfolio image..."
+                      : isUploadingImage
+                        ? "Uploading portfolio image..."
+                        : "Upload portfolio image"}
                   </p>
-                  {imageFile ? <p className="text-xs font-medium text-[#0A211F]">{imageFile.name}</p> : null}
+                  <p className="text-xs text-[#0A211F]/58">
+                    {isPreparingImage
+                      ? "Please wait while we optimize the image before upload."
+                      : isUploadingImage
+                        ? "Please wait while the image is being uploaded."
+                        : "Add a project screenshot or cover image for the portfolio card."}
+                  </p>
+                  {imageFile ? (
+                    <p className="text-xs font-medium text-[#0A211F]">
+                      {isImageBusy ? "Working on image..." : `${imageFile.name} ready to upload`}
+                    </p>
+                  ) : null}
                 </div>
                 <input
                   id="portfolio-upload"
@@ -369,6 +418,7 @@ export default function DashboardPortfolioCreate() {
                   accept="image/*"
                   className="hidden"
                   onChange={handleFileChange}
+                  disabled={isImageBusy || isPending}
                 />
               </label>
             ) : (
@@ -380,6 +430,7 @@ export default function DashboardPortfolioCreate() {
                   placeholder="https://example.com/project-image.png"
                   value={imageUrl}
                   onChange={(event) => setImageUrl(event.target.value)}
+                  disabled={isPending}
                 />
               </div>
             )}
@@ -388,12 +439,22 @@ export default function DashboardPortfolioCreate() {
           <div className="flex flex-wrap items-center gap-3 border-t border-[#0A211F]/10 pt-5">
             <Button
               type="button"
-              disabled={isPending}
+              disabled={isCreateDisabled || isPending}
               onClick={() => mutate()}
-              className="rounded-xl bg-[#0A211F] px-5 text-[#E9F3E6] hover:bg-[#143531]"
+              className="rounded-xl bg-[#0A211F] px-5 text-[#E9F3E6] hover:bg-[#143531] disabled:cursor-not-allowed disabled:opacity-60"
             >
-              <Plus className="size-4" />
-              {isPending ? "Saving..." : "Save Portfolio"}
+              {isPreparingImage || isUploadingImage || isPending ? (
+                <LoaderCircle className="size-4 animate-spin" />
+              ) : (
+                <Plus className="size-4" />
+              )}
+              {isPreparingImage
+                ? "Preparing Image..."
+                : isUploadingImage
+                  ? "Uploading Image..."
+                  : isPending
+                    ? "Saving..."
+                    : "Save Portfolio"}
             </Button>
             <Button
               asChild
@@ -403,6 +464,11 @@ export default function DashboardPortfolioCreate() {
             >
               <Link href="/dashboard/portfolio">Cancel</Link>
             </Button>
+            {isCreateDisabled && !isPending ? (
+              <p className="text-xs text-[#0A211F]/58">
+                Add a project title and portfolio image before creating the portfolio item.
+              </p>
+            ) : null}
           </div>
         </div>
       </section>

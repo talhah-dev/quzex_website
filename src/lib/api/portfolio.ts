@@ -17,6 +17,7 @@ type PortfolioCardListResponse = {
   data?: {
     items: PortfolioCardRecord[];
     categories: string[];
+    homeVisibleCount?: number;
     pagination: {
       page: number;
       limit: number;
@@ -106,6 +107,7 @@ export async function getPortfolioCards(category?: string, options?: GetPortfoli
   return response.data.data ?? {
     items: [],
     categories: [],
+    homeVisibleCount: 0,
     pagination: {
       page: 1,
       limit: options?.limit ?? 12,

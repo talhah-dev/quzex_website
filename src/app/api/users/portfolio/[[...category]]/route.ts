@@ -59,7 +59,7 @@ export async function GET(request: Request, context: RouteContext) {
       ];
     }
 
-    const [portfolioCards, totalItems, categories] = await Promise.all([
+    const [portfolioCards, totalItems, categories, homeVisibleCount] = await Promise.all([
       PortfolioCardModel.find(filters)
         .sort({ priority: 1, createdAt: -1 })
         .skip(skip)
@@ -67,6 +67,7 @@ export async function GET(request: Request, context: RouteContext) {
         .lean(),
       PortfolioCardModel.countDocuments(filters),
       PortfolioCardModel.distinct("category", { isActive: true }),
+      PortfolioCardModel.countDocuments({ isActive: true, showOnHome: true }),
     ]);
 
     const totalPages = Math.max(1, Math.ceil(totalItems / limit));
@@ -79,6 +80,7 @@ export async function GET(request: Request, context: RouteContext) {
           _id: portfolioCard._id.toString(),
         })),
         categories,
+        homeVisibleCount,
         pagination: {
           page,
           limit,
