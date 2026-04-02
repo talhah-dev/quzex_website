@@ -191,9 +191,9 @@ export default function HeroSection() {
                             >
                                 <video
                                     className="relative aspect-[16/9] w-full overflow-hidden"
-                                    src="https://www.pexels.com/download/video/6192775/"
+                                    src="https://delivery.pixelbin.io/predictions/outputs/30d/veo31Fast/generate/019d4dbb-8501-7bb2-b94b-377b792f09be/result_0.mp4"
                                     autoPlay
-                                    poster="https://res.cloudinary.com/dpkp4hymz/image/upload/v1770115231/Screenshot_2026-02-03_154010_jm7cos.png"
+                                    poster="https://images.unsplash.com/photo-1614508568879-876f2cde2237?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                     muted
                                     loop
                                     playsInline

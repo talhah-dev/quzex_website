@@ -17,9 +17,14 @@ const audioBars = [14, 26, 18, 32, 22, 28, 16, 30, 20, 24, 15, 27];
 type TestimonialsProps = {
   showCta?: boolean;
   showIntro?: boolean;
+  maxItems?: number;
 };
 
-const Testimonials = ({ showCta = true, showIntro = true }: TestimonialsProps) => {
+const Testimonials = ({
+  showCta = true,
+  showIntro = true,
+  maxItems,
+}: TestimonialsProps) => {
   const [activeCategory, setActiveCategory] = useState<"All" | TestimonialCategory>("All");
   const [playingReviewId, setPlayingReviewId] = useState<string | null>(null);
   const audioRefs = useRef<Record<string, HTMLAudioElement | null>>({});
@@ -37,8 +42,18 @@ const Testimonials = ({ showCta = true, showIntro = true }: TestimonialsProps) =
     [reviews]
   );
 
-  const filteredReviews =
-    activeCategory === "All" ? reviews : reviews.filter((item) => item.category === activeCategory);
+  const filteredReviews = useMemo(() => {
+    const categoryReviews =
+      activeCategory === "All"
+        ? reviews
+        : reviews.filter((item) => item.category === activeCategory);
+
+    if (!maxItems || maxItems < 1) {
+      return categoryReviews;
+    }
+
+    return categoryReviews.slice(0, maxItems);
+  }, [activeCategory, maxItems, reviews]);
 
   async function handleAudioToggle(reviewId: string) {
     const targetAudio = audioRefs.current[reviewId];
@@ -298,5 +313,4 @@ const Testimonials = ({ showCta = true, showIntro = true }: TestimonialsProps) =
 };
 
 export default Testimonials;
-
 

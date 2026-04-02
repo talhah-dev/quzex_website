@@ -1,19 +1,7 @@
 export default function WorkPortfolioSkeleton() {
   return (
     <div className="flex flex-col gap-10 animate-pulse">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="h-12 w-full rounded-full bg-white sm:max-w-sm" />
-        <div className="flex flex-wrap items-center gap-2">
-          {Array.from({ length: 5 }).map((_, index) => (
-            <div
-              key={index}
-              className="h-10 w-24 rounded-full border border-[#0A211F]/10 bg-white"
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {Array.from({ length: 4 }).map((_, index) => (
           <div
             key={index}

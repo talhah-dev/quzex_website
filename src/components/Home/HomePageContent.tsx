@@ -34,7 +34,7 @@ export default function HomePageContent({ selectedCategory }: HomePageContentPro
             plans={DEFAULT_PRICING_PLANS}
           />
           <div className="md:py-4 py-2"></div>
-          <Testimonials />
+          <Testimonials maxItems={6} />
           <Faq />
           <CTA />
           <div className="md:py-10 py-4"></div>

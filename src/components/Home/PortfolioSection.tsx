@@ -17,10 +17,17 @@ export default function PortfolioSection({ selectedCategory = "" }: PortfolioSec
     const activeCategory = selectedCategory;
     const { data, isLoading, isError } = useQuery({
         queryKey: ["portfolio-cards", "home"],
-        queryFn: () => getPortfolioCards(),
+        queryFn: () => getPortfolioCards(undefined, { page: 1, limit: 10000 }),
     });
     const portfolioCards = useMemo(() => data?.items ?? [], [data]);
-    const categories = useMemo(() => data?.categories ?? [], [data]);
+    const homePortfolioCards = useMemo(
+        () => portfolioCards.filter((item) => item.showOnHome),
+        [portfolioCards]
+    );
+    const categories = useMemo(
+        () => Array.from(new Set(homePortfolioCards.map((item) => item.category))),
+        [homePortfolioCards]
+    );
     const displayedCategory = useMemo(() => {
         if (activeCategory && categories.includes(activeCategory)) {
             return activeCategory;
@@ -31,10 +38,10 @@ export default function PortfolioSection({ selectedCategory = "" }: PortfolioSec
 
     const filteredItems = useMemo(
         () =>
-            portfolioCards
-                .filter((item) => item.showOnHome && (!displayedCategory || item.category === displayedCategory))
+            homePortfolioCards
+                .filter((item) => !displayedCategory || item.category === displayedCategory)
                 .slice(0, 4),
-        [displayedCategory, portfolioCards]
+        [displayedCategory, homePortfolioCards]
     );
 
     return (
