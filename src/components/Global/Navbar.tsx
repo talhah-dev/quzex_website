@@ -13,6 +13,7 @@ const links = [
     { label: 'About', href: '/about' },
     { label: 'Services', href: '/services' },
     { label: 'Our Work', href: '/work' },
+    { label: 'Blog', href: '/blog' },
 ]
 
 type NavbarProps = {
