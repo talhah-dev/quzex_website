@@ -29,7 +29,7 @@ export default function PortfolioSection({ selectedCategory = "" }: PortfolioSec
         [homePortfolioCards]
     );
     const displayedCategory = useMemo(() => {
-        if (activeCategory && categories.includes(activeCategory)) {
+        if (activeCategory && categories.some((category) => category === activeCategory)) {
             return activeCategory;
         }
 
