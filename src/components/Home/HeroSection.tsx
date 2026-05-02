@@ -193,7 +193,7 @@ export default function HeroSection() {
                                     className="relative aspect-[16/9] w-full overflow-hidden"
                                     src="https://delivery.pixelbin.io/predictions/outputs/30d/veo31Fast/generate/019d4dbb-8501-7bb2-b94b-377b792f09be/result_0.mp4"
                                     autoPlay
-                                    poster="https://images.unsplash.com/photo-1614508568879-876f2cde2237?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                    poster="https://px5rxm1szlmbgpc7.public.blob.vercel-storage.com/assets/home/ChatGPT%20Image%20May%202%2C%202026%2C%2007_37_42%20AM%20%281%29.png"
                                     muted
                                     loop
                                     playsInline
