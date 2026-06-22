@@ -248,7 +248,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
         </div>
       </section>
 
-      {pricingPlans.length > 0 ? (
+      {/* {pricingPlans.length > 0 ? (
         <PricingSection
           badgeLabel="Pricing plans"
           heading={service.pricingHeading || `Pricing for ${service.title}`}
@@ -258,7 +258,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
           }
           plans={pricingPlans}
         />
-      ) : null}
+      ) : null} */}
 
       <div className="bg-[#f7f9f2]">
         <CTA />

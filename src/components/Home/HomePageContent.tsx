@@ -27,12 +27,12 @@ export default function HomePageContent({ selectedCategory }: HomePageContentPro
           <SuccessInNumbers />
           <HowWeWork />
           <div className="md:py-5 py-2"></div>
-          <PricingSection
+          {/* <PricingSection
             badgeLabel="Pricing plans"
             heading="Affordable pricing"
             description="Choose the package that fits your website needs, from a simple landing page to a full multi-page business website."
             plans={DEFAULT_PRICING_PLANS}
-          />
+          /> */}
           <div className="md:py-4 py-2"></div>
           <Testimonials maxItems={6} />
           <Faq />

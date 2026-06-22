@@ -204,6 +204,6 @@ export default function HeroSection() {
                     </AnimatedGroup>
                 </div>
             </section>
-        </main>
+        </main> 
     )
 }
