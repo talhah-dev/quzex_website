@@ -4,7 +4,8 @@ import Wrapper from "@/app/Wrapper";
 import BlogCommentsSection from "@/components/Blog/BlogCommentsSection";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
 import { Badge } from "@/components/ui/badge";
-import { BLOG_POSTS, getBlogPostBySlug } from "@/lib/blog";
+import connectToDatabase from "@/lib/dbConnect";
+import BlogModel from "@/models/Blog";
 
 type BlogDetailPageProps = {
   params: Promise<{
@@ -12,15 +13,27 @@ type BlogDetailPageProps = {
   }>;
 };
 
-export async function generateStaticParams() {
-  return BLOG_POSTS.map((post) => ({
-    slug: post.slug,
-  }));
+export const dynamic = "force-dynamic";
+
+async function getBlogBySlug(slug: string) {
+  try {
+    await connectToDatabase();
+    const blog = await BlogModel.findOne({ slug, isActive: true }).lean();
+
+    if (!blog) return null;
+
+    return {
+      ...blog,
+      _id: blog._id.toString(),
+    };
+  } catch {
+    return null;
+  }
 }
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const post = await getBlogBySlug(slug);
 
   if (!post) {
     notFound();
@@ -41,7 +54,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               />
             </div>
 
-            <div className="">
+            <div>
               <div className="mx-auto grid gap-6 py-6 sm:py-8">
                 <Badge
                   variant="outline"
@@ -57,13 +70,11 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                   <p className="text-base leading-8 text-[#0A211F]/70">{post.excerpt}</p>
                 </div>
 
-                <div className="space-y-5">
-                  {post.content.map((paragraph) => (
-                    <p key={paragraph} className="text-base leading-8 text-[#0A211F]/72">
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
+                {/* Rich text content from the editor is stored as HTML */}
+                <div
+                  className="prose prose-slate max-w-none text-[#0A211F]/72 leading-8"
+                  dangerouslySetInnerHTML={{ __html: post.content }}
+                />
 
                 <div className="flex flex-wrap items-center gap-3 border-t border-[#0A211F]/10 pt-5">
                   <AnimatedButton href="/blog" color="dark">
