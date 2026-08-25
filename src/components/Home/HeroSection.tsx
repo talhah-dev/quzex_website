@@ -100,36 +100,12 @@ export default function HeroSection() {
                             </AnimatedGroup>
 
                             <h1 className="mx-auto mt-10 max-w-4xl text-balance font-medium text-4xl leading-[1.3] text-[#8AF7B7] md:text-6xl">
-                                <TextEffect
-                                    preset="fade-in-blur"
-                                    speedSegment={0.3}
-                                    as="span"
-                                    className="inline"
-                                >
-                                    We're here to transform your vision
-                                    into a
-                                </TextEffect>
-
-                                <TextEffect
-                                    preset="fade-in-blur"
-                                    speedSegment={0.3}
-                                    delay={0.08}
-                                    as="span"
-                                    className="inline font-accent"
-                                >
-                                    &nbsp;powerful digital brand.
-                                </TextEffect>
+                                We&apos;re here to transform your vision into a{" "}
+                                <span className="font-accent">powerful digital brand.</span>
                             </h1>
-                            <TextEffect
-                                per="line"
-                                preset="fade-in-blur"
-                                speedSegment={0.3}
-                                delay={0.45}
-                                as="p"
-                                className="mx-auto mt-8 max-w-2xl text-lg text-[#E9F3E6]/80"
-                            >
-                                Think us as your own personal digital team. From the first line of code to your launch strategy, we've got your back every step of the way.
-                            </TextEffect>
+                            <p className="mx-auto mt-8 max-w-2xl text-lg text-[#E9F3E6]/80">
+                                Think us as your own personal digital team. From the first line of code to your launch strategy, we&apos;ve got your back every step of the way.
+                            </p>
 
                             <AnimatedGroup
                                 variants={{
