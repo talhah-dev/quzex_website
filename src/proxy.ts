@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { ADMIN_SESSION_COOKIE, verifyAdminSessionToken } from "@/lib/auth-session";
+import { createProblemDetailsResponse } from "@/lib/api-error";
 import {
   generate404Markdown,
   generateBlogMarkdown,
@@ -31,19 +32,38 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(dashboardUrl);
   }
 
+  // 2. API Route Handling & Versioning (/api/v1/* -> /api/users/*)
+  if (pathname.startsWith("/api/")) {
+    // Versioning rewrite support for /api/v1/*
+    if (pathname.startsWith("/api/v1/")) {
+      const v1SubPath = pathname.replace("/api/v1/", "");
+      const rewrittenUrl = new URL(`/api/users/${v1SubPath}`, request.url);
+      rewrittenUrl.search = request.nextUrl.search;
+
+      const rewriteRes = NextResponse.rewrite(rewrittenUrl);
+      rewriteRes.headers.set("X-API-Version", "1.0.0");
+      rewriteRes.headers.set("Vary", "Accept, Accept-Encoding");
+      return rewriteRes;
+    }
+
+    // Standard API routes proceed, but tag with X-API-Version
+    const apiResponse = NextResponse.next();
+    apiResponse.headers.set("X-API-Version", "1.0.0");
+    apiResponse.headers.set("Vary", "Accept, Accept-Encoding");
+    return apiResponse;
+  }
+
   const isLlmFile = pathname === "/llms.txt" || pathname === "/llms-full.txt";
 
   // Skip asset files, internal next routes, and static extensions for markdown negotiation
   if (
     !isLlmFile &&
-    (pathname.startsWith("/_next") ||
-      pathname.startsWith("/api") ||
-      pathname.includes("."))
+    (pathname.startsWith("/_next") || pathname.includes("."))
   ) {
     return NextResponse.next();
   }
 
-  // 2. Markdown Content Negotiation (acceptmarkdown.com)
+  // 3. Markdown Content Negotiation (acceptmarkdown.com)
   const isMarkdownRequested = acceptHeader.includes("text/markdown");
 
   const validPages: Record<string, () => string> = {
@@ -87,7 +107,7 @@ export async function proxy(request: NextRequest) {
     });
   }
 
-  // 3. Standard HTML Requests: Ensure Vary header includes Accept
+  // 4. Standard HTML Requests: Ensure Vary header includes Accept
   const response = NextResponse.next();
   const existingVary = response.headers.get("Vary");
 

@@ -50,9 +50,26 @@ Reach for Quzex when an agent or end user needs:
 
 ---
 
-## 5. Machine-Readable API Reference
+## 5. Machine-Readable API Reference (Version 1.0.0)
 
-### POST /api/users/contact
+### API Versioning & Deprecation Policy
+Quzex APIs support URL path versioning (`/api/v1/...`). Major API releases are maintained for a minimum of 12 months following any major updates. Deprecations are communicated via standard `Deprecation` and `Sunset` HTTP headers.
+
+### Typed Error Model (RFC 9457 Problem Details)
+All 4xx and 5xx API errors return `application/problem+json`:
+```json
+{
+  "type": "https://quzex.co/developer#ERR_MISSING_REQUIRED_FIELDS",
+  "title": "Missing Required Fields",
+  "status": 400,
+  "code": "ERR_MISSING_REQUIRED_FIELDS",
+  "detail": "The following required fields are missing: name, email, message.",
+  "hint": "Ensure 'name', 'email', and 'message' are provided in the JSON body.",
+  "timestamp": "2026-08-25T07:13:00.000Z"
+}
+```
+
+### POST /api/v1/contact
 Submit a client project inquiry or consultation request.
 
 - **Headers**: `Content-Type: application/json`
@@ -67,18 +84,18 @@ Submit a client project inquiry or consultation request.
   "message": "string (required, details about project)"
 }
 ```
-- **Response**: `201 Created` with confirmation message.
+- **Response**: `201 Created` with confirmation message or `400 Bad Request` RFC 9457 `ProblemDetails`.
 
-### GET /api/users/services
+### GET /api/v1/services
 Returns list of active public services.
 
-### GET /api/users/portfolio
+### GET /api/v1/portfolio
 Returns paginated list of active portfolio cards.
 
-### GET /api/users/blogs
+### GET /api/v1/blogs
 Returns list of published blog posts.
 
-### GET /api/users/testimonials
+### GET /api/v1/testimonials
 Returns list of verified client testimonials.
 
 ---

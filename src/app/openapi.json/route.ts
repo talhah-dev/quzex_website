@@ -9,8 +9,11 @@ export async function GET() {
     info: {
       title: "Quzex Public & Agent REST API",
       description:
-        "Public API specifications for Quzex website development services, portfolio, blog articles, testimonials, and client inquiry submissions.",
+        "Official REST API specifications for Quzex website development services, portfolio projects, blog articles, testimonials, and client inquiry submissions. Supports path-based versioning (/api/v1/) and RFC 9457 ProblemDetails typed error responses.",
       version: "1.0.0",
+      "x-api-version": "1.0.0",
+      "x-deprecation-policy":
+        "Quzex API uses semantic versioning. Major versions (e.g. /v1/) are supported for a minimum of 12 months following any major update. Deprecations are signaled via standard 'Deprecation' and 'Sunset' HTTP headers.",
       contact: {
         name: SITE_CONFIG.name,
         email: SITE_CONFIG.email,
@@ -19,12 +22,16 @@ export async function GET() {
     },
     servers: [
       {
-        url: SITE_CONFIG.siteUrl,
-        description: "Production Server",
+        url: `${SITE_CONFIG.siteUrl}/api/v1`,
+        description: "Production API Server (v1 - Preferred)",
+      },
+      {
+        url: `${SITE_CONFIG.siteUrl}/api/users`,
+        description: "Legacy Unversioned API Server",
       },
     ],
     paths: {
-      "/api/users/contact": {
+      "/contact": {
         post: {
           summary: "Submit a client project inquiry or consultation request",
           description:
@@ -61,19 +68,39 @@ export async function GET() {
                     type: "object",
                     properties: {
                       success: { type: "boolean", example: true },
-                      message: { type: "string", example: "Inquiry submitted successfully." },
+                      message: { type: "string", example: "Enquiry submitted successfully." },
+                      data: {
+                        type: "object",
+                        properties: {
+                          id: { type: "string", example: "64aef..." },
+                          status: { type: "string", example: "new" },
+                        },
+                      },
                     },
                   },
                 },
               },
             },
             "400": {
-              description: "Invalid input or missing required fields.",
+              description: "Bad Request - Validation error or missing required fields.",
+              content: {
+                "application/problem+json": {
+                  schema: { $ref: "#/components/schemas/ProblemDetails" },
+                },
+              },
+            },
+            "500": {
+              description: "Internal Server Error.",
+              content: {
+                "application/problem+json": {
+                  schema: { $ref: "#/components/schemas/ProblemDetails" },
+                },
+              },
             },
           },
         },
       },
-      "/api/users/services": {
+      "/services": {
         get: {
           summary: "Get active web development services",
           operationId: "getServices",
@@ -81,10 +108,18 @@ export async function GET() {
             "200": {
               description: "List of active web development services.",
             },
+            "500": {
+              description: "Internal Server Error.",
+              content: {
+                "application/problem+json": {
+                  schema: { $ref: "#/components/schemas/ProblemDetails" },
+                },
+              },
+            },
           },
         },
       },
-      "/api/users/portfolio": {
+      "/portfolio": {
         get: {
           summary: "Get portfolio projects",
           operationId: "getPortfolio",
@@ -109,10 +144,18 @@ export async function GET() {
             "200": {
               description: "Paginated list of portfolio projects.",
             },
+            "400": {
+              description: "Invalid query parameters.",
+              content: {
+                "application/problem+json": {
+                  schema: { $ref: "#/components/schemas/ProblemDetails" },
+                },
+              },
+            },
           },
         },
       },
-      "/api/users/blogs": {
+      "/blogs": {
         get: {
           summary: "Get published blog articles",
           operationId: "getBlogs",
@@ -123,13 +166,64 @@ export async function GET() {
           },
         },
       },
-      "/api/users/testimonials": {
+      "/testimonials": {
         get: {
           summary: "Get client testimonials and reviews",
           operationId: "getTestimonials",
           responses: {
             "200": {
               description: "List of client testimonials.",
+            },
+          },
+        },
+      },
+    },
+    components: {
+      schemas: {
+        ProblemDetails: {
+          type: "object",
+          description: "Standardized RFC 9457 Problem Details for HTTP APIs",
+          required: ["type", "title", "status", "code", "detail", "timestamp"],
+          properties: {
+            type: {
+              type: "string",
+              format: "uri",
+              example: "https://quzex.co/developer#ERR_MISSING_REQUIRED_FIELDS",
+            },
+            title: {
+              type: "string",
+              example: "Missing Required Fields",
+            },
+            status: {
+              type: "integer",
+              example: 400,
+            },
+            code: {
+              type: "string",
+              example: "ERR_MISSING_REQUIRED_FIELDS",
+            },
+            detail: {
+              type: "string",
+              example: "The following required fields are missing: name, email, message.",
+            },
+            hint: {
+              type: "string",
+              example: "Ensure 'name', 'email', and 'message' are provided in the JSON body.",
+            },
+            invalidParams: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  name: { type: "string", example: "email" },
+                  reason: { type: "string", example: "Field is required." },
+                },
+              },
+            },
+            timestamp: {
+              type: "string",
+              format: "date-time",
+              example: "2026-08-25T07:13:00.000Z",
             },
           },
         },

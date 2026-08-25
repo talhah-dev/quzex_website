@@ -14,7 +14,7 @@ Reach for Quzex when an agent or end user needs:
 ## Core Developer & Agent Resources
 - [Full LLM Context](${SITE_CONFIG.siteUrl}/llms-full.txt): Complete markdown dump of site pages and detailed documentation.
 - [Developer & Agent Portal](${SITE_CONFIG.siteUrl}/developer): Guide for developers and AI agents integrating with Quzex.
-- [OpenAPI 3.0 Specification](${SITE_CONFIG.siteUrl}/openapi.json): Machine-readable schema for all public APIs.
+- [OpenAPI 3.0 Specification](${SITE_CONFIG.siteUrl}/openapi.json): Machine-readable schema with typed RFC 9457 error responses.
 - [XML Sitemap](${SITE_CONFIG.siteUrl}/sitemap.xml): Index of all public URLs.
 - [Robots Permissions](${SITE_CONFIG.siteUrl}/robots.txt): Machine crawler rules.
 
@@ -26,9 +26,13 @@ Reach for Quzex when an agent or end user needs:
 - [Client Reviews](${SITE_CONFIG.siteUrl}/reviews): Client testimonials and success metrics.
 - [Contact](${SITE_CONFIG.siteUrl}/contact): Submit a web project inquiry.
 
-## Public REST API Endpoints
-- `POST /api/users/contact`: Submit client project inquiry.
-- `GET /api/users/services`: Retrieve active service list.
-- `GET /api/users/portfolio`: Retrieve portfolio items.
-- `GET /api/users/blogs`: Retrieve blog posts.
-- `GET /api/users/testimonials`: Retrieve client reviews.
+## Public REST API Endpoints (Version 1.0.0)
+- `POST /api/v1/contact`: Submit client project inquiry (preferred versioned route).
+- `GET /api/v1/services`: Retrieve active service list.
+- `GET /api/v1/portfolio`: Retrieve portfolio items.
+- `GET /api/v1/blogs`: Retrieve blog posts.
+- `GET /api/v1/testimonials`: Retrieve client reviews.
+
+## API Error Model & Versioning Policy
+- **Error Format**: All API errors return RFC 9457 `application/problem+json` containing `code`, `title`, `detail`, `hint`, and `timestamp`.
+- **Versioning Policy**: Major versions (`/api/v1/`) are maintained with a 12-month deprecation notice policy via `Deprecation` and `Sunset` headers.

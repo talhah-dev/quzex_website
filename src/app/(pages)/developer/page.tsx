@@ -4,17 +4,18 @@ import HeroSection from "@/components/common/HeroSection";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { buildPageMetadata } from "@/lib/seo";
-import { SITE_CONFIG } from "@/lib/site";
 
 export const metadata = buildPageMetadata({
   title: "Quzex Developer & Agent API Documentation",
   description:
-    "Developer and AI Agent documentation for Quzex website development services, public REST APIs, llms.txt index, and OpenAPI specification.",
+    "Developer and AI Agent documentation for Quzex website development services, public REST APIs (v1), RFC 9457 typed error model, llms.txt index, and OpenAPI specification.",
   path: "/developer",
   keywords: [
     "Quzex developer resources",
     "Quzex API docs",
     "Quzex agent instructions",
+    "Quzex API versioning v1",
+    "Quzex RFC 9457 error model",
     "Quzex llms.txt",
     "Quzex openapi spec",
   ],
@@ -25,7 +26,7 @@ export default function DeveloperPage() {
     <Wrapper>
       <HeroSection
         heading="Quzex Developer & Agent Resources"
-        paragraph="API specifications, machine-readable documentation, llms.txt index, and guidance for developers and AI agents integrating with Quzex."
+        paragraph="API specifications (v1), RFC 9457 typed error schemas, machine-readable documentation, llms.txt index, and guidance for developers and AI agents integrating with Quzex."
         primaryButtonLabel="View OpenAPI Spec"
         primaryButtonHref="/openapi.json"
         secondaryButtonLabel="View llms.txt"
@@ -54,7 +55,7 @@ export default function DeveloperPage() {
                 <strong>Website Redesign & Speed Optimization:</strong> Modernizing outdated websites for higher Core Web Vitals and conversions.
               </li>
               <li>
-                <strong>Programmatic Inquiries:</strong> Submitting project details directly to our engineering team via <code className="bg-[#EDF6E8] px-1 py-0.5 rounded">POST /api/users/contact</code>.
+                <strong>Programmatic Inquiries:</strong> Submitting project details directly to our engineering team via <code className="bg-[#EDF6E8] px-1 py-0.5 rounded">POST /api/v1/contact</code>.
               </li>
               <li>
                 <strong>Portfolio & Service Discovery:</strong> Programmatically querying active web development packages and past work.
@@ -71,7 +72,7 @@ export default function DeveloperPage() {
               <div className="rounded-2xl border border-[#0A211F]/10 bg-white p-6 space-y-3">
                 <h3 className="text-xl font-medium">llms.txt Index</h3>
                 <p className="text-sm text-[#0A211F]/70">
-                  Standardized AI model index listing core capabilities, URLs, and agent instructions.
+                  Standardized AI model index listing core capabilities, v1 API URLs, and agent instructions.
                 </p>
                 <Button asChild variant="outline" className="rounded-xl border-[#0A211F]/20">
                   <Link href="/llms.txt">Access /llms.txt</Link>
@@ -91,7 +92,7 @@ export default function DeveloperPage() {
               <div className="rounded-2xl border border-[#0A211F]/10 bg-white p-6 space-y-3">
                 <h3 className="text-xl font-medium">OpenAPI 3.0 Specification</h3>
                 <p className="text-sm text-[#0A211F]/70">
-                  Machine-readable JSON schema defining all public endpoints, parameters, and request schemas.
+                  Machine-readable JSON schema defining all v1 endpoints, RFC 9457 error schemas, and parameters.
                 </p>
                 <Button asChild variant="outline" className="rounded-xl border-[#0A211F]/20">
                   <Link href="/openapi.json">Access /openapi.json</Link>
@@ -110,24 +111,51 @@ export default function DeveloperPage() {
             </div>
           </div>
 
-          {/* Section 3: Public APIs */}
+          {/* Section 3: REST Versioning & Deprecation Policy */}
           <div className="space-y-4 rounded-2xl border border-[#0A211F]/10 bg-white p-6 md:p-8">
-            <h2 className="text-2xl font-semibold md:text-3xl">Public REST API Endpoints</h2>
+            <h2 className="text-2xl font-semibold md:text-3xl">API Versioning & Deprecation Strategy</h2>
+            <p className="text-sm leading-relaxed text-[#0A211F]/80">
+              Quzex uses URL path versioning (e.g. <code className="bg-[#EDF6E8] px-1 py-0.5 rounded">/api/v1/</code>). All endpoints emit an <code className="bg-[#EDF6E8] px-1 py-0.5 rounded">X-API-Version: 1.0.0</code> header. Major API versions are maintained for a minimum of 12 months following any major release. Deprecations are communicated in advance via <code className="bg-[#EDF6E8] px-1 py-0.5 rounded">Deprecation</code> and <code className="bg-[#EDF6E8] px-1 py-0.5 rounded">Sunset</code> HTTP headers.
+            </p>
+          </div>
+
+          {/* Section 4: Typed Error Model */}
+          <div className="space-y-4 rounded-2xl border border-[#0A211F]/10 bg-white p-6 md:p-8">
+            <h2 className="text-2xl font-semibold md:text-3xl">RFC 9457 Typed Error Responses</h2>
+            <p className="text-sm text-[#0A211F]/80">
+              All 4xx and 5xx API responses return <code className="bg-[#EDF6E8] px-1 py-0.5 rounded">application/problem+json</code> with a structured error object containing machine-readable error codes and resolution hints:
+            </p>
+            <pre className="overflow-x-auto rounded-xl bg-[#0A211F] p-4 text-xs text-[#E9F3E6]">
+{`{
+  "type": "https://quzex.co/developer#ERR_MISSING_REQUIRED_FIELDS",
+  "title": "Missing Required Fields",
+  "status": 400,
+  "code": "ERR_MISSING_REQUIRED_FIELDS",
+  "detail": "The following required fields are missing: name, email, message.",
+  "hint": "Ensure 'name', 'email', and 'message' are provided in the JSON body.",
+  "timestamp": "2026-08-25T07:13:00.000Z"
+}`}
+            </pre>
+          </div>
+
+          {/* Section 5: Public APIs */}
+          <div className="space-y-4 rounded-2xl border border-[#0A211F]/10 bg-white p-6 md:p-8">
+            <h2 className="text-2xl font-semibold md:text-3xl">Public REST API Endpoints (v1)</h2>
             <div className="space-y-4 font-mono text-sm">
               <div className="border-b border-[#0A211F]/10 pb-3">
-                <span className="font-bold text-green-700">POST</span> /api/users/contact
+                <span className="font-bold text-green-700">POST</span> /api/v1/contact
                 <p className="font-sans text-xs text-[#0A211F]/70 mt-1">Submit client project inquiries (requires name, email, message).</p>
               </div>
               <div className="border-b border-[#0A211F]/10 pb-3">
-                <span className="font-bold text-blue-700">GET</span> /api/users/services
+                <span className="font-bold text-blue-700">GET</span> /api/v1/services
                 <p className="font-sans text-xs text-[#0A211F]/70 mt-1">List active website development services.</p>
               </div>
               <div className="border-b border-[#0A211F]/10 pb-3">
-                <span className="font-bold text-blue-700">GET</span> /api/users/portfolio
+                <span className="font-bold text-blue-700">GET</span> /api/v1/portfolio
                 <p className="font-sans text-xs text-[#0A211F]/70 mt-1">List active portfolio projects (supports category, page, limit).</p>
               </div>
               <div>
-                <span className="font-bold text-blue-700">GET</span> /api/users/blogs
+                <span className="font-bold text-blue-700">GET</span> /api/v1/blogs
                 <p className="font-sans text-xs text-[#0A211F]/70 mt-1">List published blog articles and guides.</p>
               </div>
             </div>
