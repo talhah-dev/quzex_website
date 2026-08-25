@@ -4,9 +4,9 @@ import WorkHeroSection from "@/components/Work/WorkHeroSection";
 import WorkPortfolioSection from "@/components/Work/WorkPortfolioSection";
 
 export const metadata = buildPageMetadata({
-  title: "Our Work | quzex",
+  title: "Portfolio & Case Studies | quzex",
   description:
-    "Explore quzex portfolio work across development, designing, AI, and marketing projects to see the quality and direction behind each delivery.",
+    "Explore quzex portfolio of custom websites, web applications, website redesigns, and AI integrations built for clients across various industries worldwide.",
   path: "/work",
   keywords: [
     "quzex portfolio",

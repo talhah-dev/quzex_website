@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 export default function NotFound() {
   return (
     <Wrapper forceNavbarBackground>
-      <section className="bg-[#f7f9f2] min-h-[70vh] flex items-center justify-center px-4 py-24 text-[#0A211F]">
+      <section className="bg-[#f7f9f2] md:mt-14 mt-8 min-h-[70vh] flex items-center justify-center px-4 py-24 text-[#0A211F]">
         <div className="mx-auto max-w-3xl text-center space-y-6">
           <Badge
             variant="outline"

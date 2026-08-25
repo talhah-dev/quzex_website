@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
@@ -10,7 +10,7 @@ import { AnimatedButton } from "@/components/ui/AnimatedButton";
 import { COUNTRY_FLAG_IMAGES, COUNTRY_LABELS } from "@/lib/countries";
 import { getTestimonials } from "@/lib/api/testimonials";
 import { normalizeImageSrc } from "@/lib/normalize-image-src";
-import { type TestimonialCategory } from "@/types";
+import type { TestimonialCategory, TestimonialRecord } from "@/types";
 
 const audioBars = [14, 26, 18, 32, 22, 28, 16, 30, 20, 24, 15, 27];
 
@@ -18,12 +18,14 @@ type TestimonialsProps = {
   showCta?: boolean;
   showIntro?: boolean;
   maxItems?: number;
+  initialReviews?: TestimonialRecord[];
 };
 
 const Testimonials = ({
   showCta = true,
   showIntro = true,
   maxItems,
+  initialReviews = [],
 }: TestimonialsProps) => {
   const [activeCategory, setActiveCategory] = useState<"All" | TestimonialCategory>("All");
   const [playingReviewId, setPlayingReviewId] = useState<string | null>(null);
@@ -35,6 +37,7 @@ const Testimonials = ({
   } = useQuery({
     queryKey: ["testimonials"],
     queryFn: getTestimonials,
+    initialData: initialReviews.length > 0 ? initialReviews : undefined,
   });
 
   const categories = useMemo(

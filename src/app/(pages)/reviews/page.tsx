@@ -2,11 +2,12 @@ import { buildBreadcrumbSchema, buildPageMetadata, stringifyJsonLd } from "@/lib
 import Wrapper from "@/app/Wrapper";
 import HeroSection from "@/components/common/HeroSection";
 import Testimonials from "@/components/Home/Testimonials";
+import { getTestimonialsServer } from "@/lib/server/testimonials";
 
 export const metadata = buildPageMetadata({
-  title: "Client Reviews | quzex",
+  title: "Client Reviews & Ratings | quzex",
   description:
-    "Read client reviews from different countries and project types to see how quzex delivers website development, redesign, AI, and marketing work.",
+    "Read verified client reviews and feedback from businesses worldwide on quzex website development, website redesign, AI solutions, and digital projects.",
   path: "/reviews",
   keywords: [
     "quzex reviews",
@@ -16,7 +17,8 @@ export const metadata = buildPageMetadata({
   ],
 });
 
-export default function ReviewsPage() {
+export default async function ReviewsPage() {
+  const initialReviews = await getTestimonialsServer();
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: "Home", path: "/" },
     { name: "Reviews", path: "/reviews" },
@@ -38,7 +40,7 @@ export default function ReviewsPage() {
       />
 
       <section className="bg-[#f7f9f2]">
-        <Testimonials showCta={false} showIntro={false} />
+        <Testimonials showCta={false} showIntro={false} initialReviews={initialReviews} />
       </section>
     </Wrapper>
   );

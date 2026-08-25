@@ -9,9 +9,9 @@ import CTA from "@/components/Global/CTA";
 import Testimonials from "@/components/Home/Testimonials";
 
 export const metadata = buildPageMetadata({
-  title: "About Us | quzex",
+  title: "About Us & Development Team | quzex",
   description:
-    "Learn about quzex, our process, and the team behind the websites, redesigns, and digital solutions we build for modern brands.",
+    "Learn about quzex, our web development team, engineering process, and culture behind building fast, modern websites and digital platforms for global brands.",
   path: "/about",
   keywords: [
     "about quzex",
@@ -47,7 +47,7 @@ export default function AboutPage() {
       <Testimonials />
       <Team />
       <CTA />
-      <div className="md:py-10 py-4"></div>
+      <div className="py-4 md:py-10"></div>
     </Wrapper>
   );
 }

@@ -7,15 +7,18 @@ import {
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { stringifyJsonLd } from "@/lib/seo";
 
 type FaqItem = {
     question: string;
     answer: ReactNode;
+    plainAnswer: string;
 };
 
 const FAQ_DATA: FaqItem[] = [
     {
         question: "What types of websites do you build?",
+        plainAnswer: "We build landing pages, business websites, dashboards, custom web pages, and full-stack web platforms tailored to each client's requirements. Our services also include static websites, dynamic pages, API integrations, website redesigns, and complete frontend and backend development.",
         answer: (
             <>
                 We build landing pages, business websites, dashboards, custom web pages, and
@@ -27,6 +30,7 @@ const FAQ_DATA: FaqItem[] = [
     },
     {
         question: "What is your typical project timeline?",
+        plainAnswer: "Timelines depend on the project scope and required functionality. Smaller websites are typically completed within 3 to 4 business days, while larger or full-stack projects generally take 1 to 2 weeks to complete with proper testing and launch preparation.",
         answer: (
             <>
                 Timelines depend on the project scope and required functionality. Smaller websites
@@ -38,6 +42,7 @@ const FAQ_DATA: FaqItem[] = [
     },
     {
         question: "How is project pricing determined?",
+        plainAnswer: "Our standard packages are available in the pricing section. For custom projects, pricing is based on page count, features, integrations, and the overall scope of work. If your requirements are specific, we can prepare a custom quote that aligns with your project.",
         answer: (
             <>
                 Our standard packages are available in the{" "}
@@ -55,6 +60,7 @@ const FAQ_DATA: FaqItem[] = [
     },
     {
         question: "Do you provide support after launch?",
+        plainAnswer: "Yes. We provide post-launch support to resolve technical issues, fix unexpected errors, and help keep your website running smoothly. If a critical issue affects your site, we aim to respond and address it within 24 hours.",
         answer: (
             <>
                 Yes. We provide post-launch support to resolve technical issues, fix unexpected
@@ -65,6 +71,7 @@ const FAQ_DATA: FaqItem[] = [
     },
     {
         question: "Can we hire your team for custom work?",
+        plainAnswer: "Yes. We work with clients on one-time builds, website redesigns, and ongoing development engagements. Whether you need a complete website, additional features, or long-term technical support, our team can be hired based on your requirements.",
         answer: (
             <>
                 Yes. We work with clients on one-time builds, website redesigns, and ongoing
@@ -76,8 +83,25 @@ const FAQ_DATA: FaqItem[] = [
 ];
 
 export default function Faq() {
+    const faqSchema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: FAQ_DATA.map((item) => ({
+            "@type": "Question",
+            name: item.question,
+            acceptedAnswer: {
+                "@type": "Answer",
+                text: item.plainAnswer,
+            },
+        })),
+    };
+
     return (
         <section>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: stringifyJsonLd(faqSchema) }}
+            />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:py-20 py-8 flex flex-col md:gap-16 gap-6">
                 <div className="flex flex-col gap-4 items-center animate-in fade-in slide-in-from-top-10 duration-1000 delay-100 ease-in-out fill-mode-both">
                     <Badge

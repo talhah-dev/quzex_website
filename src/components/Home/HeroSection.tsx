@@ -49,10 +49,10 @@ export default function HeroSection() {
     }, [])
 
     const clientLogos = [
-        { name: 'client1', src: '/clients/client3.jpeg' },
-        { name: 'client2', src: '/clients/client1.jpeg' },
-        { name: 'client3', src: '/clients/client4.jpeg' },
-        { name: 'client4', src: '/clients/client2.jpeg' },
+        { name: 'Satisfied Client Profile', src: '/clients/client3.jpeg' },
+        { name: 'Verified Partner Profile', src: '/clients/client1.jpeg' },
+        { name: 'Enterprise Client Profile', src: '/clients/client4.jpeg' },
+        { name: 'Business Owner Profile', src: '/clients/client2.jpeg' },
     ]
 
     return (

@@ -12,14 +12,14 @@ export type MarqueeLogo = {
 };
 
 export const DEFAULT_MARQUEE_LOGOS: MarqueeLogo[] = [
-    { name: "Logo", src: "/client_logos/29.png" },
-    { name: "Logo", src: "/client_logos/21.png" },
-    { name: "Logo", src: "/client_logos/28.webp" },
-    { name: "Logo", src: "/client_logos/29.webp" },
-    { name: "Logo", src: "/client_logos/46.png" },
-    { name: "Logo", src: "/client_logos/7.png" },
-    { name: "Logo", src: "/client_logos/2.png" },
-    { name: "Logo", src: "/client_logos/14.png" }
+    { name: "Apex Global", src: "/client_logos/29.png" },
+    { name: "Pulse Tech", src: "/client_logos/21.png" },
+    { name: "Vanguard Systems", src: "/client_logos/28.webp" },
+    { name: "NEXUS Digital", src: "/client_logos/29.webp" },
+    { name: "Horizon Brands", src: "/client_logos/46.png" },
+    { name: "Lumina Commerce", src: "/client_logos/7.png" },
+    { name: "Starlight Media", src: "/client_logos/2.png" },
+    { name: "Summit Cloud", src: "/client_logos/14.png" }
 ];
 
 type Props = {

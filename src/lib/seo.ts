@@ -63,6 +63,12 @@ export function buildOrganizationSchema() {
     logo: `${SITE_CONFIG.siteUrl}/quzex.png`,
     email: SITE_CONFIG.email,
     telephone: SITE_CONFIG.phone,
+    description: "quzex builds modern business websites, redesigns outdated websites, and delivers digital solutions focused on speed, clarity, and growth.",
+    sameAs: [
+      "https://facebook.com/quzex",
+      "https://instagram.com/quzex",
+      "https://linkedin.com/company/quzex"
+    ],
   };
 }
 

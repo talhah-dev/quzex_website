@@ -3,7 +3,6 @@
 import { Variants } from "framer-motion";
 import { AnimatedGroup } from "@/components/ui/animated-group";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
-import { TextEffect } from "@/components/ui/text-effect";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -54,21 +53,12 @@ export default function HeroSection({
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center w-full sm:mx-auto lg:mr-auto lg:mt-0">
             <h1 className="mx-auto mt-10 max-w-4xl text-balance font-medium text-4xl leading-[1.15] tracking-wide text-[#8AF7B7] md:text-7xl">
-              <TextEffect preset="fade-in-blur" speedSegment={0.3} as="span" className="inline">
-                {heading}
-              </TextEffect>
+              {heading}
             </h1>
 
-            <TextEffect
-              per="line"
-              preset="fade-in-blur"
-              speedSegment={0.3}
-              delay={0.2}
-              as="p"
-              className="mx-auto md:mt-8 mt-4 max-w-2xl text-lg text-[#E9F3E6]/80"
-            >
+            <p className="mx-auto md:mt-8 mt-4 max-w-2xl text-lg text-[#E9F3E6]/80">
               {paragraph}
-            </TextEffect>
+            </p>
 
             <AnimatedGroup
               variants={{

@@ -1,5 +1,6 @@
 import { buildPageMetadata } from "@/lib/seo";
 import HomePageContent from "@/components/Home/HomePageContent";
+import { getTestimonialsServer } from "@/lib/server/testimonials";
 
 export const metadata = buildPageMetadata({
   title: "quzex | Website Development and Digital Solutions",
@@ -24,6 +25,7 @@ type HomeProps = {
 
 export default async function Home({ searchParams }: HomeProps) {
   const { category } = await searchParams;
+  const initialReviews = await getTestimonialsServer();
 
-  return <HomePageContent selectedCategory={category} />;
+  return <HomePageContent selectedCategory={category} initialReviews={initialReviews} />;
 }

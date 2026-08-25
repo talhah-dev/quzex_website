@@ -13,6 +13,12 @@ import {
 } from "@/lib/markdown-helpers";
 
 export async function proxy(request: NextRequest) {
+  const host = request.headers.get("host") ?? "";
+  if (host.startsWith("www.quzex.co")) {
+    const redirectUrl = new URL(request.nextUrl.pathname + request.nextUrl.search, "https://quzex.co");
+    return NextResponse.redirect(redirectUrl, { status: 301 });
+  }
+
   const { pathname } = request.nextUrl;
   const acceptHeader = request.headers.get("accept") ?? "";
 

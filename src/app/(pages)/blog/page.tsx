@@ -8,8 +8,22 @@ import { Button } from "@/components/ui/button";
 import connectToDatabase from "@/lib/dbConnect";
 import BlogModel from "@/models/Blog";
 import type { BlogRecord } from "@/types";
+import { buildPageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+export const metadata = buildPageMetadata({
+  title: "Blog & Web Insights | quzex",
+  description:
+    "Read articles and insights on website planning, Next.js development, redesign strategies, SEO performance, and digital solutions for growing businesses.",
+  path: "/blog",
+  keywords: [
+    "quzex blog",
+    "web development articles",
+    "website planning guides",
+    "website redesign strategies",
+  ],
+});
 
 async function getPublicBlogs(): Promise<BlogRecord[]> {
   try {

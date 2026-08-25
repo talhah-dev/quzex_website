@@ -7,9 +7,9 @@ import ServicesListing from "@/components/Services/ServicesListing";
 export const dynamic = "force-dynamic";
 
 export const metadata = buildPageMetadata({
-  title: "Services | quzex",
+  title: "Web Development Services | quzex",
   description:
-    "Browse quzex services including static websites, dynamic websites, redesigns, AI solutions, social media management, and custom digital work for businesses.",
+    "Explore quzex web development services including static websites, dynamic Next.js applications, website redesigns, API integrations, and digital solutions.",
   path: "/services",
   keywords: [
     "website development services",
@@ -43,7 +43,7 @@ export default function ServicesPage() {
       <div className="bg-[#f7f9f2]">
         <ServicesListing />
         <CTA />
-        <div className="md:py-10 py-4"></div>
+        <div className="py-4 md:py-10"></div>
       </div>
     </Wrapper>
   );
