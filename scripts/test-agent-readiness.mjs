@@ -50,6 +50,31 @@ async function runTests() {
   }
 
   try {
+    // Test 0: Canonical 308 Redirect (www.quzex.co -> quzex.co)
+    const resWww = await makeRequest("/", {
+      headers: { Host: "www.quzex.co" },
+    });
+    assert(
+      resWww.statusCode === 308,
+      "www.quzex.co host triggers HTTP 308 permanent redirect",
+      `Expected 308, got ${resWww.statusCode}`
+    );
+    assert(
+      (resWww.headers.location || "") === "https://quzex.co/",
+      "www.quzex.co redirects to https://quzex.co/",
+      `Got location: ${resWww.headers.location}`
+    );
+
+    // Test 0b: Vercel Preview Host Non-Redirect
+    const resPreview = await makeRequest("/", {
+      headers: { Host: "quzex-website-111.vercel.app" },
+    });
+    assert(
+      resPreview.statusCode === 200,
+      "Vercel preview host (quzex-website-111.vercel.app) returns HTTP 200 without redirect",
+      `Expected 200, got ${resPreview.statusCode}`
+    );
+
     // Test 1: Agent-Friendly 404 (Standard HTML)
     const res404Html = await makeRequest("/non-existent-path-99999");
     assert(
