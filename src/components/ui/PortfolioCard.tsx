@@ -72,9 +72,9 @@ export function PortfolioCard({ item, index = 0, variant = "dark" }: PortfolioCa
                         {isClickable ? <ArrowUpRight className="size-4" /> : null}
                     </div>
 
-                    <p className={titleClassName}>
+                    <h3 className={titleClassName}>
                         {item.title}
-                    </p>
+                    </h3>
 
                     <div className="flex flex-wrap gap-2.5">
                         {item.tags.map((tag, i) => (

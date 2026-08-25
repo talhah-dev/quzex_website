@@ -15,6 +15,36 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async headers() {
+    return [
+      {
+        source: "/llms.txt",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "text/markdown; charset=utf-8",
+          },
+          {
+            key: "Vary",
+            value: "Accept, Accept-Encoding",
+          },
+        ],
+      },
+      {
+        source: "/llms-full.txt",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "text/markdown; charset=utf-8",
+          },
+          {
+            key: "Vary",
+            value: "Accept, Accept-Encoding",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
