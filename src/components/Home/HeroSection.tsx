@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Variants } from 'framer-motion'
-import { ArrowRight, ArrowUpRight, Star, Volume2, VolumeX } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Pause, Play, Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { AnimatedGroup } from '../ui/animated-group'
 import { TextEffect } from '../ui/text-effect'
@@ -26,7 +26,7 @@ export default function HeroSection() {
     const videoWrapperRef = useRef<HTMLDivElement | null>(null)
     const videoElRef = useRef<HTMLVideoElement | null>(null)
     const [fadeStart, setFadeStart] = useState(900)
-    const [isMuted, setIsMuted] = useState(true)
+    const [isPlaying, setIsPlaying] = useState(false)
 
     useEffect(() => {
         const measure = () => {
@@ -169,39 +169,41 @@ export default function HeroSection() {
                             >
                                 <video
                                     ref={videoElRef}
-                                    className="relative aspect-[16/9] w-full overflow-hidden"
+                                    className="aspect-[16/9] w-full"
                                     src="https://px5rxm1szlmbgpc7.public.blob.vercel-storage.com/assets/home/Quzex%20Intro_gwr_video_mvp.mp4"
-                                    autoPlay
-                                    poster="https://px5rxm1szlmbgpc7.public.blob.vercel-storage.com/assets/home/ChatGPT%20Image%20May%202%2C%202026%2C%2007_37_42%20AM%20%281%29.png"
-                                    muted
                                     loop
                                     playsInline
-                                    preload="none"
+                                    preload="metadata"
+                                    onPlay={() => setIsPlaying(true)}
+                                    onPause={() => setIsPlaying(false)}
                                 />
 
-                                {/* Sound toggle — top-right corner */}
+                                {/* Centered play / pause overlay */}
                                 <button
                                     type="button"
-                                    aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+                                    aria-label={isPlaying ? 'Pause video' : 'Play video'}
                                     onClick={() => {
                                         const vid = videoElRef.current
                                         if (!vid) return
-                                        vid.muted = !vid.muted
-                                        setIsMuted(vid.muted)
+                                        if (vid.paused) {
+                                            vid.play()
+                                        } else {
+                                            vid.pause()
+                                        }
                                     }}
-                                    className="absolute right-3 top-3 z-10 flex items-center gap-1.5 rounded-full border border-white/15 bg-black/40 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md transition-colors hover:bg-black/60"
+                                    className="absolute inset-0 flex items-center justify-center transition-opacity duration-300"
                                 >
-                                    {isMuted ? (
-                                        <>
-                                            <VolumeX className="size-3.5" />
-                                            <span>Sound off</span>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Volume2 className="size-3.5" />
-                                            <span>Sound on</span>
-                                        </>
-                                    )}
+                                    <span
+                                        className={`flex items-center justify-center rounded-full border border-white/20 bg-black/40 backdrop-blur-md transition-all duration-300 hover:bg-black/60 hover:scale-110 ${
+                                            isPlaying ? 'size-14 opacity-0 hover:opacity-100' : 'size-18 opacity-100'
+                                        }`}
+                                    >
+                                        {isPlaying ? (
+                                            <Pause className="size-6 fill-white text-white" />
+                                        ) : (
+                                            <Play className="size-7 fill-white text-white translate-x-0.5" />
+                                        )}
+                                    </span>
                                 </button>
                             </div>
                         </div>

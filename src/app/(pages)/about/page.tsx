@@ -44,8 +44,8 @@ export default function AboutPage() {
       <WhoWeAre />
       <ClientLogos />
       <CompanyEssentials />
-      <Testimonials />
       <Team />
+      <Testimonials />
       <CTA />
       <div className="py-4 md:py-10"></div>
     </Wrapper>
