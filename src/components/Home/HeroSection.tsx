@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Variants } from 'framer-motion'
-import { ArrowRight, ArrowUpRight, Star } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Star, Volume2, VolumeX } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { AnimatedGroup } from '../ui/animated-group'
 import { TextEffect } from '../ui/text-effect'
@@ -23,13 +23,15 @@ const transitionVariants: { item: Variants } = {
 
 export default function HeroSection() {
     const mainRef = useRef<HTMLElement | null>(null)
-    const videoRef = useRef<HTMLDivElement | null>(null)
+    const videoWrapperRef = useRef<HTMLDivElement | null>(null)
+    const videoElRef = useRef<HTMLVideoElement | null>(null)
     const [fadeStart, setFadeStart] = useState(900)
+    const [isMuted, setIsMuted] = useState(true)
 
     useEffect(() => {
         const measure = () => {
             const main = mainRef.current
-            const video = videoRef.current
+            const video = videoWrapperRef.current
             if (!main || !video) return
             const mainRect = main.getBoundingClientRect()
             const videoRect = video.getBoundingClientRect()
@@ -162,12 +164,13 @@ export default function HeroSection() {
                     >
                         <div className="relative mt-12 overflow-hidden px-6 md:mt-16">
                             <div
-                                ref={videoRef}
-                                className="mx-auto max-w-6xl overflow-hidden rounded-2xl border border-white/10"
+                                ref={videoWrapperRef}
+                                className="relative mx-auto max-w-6xl overflow-hidden rounded-2xl border border-white/10"
                             >
                                 <video
+                                    ref={videoElRef}
                                     className="relative aspect-[16/9] w-full overflow-hidden"
-                                    src="https://delivery.pixelbin.io/predictions/outputs/30d/veo31Fast/generate/019d4dbb-8501-7bb2-b94b-377b792f09be/result_0.mp4"
+                                    src="https://px5rxm1szlmbgpc7.public.blob.vercel-storage.com/assets/home/gemini_generated_video_db11821a.mp4"
                                     autoPlay
                                     poster="https://px5rxm1szlmbgpc7.public.blob.vercel-storage.com/assets/home/ChatGPT%20Image%20May%202%2C%202026%2C%2007_37_42%20AM%20%281%29.png"
                                     muted
@@ -175,6 +178,31 @@ export default function HeroSection() {
                                     playsInline
                                     preload="none"
                                 />
+
+                                {/* Sound toggle — top-right corner */}
+                                <button
+                                    type="button"
+                                    aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+                                    onClick={() => {
+                                        const vid = videoElRef.current
+                                        if (!vid) return
+                                        vid.muted = !vid.muted
+                                        setIsMuted(vid.muted)
+                                    }}
+                                    className="absolute right-3 top-3 z-10 flex items-center gap-1.5 rounded-full border border-white/15 bg-black/40 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md transition-colors hover:bg-black/60"
+                                >
+                                    {isMuted ? (
+                                        <>
+                                            <VolumeX className="size-3.5" />
+                                            <span>Sound off</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Volume2 className="size-3.5" />
+                                            <span>Sound on</span>
+                                        </>
+                                    )}
+                                </button>
                             </div>
                         </div>
                     </AnimatedGroup>
