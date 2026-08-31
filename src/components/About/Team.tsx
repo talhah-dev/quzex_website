@@ -26,6 +26,21 @@ const teamData: TeamMember = [
         role: "Branding and Marketing Expert",
         image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1772853517/ali_wkaonw.png",
     },
+    {
+        name: "Karan",
+        role: "UI/UX Designer",
+        image: "https://px5rxm1szlmbgpc7.public.blob.vercel-storage.com/assets/home/Karan.jpeg",
+    },
+    {
+        name: "Hadi",
+        role: "Marketing",
+        image: "https://px5rxm1szlmbgpc7.public.blob.vercel-storage.com/assets/home/Hadi.jpeg",
+    },
+    {
+        name: "Areeba",
+        role: "Marketing",
+        image: "https://px5rxm1szlmbgpc7.public.blob.vercel-storage.com/assets/home/areeba.png",
+    },
 ];
 
 const Team = () => {
@@ -50,7 +65,8 @@ const Team = () => {
                             Meet the creative minds behind our success
                         </h2>
                     </motion.div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
                         {teamData.map((value, index) => {
                             return (
                                 <motion.div
@@ -63,16 +79,20 @@ const Team = () => {
                                         delay: index * 0.1,
                                         ease: [0.21, 0.47, 0.32, 0.98],
                                     }}
-                                    className="group flex flex-col items-center justify-center gap-6"
+                                    className="group flex flex-col items-center gap-5"
                                 >
-                                    <Image
-                                        className="w-full rounded-[2.5rem] transition-all duration-300 group-hover:grayscale"
-                                        src={value.image}
-                                        alt={value.name}
-                                        width={900}
-                                        height={1080}
-                                    />
-                                    <div className="w-full flex flex-col gap-2 items-center justify-center">
+                                    {/* Fixed-ratio image container — every card is identical height */}
+                                    <div className="relative w-full aspect-[3/4] overflow-hidden rounded-[2rem]">
+                                        <Image
+                                            className="object-cover object-top transition-all duration-500 group-hover:grayscale group-hover:scale-105"
+                                            src={value.image}
+                                            alt={value.name}
+                                            fill
+                                            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                                        />
+                                    </div>
+
+                                    <div className="w-full flex flex-col gap-1.5 items-center justify-center">
                                         <h3 className="text-2xl font-medium text-foreground">
                                             {value.name}
                                         </h3>
