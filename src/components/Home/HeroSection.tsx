@@ -170,7 +170,7 @@ export default function HeroSection() {
                                 <video
                                     ref={videoElRef}
                                     className="relative aspect-[16/9] w-full overflow-hidden"
-                                    src="https://px5rxm1szlmbgpc7.public.blob.vercel-storage.com/assets/home/gemini_generated_video_db11821a.mp4"
+                                    src="https://px5rxm1szlmbgpc7.public.blob.vercel-storage.com/assets/home/Quzex%20Intro_gwr_video_mvp.mp4"
                                     autoPlay
                                     poster="https://px5rxm1szlmbgpc7.public.blob.vercel-storage.com/assets/home/ChatGPT%20Image%20May%202%2C%202026%2C%2007_37_42%20AM%20%281%29.png"
                                     muted

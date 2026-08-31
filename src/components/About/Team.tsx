@@ -18,12 +18,12 @@ const teamData: TeamMember = [
     },
     {
         name: "Ammar Khalid",
-        role: "Project Manager and Developer",
+        role: "CEO",
         image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1772854503/ammar_ubs1kx.png",
     },
     {
         name: "Muhammad Ali",
-        role: "Branding and Marketing Expert",
+        role: "COO",
         image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1772853517/ali_wkaonw.png",
     },
     {
