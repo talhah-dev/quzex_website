@@ -25,7 +25,8 @@ export default function AboutSection({
     helper = "With 6+ years of experience, we’ve learned that a great website is only the beginning. You need a cohesive strategy. We combine clean development with bold branding and the latest AI tools to ensure your business doesn't just exist online, it dominates.",
     ctaText = "Start your website project",
     ctaHref = "/contact",
-    imageSrc = "https://images.unsplash.com/photo-1650661926447-9efb2610f64c?q=80&w=1173&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    // imageSrc = "https://images.unsplash.com/photo-1650661926447-9efb2610f64c?q=80&w=1173&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imageSrc = "/quzex-company.png",
     imageAlt = "Work preview",
     className,
 }: AboutSectionProps) {
