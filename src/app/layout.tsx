@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter_Tight, Instrument_Serif } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { buildOrganizationSchema, buildWebsiteSchema, stringifyJsonLd } from "@/lib/seo";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import Providers from "./providers/react-query-provider";
 import "./globals.css";
 
@@ -55,6 +56,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${interTight.className} ${instrumentSerif.variable} antialiased`}>
+        <GoogleAnalytics />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: stringifyJsonLd(organizationSchema) }}
