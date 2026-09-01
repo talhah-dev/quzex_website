@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import connectToDatabase from "@/lib/dbConnect";
-import { BLOG_POSTS } from "@/lib/blog";
+import BlogModel from "@/models/Blog";
 import { SITE_CONFIG } from "@/lib/site";
 import ServiceModel from "@/models/Service";
 
@@ -97,12 +97,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  const blogPages: SitemapEntry[] = BLOG_POSTS.map((post) => ({
-    url: buildUrl(`/blog/${post.slug}`),
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.7,
-  }));
+  let blogPages: SitemapEntry[] = [];
+
+  try {
+    const blogs = await BlogModel.find({ isActive: true })
+      .select("slug updatedAt")
+      .lean();
+
+    blogPages = blogs.map((blog) => ({
+      url: buildUrl(`/blog/${blog.slug}`),
+      lastModified: blog.updatedAt ? new Date(blog.updatedAt) : now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }));
+  } catch (error) {
+    console.error("Unable to load dynamic blog posts for sitemap:", error);
+  }
 
   let servicePages: SitemapEntry[] = [];
 

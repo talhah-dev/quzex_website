@@ -34,7 +34,7 @@ export default function AboutPage() {
         dangerouslySetInnerHTML={{ __html: stringifyJsonLd(breadcrumbSchema) }}
       />
       <HeroSection
-        heading="We build products that people love to use"
+        heading="Web Development Agency — Our Team & Story"
         paragraph="Quzex blends strategy, design, and development to create fast, reliable digital experiences that help brands grow with confidence."
         primaryButtonLabel="View Portfolio"
         primaryButtonHref="/portfolio"

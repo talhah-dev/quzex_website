@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter_Tight, Instrument_Serif } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
-import { buildOrganizationSchema, stringifyJsonLd } from "@/lib/seo";
+import { buildOrganizationSchema, buildWebsiteSchema, stringifyJsonLd } from "@/lib/seo";
 import Providers from "./providers/react-query-provider";
 import "./globals.css";
 
@@ -21,22 +21,30 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://quzex.co"),
-  title: "quzex - Website Development and Digital Solutions",
+  title: {
+    default: "Quzex | Website Development Agency",
+    template: "%s | Quzex",
+  },
   description:
-    "quzex provides professional website development, static and dynamic websites, website redesign, backend systems, database integration, AI solutions, and digital services for modern businesses.",
+    "Quzex builds modern business websites, redesigns outdated websites, and delivers digital solutions focused on speed, clarity, and growth.",
   keywords: [
-    "website development",
-    "dynamic website development",
-    "static website development",
+    "website development agency",
+    "business website development",
+    "Next.js development",
     "website redesign",
-    "backend development",
-    "database integration",
-    "AI chatbot integration",
-    "AI blog post integration",
-    "mobile app development",
-    "social media management",
+    "AI integration",
     "quzex",
   ],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
@@ -50,6 +58,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: stringifyJsonLd(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: stringifyJsonLd(buildWebsiteSchema()) }}
         />
         <Providers>{children}</Providers>
         <Toaster />

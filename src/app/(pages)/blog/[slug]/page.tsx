@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import Wrapper from "@/app/Wrapper";
@@ -6,6 +7,12 @@ import { AnimatedButton } from "@/components/ui/AnimatedButton";
 import { Badge } from "@/components/ui/badge";
 import connectToDatabase from "@/lib/dbConnect";
 import BlogModel from "@/models/Blog";
+import {
+  buildArticleSchema,
+  buildBreadcrumbSchema,
+  buildPageMetadata,
+  stringifyJsonLd,
+} from "@/lib/seo";
 
 type BlogDetailPageProps = {
   params: Promise<{
@@ -31,6 +38,36 @@ async function getBlogBySlug(slug: string) {
   }
 }
 
+// ─── Per-post dynamic metadata ────────────────────────────────────────────────
+export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getBlogBySlug(slug);
+
+  if (!post) {
+    return {
+      title: "Post Not Found",
+      description: "This blog post does not exist or has been removed.",
+    };
+  }
+
+  const title = post.seo?.metaTitle || post.title;
+  const description = post.seo?.metaDescription || post.excerpt;
+  const image = post.seo?.ogImage || post.image;
+
+  return buildPageMetadata({
+    title,
+    description,
+    path: `/blog/${slug}`,
+    image,
+    type: "article",
+    publishedTime: post.createdAt ? new Date(post.createdAt as Date).toISOString() : undefined,
+    modifiedTime: post.updatedAt ? new Date(post.updatedAt as Date).toISOString() : undefined,
+    keywords: post.seo?.focusKeyword
+      ? [post.seo.focusKeyword, post.category, "quzex blog"]
+      : [post.category, "web development", "quzex blog"],
+  });
+}
+
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { slug } = await params;
   const post = await getBlogBySlug(slug);
@@ -39,8 +76,31 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
     notFound();
   }
 
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Blog", path: "/blog" },
+    { name: post.title, path: `/blog/${slug}` },
+  ]);
+
+  const articleSchema = buildArticleSchema({
+    title: post.title,
+    description: post.excerpt,
+    slug,
+    image: post.seo?.ogImage || post.image,
+    publishedAt: post.createdAt ? new Date(post.createdAt as Date).toISOString() : undefined,
+    updatedAt: post.updatedAt ? new Date(post.updatedAt as Date).toISOString() : undefined,
+  });
+
   return (
     <Wrapper forceNavbarBackground>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: stringifyJsonLd(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: stringifyJsonLd(articleSchema) }}
+      />
       <section className="bg-[#f7f9f2]">
         <div className="px-4 pb-16 pt-26 md:px-6 md:pt-28 lg:px-8">
           <article className="mx-auto max-w-5xl overflow-hidden rounded-2xl">
@@ -51,6 +111,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                 fill
                 sizes="(min-width: 1280px) 72rem, 100vw"
                 className="object-cover rounded-2xl"
+                priority
               />
             </div>
 

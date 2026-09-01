@@ -1,4 +1,4 @@
-import { buildBreadcrumbSchema, buildPageMetadata, stringifyJsonLd } from "@/lib/seo";
+import { buildAggregateRatingSchema, buildBreadcrumbSchema, buildPageMetadata, stringifyJsonLd } from "@/lib/seo";
 import Wrapper from "@/app/Wrapper";
 import HeroSection from "@/components/common/HeroSection";
 import Testimonials from "@/components/Home/Testimonials";
@@ -29,6 +29,10 @@ export default async function ReviewsPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: stringifyJsonLd(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: stringifyJsonLd(buildAggregateRatingSchema()) }}
       />
       <HeroSection
         heading="Client Reviews From Different Markets"

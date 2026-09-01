@@ -1,4 +1,4 @@
-import { buildBreadcrumbSchema, buildPageMetadata, stringifyJsonLd } from "@/lib/seo";
+import { buildBreadcrumbSchema, buildPageMetadata, buildServicePageSchema, stringifyJsonLd } from "@/lib/seo";
 import Wrapper from "@/app/Wrapper";
 import HeroSection from "@/components/common/HeroSection";
 import CTA from "@/components/Global/CTA";
@@ -32,8 +32,12 @@ export default function ServicesPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: stringifyJsonLd(breadcrumbSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: stringifyJsonLd(buildServicePageSchema()) }}
+      />
       <HeroSection
-        heading="Our Services"
+        heading="Web Development & Design Services"
         paragraph="We provide professional web development, website redesign, and complete website builds from scratch. Every service is focused on quality, performance, and a final result that matches your business requirements."
         primaryButtonLabel="View Portfolio"
         primaryButtonHref="/portfolio"

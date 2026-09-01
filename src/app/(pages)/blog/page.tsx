@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import connectToDatabase from "@/lib/dbConnect";
 import BlogModel from "@/models/Blog";
 import type { BlogRecord } from "@/types";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildBreadcrumbSchema, buildPageMetadata, stringifyJsonLd } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -43,11 +43,19 @@ async function getPublicBlogs(): Promise<BlogRecord[]> {
 
 export default async function BlogPage() {
   const posts = await getPublicBlogs();
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Blog", path: "/blog" },
+  ]);
 
   return (
     <Wrapper>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: stringifyJsonLd(breadcrumbSchema) }}
+      />
       <HeroSection
-        heading="Blog Posts"
+        heading="Web Development Blog & Insights"
         paragraph="Insights about website planning, design decisions, development process, and the practical things that help businesses build better websites."
         primaryButtonLabel="Contact Us"
         primaryButtonHref="/contact"
