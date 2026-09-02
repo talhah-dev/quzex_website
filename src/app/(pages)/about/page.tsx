@@ -7,6 +7,7 @@ import WhoWeAre from "@/components/About/WhoWeAre";
 import HeroSection from "@/components/common/HeroSection";
 import CTA from "@/components/Global/CTA";
 import Testimonials from "@/components/Home/Testimonials";
+import { getTestimonialsServer } from "@/lib/server/testimonials";
 
 export const metadata = buildPageMetadata({
   title: "About Us & Development Team | quzex",
@@ -21,7 +22,8 @@ export const metadata = buildPageMetadata({
   ],
 });
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const initialReviews = await getTestimonialsServer();
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
@@ -34,7 +36,7 @@ export default function AboutPage() {
         dangerouslySetInnerHTML={{ __html: stringifyJsonLd(breadcrumbSchema) }}
       />
       <HeroSection
-        heading="Web Development Agency — Our Team & Story"
+        heading="Our Web Development Agency Team and Story"
         paragraph="Quzex blends strategy, design, and development to create fast, reliable digital experiences that help brands grow with confidence."
         primaryButtonLabel="View Portfolio"
         primaryButtonHref="/portfolio"
@@ -45,7 +47,7 @@ export default function AboutPage() {
       <ClientLogos />
       <CompanyEssentials />
       <Team />
-      <Testimonials />
+      <Testimonials maxItems={6} initialReviews={initialReviews} />
       <CTA />
       <div className="py-4 md:py-10"></div>
     </Wrapper>
