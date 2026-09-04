@@ -73,7 +73,7 @@ export default function Navbar({ forceBackground = false }: NavbarProps) {
                                 width={470}
                                 height={207}
                                 priority
-                                className="h-10 w-auto object-contain md:h-12"
+                                className="h-8 w-auto object-contain md:h-10"
                             />
                             <span className="sr-only">{SITE_CONFIG.name}</span>
                         </Link>
