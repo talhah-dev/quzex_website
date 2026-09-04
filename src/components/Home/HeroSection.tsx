@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Variants } from 'framer-motion'
 import { ArrowRight, ArrowUpRight, Pause, Play, Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -127,11 +128,12 @@ export default function HeroSection() {
                                         {clientLogos.slice(0, 5).map((c) => (
                                             <li key={c.name} className="-mr-2">
                                                 <div className="flex h-9 w-9 overflow-hidden items-center justify-center rounded-full border border-white/15 bg-white/5 backdrop-blur">
-                                                    <img
+                                                <Image
                                                         src={c.src}
                                                         alt={c.name}
-                                                        width={18}
-                                                        height={18}
+                                                        width={36}
+                                                        height={36}
+                                                        priority
                                                         className="opacity-90 w-full h-full object-cover"
                                                     />
                                                 </div>

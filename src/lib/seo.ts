@@ -96,9 +96,10 @@ export function buildOrganizationSchema() {
       "Social Media Management",
     ],
     sameAs: [
-      "https://facebook.com/quzex",
-      "https://instagram.com/quzex",
-      "https://linkedin.com/company/quzex",
+      "https://www.instagram.com/quzex.co/",
+      "https://www.linkedin.com/in/quzex-agency-7632aa407/",
+      "https://www.youtube.com/@quzex-official",
+      "https://www.facebook.com/quzex",
     ],
   };
 }

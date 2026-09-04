@@ -1,7 +1,15 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import Wrapper from "@/app/Wrapper";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+
+export const metadata: Metadata = {
+  title: "404 – Page Not Found | Quzex",
+  description: "The page you requested could not be found on Quzex.",
+  robots: { index: false, follow: false },
+};
+
 
 export default function NotFound() {
   return (

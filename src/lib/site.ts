@@ -12,7 +12,8 @@ export const SITE_LINKS = {
   mailto: `mailto:${SITE_CONFIG.email}`,
   tel: `tel:${SITE_CONFIG.phoneE164}`,
   whatsapp: `https://wa.me/${SITE_CONFIG.phoneE164.replace("+", "")}`,
-  instagram: "#",
-  linkedin: "#",
-  facebook: "#",
+  instagram: "https://www.instagram.com/quzex.co/",
+  linkedin: "https://www.linkedin.com/in/quzex-agency-7632aa407/",
+  youtube: "https://www.youtube.com/@quzex-official",
+  facebook: "https://www.facebook.com/quzex",
 } as const;
