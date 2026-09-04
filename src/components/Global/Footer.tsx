@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTiktok, FaWhatsapp, FaXTwitter, FaYoutube } from "react-icons/fa6";
+import { Plus, X } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { getPublicSettings } from "@/lib/api/settings";
 import { SITE_CONFIG } from "@/lib/site";
@@ -44,6 +46,7 @@ const footerSections: FooterData[] = [
 
 const Footer = () => {
     const pathname = usePathname();
+    const [showAllSocials, setShowAllSocials] = useState(false);
     const { data: settings } = useQuery({
         queryKey: ["public-settings"],
         queryFn: getPublicSettings,
@@ -59,6 +62,19 @@ const Footer = () => {
         if (href === "/") return pathname === "/";
         return pathname === href || pathname.startsWith(`${href}/`);
     };
+
+    const iconClass = "text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]";
+    const allSocialIcons = [
+        { href: settings?.instagram || "#", icon: <FaInstagram size={20} />, label: "Instagram" },
+        { href: settings?.linkedin || "#", icon: <FaLinkedinIn size={20} />, label: "LinkedIn" },
+        { href: settings?.whatsapp || "#", icon: <FaWhatsapp size={20} />, label: "WhatsApp" },
+        { href: settings?.facebook || "#", icon: <FaFacebookF size={18} />, label: "Facebook" },
+        { href: settings?.youtube || "#", icon: <FaYoutube size={20} />, label: "YouTube" },
+        { href: settings?.tiktok || "#", icon: <FaTiktok size={18} />, label: "TikTok" },
+        { href: settings?.x || "#", icon: <FaXTwitter size={18} />, label: "X (Twitter)" },
+    ];
+    const visibleIcons = showAllSocials ? allSocialIcons : allSocialIcons.slice(0, 4);
+    const hiddenCount = allSocialIcons.length - 4;
 
     return (
         <footer className="relative overflow-hidden bg-[#0A211F] py-10 text-[#E9F3E6]">
@@ -88,76 +104,37 @@ const Footer = () => {
                                     tailored solutions built around your business needs.
                                 </p>
 
-                                <div className="flex items-center gap-4">
-                                    <a
-                                        href={settings?.instagram || "#"}
-                                        className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label="Instagram"
-                                    >
-                                        <FaInstagram size={20} />
-                                    </a>
-                                    <a
-                                        href={settings?.linkedin || "#"}
-                                        className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label="LinkedIn"
-                                    >
-                                        <FaLinkedinIn size={20} />
-                                    </a>
-                                    <a
-                                        href={settings?.whatsapp || "#"}
-                                        className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label="WhatsApp"
-                                    >
-                                        <FaWhatsapp size={20} />
-                                    </a>
-                                    <a
-                                        href={settings?.facebook || "#"}
-                                        className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label="Facebook"
-                                    >
-                                        <FaFacebookF size={18} />
-                                    </a>
-                                    {settings?.youtube ? (
+                                <div className="flex items-center gap-3 flex-wrap">
+                                    {visibleIcons.map((social) => (
                                         <a
-                                            href={settings.youtube}
-                                            className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
+                                            key={social.label}
+                                            href={social.href}
+                                            className={iconClass}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            aria-label="YouTube"
+                                            aria-label={social.label}
                                         >
-                                            <FaYoutube size={20} />
+                                            {social.icon}
                                         </a>
-                                    ) : null}
-                                    {settings?.tiktok ? (
-                                        <a
-                                            href={settings.tiktok}
-                                            className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            aria-label="TikTok"
-                                        >
-                                            <FaTiktok size={18} />
-                                        </a>
-                                    ) : null}
-                                    {settings?.x ? (
-                                        <a
-                                            href={settings.x}
-                                            className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            aria-label="X (Twitter)"
-                                        >
-                                            <FaXTwitter size={18} />
-                                        </a>
-                                    ) : null}
+                                    ))}
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowAllSocials((prev) => !prev)}
+                                        aria-label={showAllSocials ? "Show fewer social links" : "Show more social links"}
+                                        className="flex items-center gap-1 rounded-full border border-white/15 bg-white/8 px-2.5 py-1 text-xs font-medium text-[#E9F3E6]/70 transition-all duration-200 hover:border-white/30 hover:bg-white/14 hover:text-[#E9F3E6]"
+                                    >
+                                        {showAllSocials ? (
+                                            <>
+                                                <X size={10} />
+                                                <span>Less</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Plus size={10} />
+                                                <span>{hiddenCount}</span>
+                                            </>
+                                        )}
+                                    </button>
                                 </div>
                             </div>
                         </div>

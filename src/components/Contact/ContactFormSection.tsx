@@ -192,7 +192,7 @@ export default function ContactFormSection() {
 
           <aside className="lg:col-span-4 lg:pl-4">
             <div className="flex h-full flex-col justify-between gap-14">
-              <div className="space-y-4 text-sm font-medium md:text-base">
+              <div className="grid grid-cols-2 gap-x-6 gap-y-4 text-sm font-medium md:text-base">
                 <a
                   href={settings?.whatsapp || "#"}
                   className="block text-[#0A211F]/75 transition-colors hover:text-[#0A211F]"
@@ -200,6 +200,14 @@ export default function ContactFormSection() {
                   rel="noreferrer"
                 >
                   Whatsapp
+                </a>
+                <a
+                  href={settings?.youtube || "#"}
+                  className="block text-[#0A211F]/75 transition-colors hover:text-[#0A211F]"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  YouTube
                 </a>
                 <a
                   href={settings?.facebook || "#"}
@@ -210,12 +218,28 @@ export default function ContactFormSection() {
                   Facebook
                 </a>
                 <a
+                  href={settings?.x || "#"}
+                  className="block text-[#0A211F]/75 transition-colors hover:text-[#0A211F]"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  X (Twitter)
+                </a>
+                <a
                   href={settings?.linkedin || "#"}
                   className="block text-[#0A211F]/75 transition-colors hover:text-[#0A211F]"
                   target="_blank"
                   rel="noreferrer"
                 >
                   LinkedIn
+                </a>
+                <a
+                  href={settings?.tiktok || "#"}
+                  className="block text-[#0A211F]/75 transition-colors hover:text-[#0A211F]"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  TikTok
                 </a>
               </div>
 
