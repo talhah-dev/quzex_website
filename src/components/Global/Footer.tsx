@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
-import { FaFacebookF, FaInstagram, FaLinkedinIn, FaWhatsapp } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTiktok, FaWhatsapp, FaXTwitter, FaYoutube } from "react-icons/fa6";
 import { Separator } from "@/components/ui/separator";
 import { getPublicSettings } from "@/lib/api/settings";
 import { SITE_CONFIG } from "@/lib/site";
@@ -94,6 +94,7 @@ const Footer = () => {
                                         className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        aria-label="Instagram"
                                     >
                                         <FaInstagram size={20} />
                                     </a>
@@ -102,6 +103,7 @@ const Footer = () => {
                                         className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        aria-label="LinkedIn"
                                     >
                                         <FaLinkedinIn size={20} />
                                     </a>
@@ -110,6 +112,7 @@ const Footer = () => {
                                         className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        aria-label="WhatsApp"
                                     >
                                         <FaWhatsapp size={20} />
                                     </a>
@@ -118,9 +121,43 @@ const Footer = () => {
                                         className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        aria-label="Facebook"
                                     >
                                         <FaFacebookF size={18} />
                                     </a>
+                                    {settings?.youtube ? (
+                                        <a
+                                            href={settings.youtube}
+                                            className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            aria-label="YouTube"
+                                        >
+                                            <FaYoutube size={20} />
+                                        </a>
+                                    ) : null}
+                                    {settings?.tiktok ? (
+                                        <a
+                                            href={settings.tiktok}
+                                            className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            aria-label="TikTok"
+                                        >
+                                            <FaTiktok size={18} />
+                                        </a>
+                                    ) : null}
+                                    {settings?.x ? (
+                                        <a
+                                            href={settings.x}
+                                            className="text-[#E9F3E6]/85 transition-colors hover:text-[#E9F3E6]"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            aria-label="X (Twitter)"
+                                        >
+                                            <FaXTwitter size={18} />
+                                        </a>
+                                    ) : null}
                                 </div>
                             </div>
                         </div>

@@ -42,6 +42,9 @@ export async function PUT(request: NextRequest) {
       instagram: String(body.instagram || "").trim(),
       linkedin: String(body.linkedin || "").trim(),
       facebook: String(body.facebook || "").trim(),
+      youtube: String(body.youtube || "").trim(),
+      tiktok: String(body.tiktok || "").trim(),
+      x: String(body.x || "").trim(),
     };
 
     if (

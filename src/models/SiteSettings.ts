@@ -43,6 +43,21 @@ const siteSettingsSchema = new Schema<SiteSettings>(
       required: true,
       trim: true,
     },
+    youtube: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    tiktok: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    x: {
+      type: String,
+      trim: true,
+      default: "",
+    },
   },
   {
     timestamps: true,

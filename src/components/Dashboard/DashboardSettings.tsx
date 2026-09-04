@@ -20,6 +20,9 @@ const initialFormState: UpsertSiteSettingsPayload = {
   instagram: "",
   linkedin: "",
   facebook: "",
+  youtube: "",
+  tiktok: "",
+  x: "",
 };
 
 function SettingsField({
@@ -65,6 +68,9 @@ export default function DashboardSettings() {
     instagram: data?.instagram || initialFormState.instagram,
     linkedin: data?.linkedin || initialFormState.linkedin,
     facebook: data?.facebook || initialFormState.facebook,
+    youtube: data?.youtube || initialFormState.youtube,
+    tiktok: data?.tiktok || initialFormState.tiktok,
+    x: data?.x || initialFormState.x,
   };
 
   const { mutate, isPending } = useMutation({
@@ -227,15 +233,34 @@ export default function DashboardSettings() {
                         onChange={(value) => handleChange("linkedin", value)}
                         placeholder="Enter LinkedIn URL"
                       />
-                      <div className="md:col-span-2">
-                        <SettingsField
-                          id="facebook"
-                          label="Facebook"
-                          value={formData.facebook}
-                          onChange={(value) => handleChange("facebook", value)}
-                          placeholder="Enter Facebook URL"
-                        />
-                      </div>
+                      <SettingsField
+                        id="facebook"
+                        label="Facebook"
+                        value={formData.facebook}
+                        onChange={(value) => handleChange("facebook", value)}
+                        placeholder="Enter Facebook URL"
+                      />
+                      <SettingsField
+                        id="youtube"
+                        label="YouTube"
+                        value={formData.youtube || ""}
+                        onChange={(value) => handleChange("youtube", value)}
+                        placeholder="Enter YouTube channel URL"
+                      />
+                      <SettingsField
+                        id="tiktok"
+                        label="TikTok"
+                        value={formData.tiktok || ""}
+                        onChange={(value) => handleChange("tiktok", value)}
+                        placeholder="Enter TikTok profile URL"
+                      />
+                      <SettingsField
+                        id="x"
+                        label="X (Twitter)"
+                        value={formData.x || ""}
+                        onChange={(value) => handleChange("x", value)}
+                        placeholder="Enter X / Twitter profile URL"
+                      />
                     </div>
                   ) : null}
                 </article>

@@ -68,7 +68,7 @@ export default function Navbar({ forceBackground = false }: NavbarProps) {
                     >
                         <Link href="/" className="flex items-center">
                             <Image
-                                src="/quzex1.png"
+                                src="/quzex.png"
                                 alt={SITE_CONFIG.name}
                                 width={470}
                                 height={207}

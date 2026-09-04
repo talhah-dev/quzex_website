@@ -7,6 +7,9 @@ export type SiteSettings = {
   instagram: string;
   linkedin: string;
   facebook: string;
+  youtube?: string;
+  tiktok?: string;
+  x?: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
@@ -25,4 +28,7 @@ export type UpsertSiteSettingsPayload = Pick<
   | "instagram"
   | "linkedin"
   | "facebook"
+  | "youtube"
+  | "tiktok"
+  | "x"
 >;
