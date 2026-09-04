@@ -68,12 +68,12 @@ export default function Navbar({ forceBackground = false }: NavbarProps) {
                     >
                         <Link href="/" className="flex items-center">
                             <Image
-                                src="/quzex.png"
+                                src="/quzex1.png"
                                 alt={SITE_CONFIG.name}
                                 width={470}
                                 height={207}
                                 priority
-                                className="h-10 w-auto object-contain md:h-11"
+                                className="h-10 w-auto object-contain md:h-12"
                             />
                             <span className="sr-only">{SITE_CONFIG.name}</span>
                         </Link>
