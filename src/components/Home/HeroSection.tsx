@@ -88,7 +88,7 @@ export default function HeroSection() {
                         <div className="text-center w-full sm:mx-auto lg:mr-auto lg:mt-0">
                             <AnimatedGroup variants={transitionVariants}>
                                 <Link
-                                    href="/portfolio"
+                                    href="/work"
                                     className="mx-auto flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 p-1 pl-4 shadow-md shadow-black/20 backdrop-blur py-1 md:py-0 transition-colors duration-300 hover:bg-white/8"
                                 >
 

@@ -30,7 +30,6 @@ const footerSections: FooterData[] = [
             { title: "Blog", href: "/blog" },
             { title: "Our Work", href: "/work" },
             { title: "Contact", href: "/contact" },
-            { title: "Developers & Agents", href: "/developer" },
         ],
     },
     {
@@ -211,10 +210,32 @@ const Footer = () => {
 
                     <Separator orientation="horizontal" className="bg-white/10" />
 
-                    <p className="animate-in fill-mode-both slide-in-from-bottom-10 fade-in text-center text-sm font-normal text-[#E9F3E6]/85 duration-1000 delay-100 ease-in-out">
-                        Copyright © {new Date().getFullYear()} {SITE_CONFIG.name}. All Rights
-                        Reserved
-                    </p>
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm font-normal text-[#E9F3E6]/85 animate-in fill-mode-both slide-in-from-bottom-10 fade-in duration-1000 delay-100 ease-in-out">
+                        <p>
+                            Copyright © {new Date().getFullYear()} {SITE_CONFIG.name}. All Rights Reserved
+                        </p>
+                        <div className="flex items-center gap-4 text-xs sm:text-sm">
+                            <Link
+                                href="/privacy-policy"
+                                className={cn(
+                                    "transition-colors hover:text-[#D8F782]",
+                                    isActiveRoute("/privacy-policy") ? "text-[#D8F782]" : "text-[#E9F3E6]/70"
+                                )}
+                            >
+                                Privacy Policy
+                            </Link>
+                            <span className="text-white/20">·</span>
+                            <Link
+                                href="/terms-of-service"
+                                className={cn(
+                                    "transition-colors hover:text-[#D8F782]",
+                                    isActiveRoute("/terms-of-service") ? "text-[#D8F782]" : "text-[#E9F3E6]/70"
+                                )}
+                            >
+                                Terms of Service
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </div>
         </footer>
