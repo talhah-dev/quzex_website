@@ -8,7 +8,8 @@ import { Button } from "./button";
 type ButtonColor = "light" | "green" | "dark";
 
 type AnimatedButtonProps = {
-    href: string;
+    href?: string;
+    onClick?: () => void;
     children: React.ReactNode;
     color?: ButtonColor;
     className?: string;
@@ -34,33 +35,44 @@ const palette: Record<ButtonColor, { btn: string; bubble: string; icon: string }
 
 export function AnimatedButton({
     href,
+    onClick,
     children,
     color = "light",
     className,
 }: AnimatedButtonProps) {
     const s = palette[color];
 
-    return (
-        <Link href={href} className="inline-block">
-            <Button
+    const content = (
+        <Button
+            onClick={onClick}
+            type={onClick ? "button" : undefined}
+            className={cn(
+                "group relative cursor-pointer h-12 w-fit overflow-hidden rounded-full p-1 ps-6 pe-14 text-sm font-medium transition-all duration-500 hover:ps-14 hover:pe-6",
+                s.btn,
+                className
+            )}
+        >
+            <span className="relative z-10 transition-all duration-500">{children}</span>
+
+            <span
                 className={cn(
-                    "group relative cursor-pointer h-12 w-fit overflow-hidden rounded-full p-1 ps-6 pe-14 text-sm font-medium transition-all duration-500 hover:ps-14 hover:pe-6",
-                    s.btn,
-                    className
+                    "absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full transition-all duration-500",
+                    "group-hover:right-[calc(100%-44px)] group-hover:rotate-45",
+                    s.bubble
                 )}
             >
-                <span className="relative z-10 transition-all duration-500">{children}</span>
-
-                <span
-                    className={cn(
-                        "absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full transition-all duration-500",
-                        "group-hover:right-[calc(100%-44px)] group-hover:rotate-45",
-                        s.bubble
-                    )}
-                >
-                    <ArrowUpRight size={16} className={cn(s.icon)} />
-                </span>
-            </Button>
-        </Link>
+                <ArrowUpRight size={16} className={cn(s.icon)} />
+            </span>
+        </Button>
     );
+
+    if (href) {
+        return (
+            <Link href={href} className="inline-block">
+                {content}
+            </Link>
+        );
+    }
+
+    return <div className="inline-block">{content}</div>;
 }

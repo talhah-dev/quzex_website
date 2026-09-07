@@ -16,4 +16,5 @@ export const SITE_LINKS = {
   linkedin: "https://www.linkedin.com/in/quzex-agency-7632aa407/",
   youtube: "https://www.youtube.com/@quzex-official",
   facebook: "https://www.facebook.com/quzex",
+  calendly: "https://calendly.com/quzex-co/30min",
 } as const;

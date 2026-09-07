@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X } from 'lucide-react'
+import { Calendar, Menu, X } from 'lucide-react'
 import { SITE_CONFIG } from '@/lib/site'
 import { cn } from '@/lib/utils'
+import { useCalendly } from '@/context/CalendlyContext'
 
 const links = [
     { label: 'Home', href: '/' },
@@ -24,6 +25,7 @@ export default function Navbar({ forceBackground = false }: NavbarProps) {
     const [open, setOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
     const pathname = usePathname()
+    const { openCalendly } = useCalendly()
 
     const isActiveRoute = (href: string) => {
         if (href === '/') return pathname === '/'
@@ -95,7 +97,15 @@ export default function Navbar({ forceBackground = false }: NavbarProps) {
                             ))}
                         </nav>
 
-                        <div className="hidden md:flex items-center gap-3">
+                        <div className="hidden md:flex items-center gap-2.5">
+                            <button
+                                type="button"
+                                onClick={() => openCalendly()}
+                                className="inline-flex h-11 items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 text-sm font-medium text-[#E9F3E6] backdrop-blur transition-all duration-300 hover:bg-white/10 hover:border-white/25"
+                            >
+                                <Calendar className="h-4 w-4 text-[#D8F782]" />
+                                Book a Call
+                            </button>
                             <Link
                                 href="/contact"
                                 className={cn(
@@ -179,7 +189,18 @@ export default function Navbar({ forceBackground = false }: NavbarProps) {
                                     ))}
                                 </nav>
 
-                                <div className="mt-4">
+                                <div className="mt-4 flex flex-col gap-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setOpen(false)
+                                            openCalendly()
+                                        }}
+                                        className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#0A211F]/20 bg-white/25 px-5 text-sm font-semibold text-[#0A211F] transition-colors hover:bg-white/40"
+                                    >
+                                        <Calendar className="h-4 w-4" />
+                                        Book a 30-Min Call
+                                    </button>
                                     <Link
                                         href="/contact"
                                         onClick={() => setOpen(false)}

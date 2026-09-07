@@ -17,9 +17,11 @@ import { createContact } from "@/lib/api/contact";
 import { getPublicSettings } from "@/lib/api/settings";
 import { SERVICE_ITEMS } from "@/lib/services";
 import type { CreateContactInquiryPayload } from "@/types";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Calendar } from "lucide-react";
+import { useCalendly } from "@/context/CalendlyContext";
 
 export default function ContactFormSection() {
+  const { openCalendly } = useCalendly();
   const { data: settings } = useQuery({
     queryKey: ["public-settings"],
     queryFn: getPublicSettings,
@@ -267,6 +269,17 @@ export default function ContactFormSection() {
                   >
                     {settings?.phone || ""}
                   </a>
+                </div>
+                <div className="border-b border-[#0A211F]/25 pb-3">
+                  <p className="text-sm text-[#0A211F]/60">Prefer a live call?</p>
+                  <button
+                    type="button"
+                    onClick={() => openCalendly()}
+                    className="mt-1 flex items-center gap-2 text-base font-semibold text-[#0A211F] hover:underline"
+                  >
+                    <Calendar className="h-4 w-4" />
+                    Book 30-Min Discovery →
+                  </button>
                 </div>
               </div>
             </div>
