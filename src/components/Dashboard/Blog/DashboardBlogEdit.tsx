@@ -287,11 +287,10 @@ export default function DashboardBlogEdit({ id }: Props) {
                 type="button"
                 onClick={() => setImageMode("upload")}
                 disabled={isSubmitting}
-                className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
-                  imageMode === "upload"
+                className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors ${imageMode === "upload"
                     ? "bg-[#0A211F] text-[#E9F3E6]"
                     : "text-[#0A211F]/62 hover:bg-[#EDF6E8]"
-                }`}
+                  }`}
               >
                 Upload Image
               </button>
@@ -299,11 +298,10 @@ export default function DashboardBlogEdit({ id }: Props) {
                 type="button"
                 onClick={() => setImageMode("url")}
                 disabled={isSubmitting}
-                className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
-                  imageMode === "url"
+                className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors ${imageMode === "url"
                     ? "bg-[#0A211F] text-[#E9F3E6]"
                     : "text-[#0A211F]/62 hover:bg-[#EDF6E8]"
-                }`}
+                  }`}
               >
                 Use Image URL
               </button>

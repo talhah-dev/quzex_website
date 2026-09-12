@@ -234,6 +234,16 @@ const Footer = () => {
                             >
                                 Terms of Service
                             </Link>
+                            <span className="text-white/20">·</span>
+                            <Link
+                                href="/brand-assets"
+                                className={cn(
+                                    "transition-colors hover:text-[#D8F782]",
+                                    isActiveRoute("/brand-assets") ? "text-[#D8F782]" : "text-[#E9F3E6]/70"
+                                )}
+                            >
+                                Brand Assets
+                            </Link>
                         </div>
                     </div>
                 </div>
