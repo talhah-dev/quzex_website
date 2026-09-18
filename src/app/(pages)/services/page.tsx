@@ -7,16 +7,21 @@ import ServicesListing from "@/components/Services/ServicesListing";
 export const dynamic = "force-dynamic";
 
 export const metadata = buildPageMetadata({
-  title: "Web Development Services | quzex",
+  title: "Web Development Services in Pakistan | Quzex",
   description:
-    "Explore quzex web development services including static websites, dynamic Next.js applications, website redesigns, API integrations, and digital solutions.",
+    "Explore Quzex web development services in Pakistan — custom websites, Next.js applications, website redesigns, API integrations, AI solutions, and social media management for businesses in Karachi, Lahore, and beyond.",
   path: "/services",
   keywords: [
-    "website development services",
-    "dynamic website development",
-    "static website development",
-    "AI services",
-    "social media management",
+    "web development services Pakistan",
+    "website development services Karachi",
+    "website development services Lahore",
+    "Next.js development services",
+    "full stack web development Pakistan",
+    "website redesign service",
+    "AI integration services",
+    "social media management Pakistan",
+    "custom website development",
+    "API integration services",
   ],
 });
 

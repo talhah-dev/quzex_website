@@ -63,8 +63,8 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
     publishedTime: post.createdAt ? new Date(post.createdAt as Date).toISOString() : undefined,
     modifiedTime: post.updatedAt ? new Date(post.updatedAt as Date).toISOString() : undefined,
     keywords: post.seo?.focusKeyword
-      ? [post.seo.focusKeyword, post.category, "quzex blog"]
-      : [post.category, "web development", "quzex blog"],
+      ? [post.seo.focusKeyword, post.category, "quzex blog", "web development Pakistan"]
+      : [post.category, "web development blog Pakistan", "website tips", "quzex blog"],
   });
 }
 

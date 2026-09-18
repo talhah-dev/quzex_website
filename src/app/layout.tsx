@@ -23,18 +23,24 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   metadataBase: new URL("https://quzex.co"),
   title: {
-    default: "Quzex | Website Development Agency",
+    default: "Quzex | Website Development Agency in Pakistan",
     template: "%s | Quzex",
   },
   description:
-    "Quzex builds modern business websites, redesigns outdated websites, and delivers digital solutions focused on speed, clarity, and growth.",
+    "Quzex is a professional website development agency in Pakistan, serving clients in Karachi, Lahore, and worldwide. We build modern business websites and deliver digital solutions.",
   keywords: [
+    "quzex",
     "website development agency",
+    "website development agency in Pakistan",
+    "web development company Karachi",
+    "web development company Lahore",
+    "web design Pakistan",
     "business website development",
     "Next.js development",
     "website redesign",
     "AI integration",
-    "quzex",
+    "hire web developer Pakistan",
+    "remote web development agency",
   ],
   robots: {
     index: true,

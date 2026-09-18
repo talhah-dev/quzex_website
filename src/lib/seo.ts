@@ -82,12 +82,35 @@ export function buildOrganizationSchema() {
     email: SITE_CONFIG.email,
     telephone: SITE_CONFIG.phone,
     description:
-      "Quzex builds modern business websites, redesigns outdated websites, and delivers digital solutions focused on speed, clarity, and growth.",
+      "Quzex is a professional website development agency based in Pakistan, serving businesses in Karachi, Lahore, and worldwide. We build modern websites, redesign outdated sites, and deliver digital solutions focused on speed, clarity, and growth.",
+    address: {
+      "@type": "PostalAddress",
+      addressCountry: "PK",
+      addressRegion: "Sindh",
+      addressLocality: "Karachi",
+    },
     founder: {
       "@type": "Person",
       name: SITE_CONFIG.ownerName,
     },
-    areaServed: "Worldwide",
+    areaServed: [
+      {
+        "@type": "City",
+        name: "Karachi",
+      },
+      {
+        "@type": "City",
+        name: "Lahore",
+      },
+      {
+        "@type": "Country",
+        name: "Pakistan",
+      },
+      {
+        "@type": "Text",
+        name: "Worldwide",
+      },
+    ],
     serviceType: [
       "Website Development",
       "Website Redesign",

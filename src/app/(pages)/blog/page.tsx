@@ -13,15 +13,20 @@ import { buildBreadcrumbSchema, buildPageMetadata, stringifyJsonLd } from "@/lib
 export const dynamic = "force-dynamic";
 
 export const metadata = buildPageMetadata({
-  title: "Blog & Web Insights | quzex",
+  title: "Web Development Blog & Insights | Quzex Pakistan",
   description:
-    "Read articles and insights on website planning, Next.js development, redesign strategies, SEO performance, and digital solutions for growing businesses.",
+    "Read articles and insights from Quzex on website planning, Next.js development, redesign strategies, SEO performance, and digital solutions for growing businesses in Pakistan and beyond.",
   path: "/blog",
   keywords: [
     "quzex blog",
-    "web development articles",
-    "website planning guides",
+    "web development blog Pakistan",
+    "website development articles",
+    "Next.js tutorials",
     "website redesign strategies",
+    "SEO guides Pakistan",
+    "website planning guides",
+    "digital marketing blog Pakistan",
+    "web design tips",
   ],
 });
 

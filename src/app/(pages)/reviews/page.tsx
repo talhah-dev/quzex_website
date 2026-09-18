@@ -5,14 +5,18 @@ import Testimonials from "@/components/Home/Testimonials";
 import { getTestimonialsServer } from "@/lib/server/testimonials";
 
 export const metadata = buildPageMetadata({
-  title: "Client Reviews & Ratings | quzex",
+  title: "Client Reviews & Ratings | Quzex Web Development Pakistan",
   description:
-    "Read verified client reviews and feedback from businesses worldwide on quzex website development, website redesign, AI solutions, and digital projects.",
+    "Read verified client reviews and feedback from businesses in Pakistan and worldwide on Quzex website development, redesign, AI solutions, and digital projects.",
   path: "/reviews",
   keywords: [
     "quzex reviews",
-    "client testimonials",
-    "website development reviews",
+    "web development agency reviews Pakistan",
+    "website developer ratings",
+    "client testimonials Pakistan",
+    "web design reviews Karachi",
+    "web design reviews Lahore",
+    "5 star web agency Pakistan",
     "digital agency reviews",
   ],
 });

@@ -10,15 +10,20 @@ import Testimonials from "@/components/Home/Testimonials";
 import { getTestimonialsServer } from "@/lib/server/testimonials";
 
 export const metadata = buildPageMetadata({
-  title: "About Us & Development Team | quzex",
+  title: "About Us | Web Development Agency Team | Quzex Pakistan",
   description:
-    "Learn about quzex, our web development team, engineering process, and culture behind building fast, modern websites and digital platforms for global brands.",
+    "Learn about Quzex — a web development agency based in Pakistan. Our team builds fast, modern websites and digital platforms for businesses in Karachi, Lahore, and worldwide.",
   path: "/about",
   keywords: [
     "about quzex",
-    "web development team",
-    "digital solutions company",
+    "web development team Pakistan",
+    "digital agency Pakistan",
     "website design and development agency",
+    "web developers Karachi",
+    "web developers Lahore",
+    "remote web development team",
+    "website agency culture",
+    "digital solutions company Pakistan",
   ],
 });
 

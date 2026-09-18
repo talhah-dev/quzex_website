@@ -4,17 +4,20 @@ import WorkHeroSection from "@/components/Work/WorkHeroSection";
 import WorkPortfolioSection from "@/components/Work/WorkPortfolioSection";
 
 export const metadata = buildPageMetadata({
-  title: "Portfolio & Case Studies | quzex",
+  title: "Web Development Portfolio & Case Studies | Quzex Pakistan",
   description:
-    "Explore quzex portfolio of custom websites, web applications, website redesigns, and AI integrations built for clients across various industries worldwide.",
+    "Explore Quzex's portfolio of custom websites, web applications, website redesigns, and AI integrations built for clients across Pakistan and worldwide.",
   path: "/work",
   keywords: [
     "quzex portfolio",
-    "website project portfolio",
-    "development portfolio",
-    "design portfolio",
-    "AI portfolio",
-    "marketing portfolio",
+    "web development portfolio Pakistan",
+    "website case studies",
+    "client website examples",
+    "Next.js portfolio",
+    "website redesign portfolio",
+    "web design examples Karachi",
+    "web design examples Lahore",
+    "development portfolio Pakistan",
   ],
 });
 

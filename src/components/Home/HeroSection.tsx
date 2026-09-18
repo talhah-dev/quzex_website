@@ -103,11 +103,11 @@ export default function HeroSection() {
                             </AnimatedGroup>
 
                             <h1 className="mx-auto mt-10 max-w-4xl text-balance font-medium text-4xl leading-[1.3] text-[#8AF7B7] md:text-6xl">
-                                We&apos;re here to transform your vision into a{" "}
-                                <span className="font-accent">powerful digital brand.</span>
+                                Website Development Agency That Builds{" "}
+                                <span className="font-accent">Powerful Digital Brands.</span>
                             </h1>
                             <p className="mx-auto mt-8 max-w-2xl text-lg text-[#E9F3E6]/80">
-                                Think us as your own personal digital team. From the first line of code to your launch strategy, we&apos;ve got your back every step of the way.
+                                Your dedicated web development team in Pakistan — from custom website builds and redesigns to full-stack apps and AI integrations. From the first line of code to your launch, we&apos;ve got you covered.
                             </p>
 
                             <AnimatedGroup

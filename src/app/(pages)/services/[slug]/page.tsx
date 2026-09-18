@@ -103,16 +103,20 @@ export async function generateMetadata({ params }: ServiceDetailPageProps): Prom
   }
 
   return buildPageMetadata({
-    title: `${service.title} | quzex Services`,
+    title: `${service.title} Services in Pakistan | Quzex`,
     description: service.description,
     path: `/services/${service.slug}`,
     image: service.image || "/22.png",
     keywords: [
       service.title,
-      service.category,
+      `${service.title} services`,
+      `${service.title} Pakistan`,
+      `${service.category} development`,
+      `hire ${service.category} developer`,
       "quzex services",
-      "website development",
-      "digital services",
+      "web development Pakistan",
+      "website agency Karachi",
+      "website agency Lahore",
     ],
   });
 }

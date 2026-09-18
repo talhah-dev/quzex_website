@@ -147,7 +147,8 @@ export default function DashboardBlogCreate() {
         </Button>
       </div>
 
-      <div className="grid gap-6 rounded-xl border border-[#0A211F]/10 bg-white p-6 shadow-[0_24px_60px_-40px_rgba(10,33,31,0.35)] sm:p-8">
+      <div className=" gap-6 rounded-xl border border-[#0A211F]/10 bg-white p-6 shadow-[0_24px_60px_-40px_rgba(10,33,31,0.35)] sm:p-8 space-y-5">
+
         <div className="grid gap-6 lg:grid-cols-2">
           <label className="grid gap-2 text-sm text-[#0A211F]/75">
             <span className="font-medium text-[#0A211F]">Blog title</span>
@@ -188,17 +189,19 @@ export default function DashboardBlogCreate() {
           </label>
         </div>
 
-        <label className="grid gap-2 text-sm text-[#0A211F]/75">
-          <span className="font-medium text-[#0A211F]">Excerpt</span>
-          <textarea
-            rows={4}
-            value={excerpt}
-            onChange={(event) => setExcerpt(event.target.value)}
-            placeholder="Short summary shown on the blog listing page"
-            disabled={isSubmitting}
-            className="rounded-xl border border-[#0A211F]/12 bg-[#f7f9f2] px-4 py-3 outline-none transition-colors focus:border-[#0A211F]/25 disabled:opacity-60"
-          />
-        </label>
+        <div className="">
+          <label className="grid gap-2 text-sm text-[#0A211F]/75">
+            <span className="font-medium text-[#0A211F]">Excerpt</span>
+            <textarea
+              rows={4}
+              value={excerpt}
+              onChange={(event) => setExcerpt(event.target.value)}
+              placeholder="Short summary shown on the blog listing page"
+              disabled={isSubmitting}
+              className="rounded-xl border border-[#0A211F]/12 bg-[#f7f9f2] px-4 py-3 outline-none transition-colors focus:border-[#0A211F]/25 disabled:opacity-60"
+            />
+          </label>
+        </div>
 
         <div className="grid gap-4 rounded-2xl border border-[#0A211F]/10 bg-[#f7f9f2] p-5">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

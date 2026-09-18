@@ -4,14 +4,19 @@ import HeroSection from "@/components/common/HeroSection";
 import ContactFormSection from "@/components/Contact/ContactFormSection";
 
 export const metadata = buildPageMetadata({
-  title: "Contact Us & Project Enquiry | quzex",
+  title: "Hire a Web Developer in Pakistan | Contact Quzex",
   description:
-    "Contact quzex to discuss your website project, website redesign, or digital solutions. Share your requirements and request a consultation today.",
+    "Contact Quzex to hire a web developer in Pakistan. Discuss your website project, website redesign, or digital solution with our team in Karachi, Lahore, and across Pakistan.",
   path: "/contact",
   keywords: [
+    "hire web developer Pakistan",
+    "hire web developer Karachi",
+    "hire web developer Lahore",
     "contact quzex",
-    "website project enquiry",
-    "web development contact",
+    "website project quote Pakistan",
+    "get website estimate",
+    "web development contact Pakistan",
+    "freelance web development Pakistan",
     "request website quote",
   ],
 });

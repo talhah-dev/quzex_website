@@ -3,17 +3,22 @@ import HomePageContent from "@/components/Home/HomePageContent";
 import { getTestimonialsServer } from "@/lib/server/testimonials";
 
 export const metadata = buildPageMetadata({
-  title: "quzex | Website Development and Digital Solutions",
+  title: "Quzex | Website Development Agency in Pakistan",
   description:
-    "quzex builds modern business websites, redesigns outdated websites, and delivers digital solutions focused on speed, clarity, and growth.",
+    "Quzex is a professional website development agency in Pakistan — we build modern business websites, redesign outdated sites, and deliver digital solutions focused on speed, clarity, and growth.",
   path: "/",
   keywords: [
     "quzex",
     "website development agency",
+    "website development agency in Pakistan",
+    "web development company Karachi",
+    "web development company Lahore",
+    "web design Pakistan",
     "business website development",
-    "dynamic website development",
-    "static website development",
+    "custom website development",
     "website redesign services",
+    "hire web developer Pakistan",
+    "remote web development agency",
   ],
 });
 
