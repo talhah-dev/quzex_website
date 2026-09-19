@@ -143,7 +143,6 @@ export async function generateAndSaveBlogPost(
 
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
-    // Use gemini-1.5-flash or gemini-2.0-flash for high speed, low cost, and reliable structured JSON output
     const model = genAI.getGenerativeModel({
       model: "gemini-3.5-flash-lite",
       generationConfig: {
@@ -152,31 +151,35 @@ export async function generateAndSaveBlogPost(
       },
     });
 
-    const prompt = `You are a world-class senior technical writer, web development expert, and SEO specialist writing for Quzex (a premium website design & software development agency).
+    const prompt = `You are a real human writer, experienced web engineer, and digital strategist writing for the Quzex blog (a high-end web design and software agency).
 
-Write a comprehensive, engaging, and in-depth blog post about the following topic:
+Write an insightful, engaging, and in-depth article about this topic:
 Topic: "${chosenTopicInfo.topic}"
 Category: "${chosenTopicInfo.category}"
 
-Requirements:
-1. The post must be informative, authoritative, actionable, and 800 to 1400 words long.
-2. Structure the content with clean HTML tags: use <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>, <blockquote>, and <code> where appropriate. DO NOT wrap the whole content in <html> or <body> tags. Just return inner HTML.
-3. Ensure the tone is professional, innovative, and directly helpful to startup founders, business owners, and tech leaders looking to grow their digital presence.
-4. Naturally weave in mentions of best practices, modern frameworks (like Next.js, React, TypeScript), and how working with dedicated agencies (like Quzex) helps achieve peak performance.
-5. Provide strong SEO metadata including a high-converting meta title, meta description (under 160 characters), and primary focus keyword.
-6. Provide an image search query (2-4 keywords) suitable for fetching a matching photo from Unsplash.
+CRITICAL WRITING STYLE & TONE GUIDELINES:
+1. Write 100% like a real human: warm, practical, conversational, authoritative, and direct.
+2. DO NOT SOUND LIKE AN AI OR ROBOT:
+   - NEVER use robotic clichés like "In today's fast-paced digital world", "delve into", "tapestry", "revolutionize", "beacon", "testament to", "furthermore", "it is crucial to", "realm of".
+   - DO NOT use excessive hyphens or em-dashes (—). Keep punctuation natural, simple, and clean.
+   - Use simple, clear, everyday English so that any business owner, startup founder, or non-technical reader can easily understand and take away value.
+3. Content length: 900 to 1400 words.
+4. Formatting: Use semantic HTML inside the content string (<h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>, <blockquote>, <code>). DO NOT include <html>, <head>, or <body> tags.
+5. Provide real actionable advice, practical examples, and explain why modern frameworks (Next.js, React, TypeScript) and custom design by agency experts (like Quzex) give businesses a competitive edge.
+6. Provide strong SEO metadata (metaTitle, metaDescription under 160 characters, focusKeyword, ogTitle, ogDescription).
+7. Suggest an image search query (2-4 words) for Unsplash.
 
-You must return a valid JSON object matching this schema:
+Return a valid JSON object matching this exact schema:
 {
-  "title": "Clear, engaging, and SEO-friendly article title",
-  "slug": "url-friendly-kebab-case-slug",
+  "title": "Natural, punchy, human-written article title",
+  "slug": "url-friendly-slug",
   "category": "${chosenTopicInfo.category}",
-  "excerpt": "A compelling 2-3 sentence teaser summary of the blog post (150-200 characters).",
-  "content": "<p>Introduction...</p><h2>First Main Heading</h2><p>Details...</p>...",
-  "unsplashQuery": "minimalist modern workspace tech code",
+  "excerpt": "A clear, natural 2-sentence summary explaining what the reader will learn (under 180 characters).",
+  "content": "<p>A relatable, engaging opening hook...</p><h2>First Section Heading</h2><p>Valuable real-world breakdown...</p>",
+  "unsplashQuery": "minimalist modern workspace tech",
   "seo": {
-    "metaTitle": "SEO Meta Title (50-60 characters) | Quzex",
-    "metaDescription": "SEO Meta Description (under 160 characters)",
+    "metaTitle": "Title | Quzex",
+    "metaDescription": "Concise natural meta description under 160 characters.",
     "focusKeyword": "primary focus keyword",
     "ogTitle": "OpenGraph Title",
     "ogDescription": "OpenGraph Description"

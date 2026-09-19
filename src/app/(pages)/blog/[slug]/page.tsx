@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { Calendar } from "lucide-react";
 import Wrapper from "@/app/Wrapper";
 import BlogCommentsSection from "@/components/Blog/BlogCommentsSection";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
@@ -21,6 +22,46 @@ type BlogDetailPageProps = {
 };
 
 export const dynamic = "force-dynamic";
+
+function formatPublishedDate(date?: Date | string) {
+  if (!date) return null;
+  const parsed = new Date(date);
+  if (isNaN(parsed.getTime())) return null;
+  return parsed.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function formatBlogContent(rawContent: string): string {
+  if (!rawContent) return "";
+
+  // If the content already contains HTML block tags
+  if (/<(p|h1|h2|h3|h4|h5|h6|ul|ol|blockquote|pre|div)[^>]*>/i.test(rawContent)) {
+    return rawContent;
+  }
+
+  // Convert plain text or markdown-style paragraphs to structured HTML
+  return rawContent
+    .split(/\n{2,}/)
+    .map((block) => {
+      const trimmed = block.trim();
+      if (!trimmed) return "";
+      if (trimmed.startsWith("### ")) {
+        return `<h3>${trimmed.replace(/^###\s+/, "")}</h3>`;
+      }
+      if (trimmed.startsWith("## ")) {
+        return `<h2>${trimmed.replace(/^##\s+/, "")}</h2>`;
+      }
+      if (trimmed.startsWith("# ")) {
+        return `<h1>${trimmed.replace(/^#\s+/, "")}</h1>`;
+      }
+      return `<p>${trimmed.replace(/\n/g, "<br />")}</p>`;
+    })
+    .filter(Boolean)
+    .join("\n");
+}
 
 async function getBlogBySlug(slug: string) {
   try {
@@ -91,6 +132,9 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
     updatedAt: post.updatedAt ? new Date(post.updatedAt as Date).toISOString() : undefined,
   });
 
+  const publishedDateStr = formatPublishedDate(post.createdAt);
+  const formattedContent = formatBlogContent(post.content);
+
   return (
     <Wrapper forceNavbarBackground>
       <script
@@ -103,13 +147,13 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
       />
       <section className="bg-[#f7f9f2]">
         <div className="px-4 pb-16 pt-26 md:px-6 md:pt-28 lg:px-8">
-          <article className="mx-auto max-w-5xl overflow-hidden rounded-2xl">
-            <div className="relative aspect-[16/9]">
+          <article className="mx-auto max-w-4xl overflow-hidden rounded-2xl">
+            <div className="relative aspect-[16/9] shadow-lg rounded-2xl overflow-hidden">
               <Image
                 src={post.image}
                 alt={post.title}
                 fill
-                sizes="(min-width: 1280px) 72rem, 100vw"
+                sizes="(min-width: 1280px) 64rem, 100vw"
                 className="object-cover rounded-2xl"
                 priority
               />
@@ -117,27 +161,38 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
             <div>
               <div className="mx-auto grid gap-6 py-6 sm:py-8">
-                <Badge
-                  variant="outline"
-                  className="w-fit rounded-full border-[#0A211F]/12 bg-[#EDF6E8] px-3 py-1 text-[#0A211F]"
-                >
-                  {post.category}
-                </Badge>
+                <div className="flex flex-wrap items-center gap-3.5">
+                  <Badge
+                    variant="outline"
+                    className="w-fit rounded-full border-[#0A211F]/12 bg-[#EDF6E8] px-3.5 py-1 text-xs sm:text-sm font-medium text-[#0A211F]"
+                  >
+                    {post.category}
+                  </Badge>
 
-                <div className="space-y-4">
-                  <h1 className="text-2xl font-semibold leading-tight text-[#0A211F] sm:text-4xl">
-                    {post.title}
-                  </h1>
-                  <p className="text-base leading-8 text-[#0A211F]/70">{post.excerpt}</p>
+                  {publishedDateStr && (
+                    <div className="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-[#0A211F]/60">
+                      <Calendar className="size-3.5 sm:size-4 text-[#0A211F]/45" />
+                      <span>{publishedDateStr}</span>
+                    </div>
+                  )}
                 </div>
 
-                {/* Rich text content from the editor is stored as HTML */}
+                <div className="space-y-4">
+                  <h1 className="text-2xl font-bold leading-tight text-[#0A211F] sm:text-4xl md:text-5xl tracking-tight">
+                    {post.title}
+                  </h1>
+                  <p className="text-base sm:text-lg leading-relaxed text-[#0A211F]/70 font-normal border-l-2 border-[#8AF7B7] pl-4 py-1">
+                    {post.excerpt}
+                  </p>
+                </div>
+
+                {/* Rich styled blog content */}
                 <div
-                  className="prose prose-slate max-w-none text-[#0A211F]/72 leading-8"
-                  dangerouslySetInnerHTML={{ __html: post.content }}
+                  className="blog-content prose max-w-none pt-2"
+                  dangerouslySetInnerHTML={{ __html: formattedContent }}
                 />
 
-                <div className="flex flex-wrap items-center gap-3 border-t border-[#0A211F]/10 pt-5">
+                <div className="flex flex-wrap items-center gap-3 border-t border-[#0A211F]/10 pt-6 mt-4">
                   <AnimatedButton href="/blog" color="dark">
                     Back to Blog
                   </AnimatedButton>
@@ -145,10 +200,6 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               </div>
             </div>
           </article>
-
-          {/* <div className="mx-auto max-w-5xl">
-            <BlogCommentsSection />
-          </div> */}
         </div>
       </section>
     </Wrapper>

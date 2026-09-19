@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FileText } from "lucide-react";
+import { Calendar, FileText } from "lucide-react";
 import Wrapper from "@/app/Wrapper";
 import HeroSection from "@/components/common/HeroSection";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +11,17 @@ import type { BlogRecord } from "@/types";
 import { buildBreadcrumbSchema, buildPageMetadata, stringifyJsonLd } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+function formatPublishedDate(date?: Date | string) {
+  if (!date) return null;
+  const parsed = new Date(date);
+  if (isNaN(parsed.getTime())) return null;
+  return parsed.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
 
 export const metadata = buildPageMetadata({
   title: "Web Development Blog & Insights | Quzex Pakistan",
@@ -107,18 +118,27 @@ export default async function BlogPage() {
                     </div>
 
                     <div className="space-y-4 p-6">
-                      <Badge
-                        variant="outline"
-                        className="rounded-full border-[#0A211F]/12 bg-[#EDF6E8] px-3 py-1 text-[#0A211F]"
-                      >
-                        {post.category}
-                      </Badge>
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <Badge
+                          variant="outline"
+                          className="rounded-full border-[#0A211F]/12 bg-[#EDF6E8] px-3 py-1 text-xs font-medium text-[#0A211F]"
+                        >
+                          {post.category}
+                        </Badge>
+
+                        {post.createdAt && (
+                          <div className="flex items-center gap-1.5 text-xs font-medium text-[#0A211F]/55">
+                            <Calendar className="size-3.5 text-[#0A211F]/45" />
+                            <span>{formatPublishedDate(post.createdAt)}</span>
+                          </div>
+                        )}
+                      </div>
 
                       <div className="space-y-3">
-                        <h2 className="line-clamp-2 text-2xl font-semibold leading-tight text-[#0A211F]">
+                        <h2 className="line-clamp-2 text-xl sm:text-2xl font-semibold leading-snug text-[#0A211F]">
                           {post.title}
                         </h2>
-                        <p className="line-clamp-2 text-sm leading-7 text-[#0A211F]/68">
+                        <p className="line-clamp-2 text-sm leading-relaxed text-[#0A211F]/68">
                           {post.excerpt}
                         </p>
                       </div>

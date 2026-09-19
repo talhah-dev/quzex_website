@@ -166,3 +166,152 @@
   animation: pricing-ring-spin 4.5s linear infinite;
   will-change: transform;
 }
+
+/* ─── Blog Post Typography & Layout ────────────────────────── */
+.blog-content,
+.prose {
+  color: #0a211f;
+  line-height: 1.9;
+  font-size: 1.0625rem;
+}
+
+.blog-content h1,
+.prose h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #0a211f;
+  margin-top: 2.75rem;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.blog-content h2,
+.prose h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #0a211f;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.015em;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(10, 33, 31, 0.08);
+}
+
+.blog-content h3,
+.prose h3 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #0a211f;
+  margin-top: 2.25rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
+}
+
+.blog-content h4,
+.prose h4 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #0a211f;
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.blog-content p,
+.prose p {
+  color: rgba(10, 33, 31, 0.78);
+  margin-bottom: 1.625rem;
+  line-height: 1.9;
+}
+
+.blog-content strong,
+.prose strong,
+.blog-content b,
+.prose b {
+  color: #0a211f;
+  font-weight: 700;
+}
+
+.blog-content ul,
+.prose ul {
+  list-style-type: disc;
+  padding-left: 1.75rem;
+  margin-top: 1rem;
+  margin-bottom: 1.75rem;
+  color: rgba(10, 33, 31, 0.78);
+}
+
+.blog-content ol,
+.prose ol {
+  list-style-type: decimal;
+  padding-left: 1.75rem;
+  margin-top: 1rem;
+  margin-bottom: 1.75rem;
+  color: rgba(10, 33, 31, 0.78);
+}
+
+.blog-content li,
+.prose li {
+  margin-bottom: 0.625rem;
+  line-height: 1.8;
+}
+
+.blog-content blockquote,
+.prose blockquote {
+  border-left: 4px solid #8af7b7;
+  background-color: rgba(237, 246, 232, 0.6);
+  padding: 1.25rem 1.75rem;
+  margin: 2.25rem 0;
+  border-radius: 0 0.75rem 0.75rem 0;
+  font-style: italic;
+  color: #0a211f;
+}
+
+.blog-content pre,
+.prose pre {
+  background-color: #0a211f;
+  color: #8af7b7;
+  padding: 1.25rem 1.5rem;
+  border-radius: 1rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  margin: 1.75rem 0;
+  font-family: var(--font-mono, monospace);
+  line-height: 1.6;
+}
+
+.blog-content code:not(pre code),
+.prose code:not(pre code) {
+  background-color: #edf6e8;
+  color: #0a211f;
+  padding: 0.2rem 0.45rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: var(--font-mono, monospace);
+}
+
+.blog-content a,
+.prose a {
+  color: #0a211f;
+  text-decoration: underline;
+  text-decoration-color: #8af7b7;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.blog-content a:hover,
+.prose a:hover {
+  opacity: 0.75;
+}
+
+.blog-content hr,
+.prose hr {
+  border: 0;
+  border-top: 1px solid rgba(10, 33, 31, 0.1);
+  margin: 2.75rem 0;
+}

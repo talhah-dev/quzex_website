@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { FileText, Loader2, Pencil, Plus, Trash2 } from "lucide-react";
+import { Calendar, FileText, Loader2, Pencil, Plus, Sparkles, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { BlogRecord } from "@/types";
@@ -12,6 +12,7 @@ import { deleteBlog, getAdminBlogs } from "@/lib/api/blogs";
 export default function DashboardBlogs() {
   const [blogs, setBlogs] = useState<BlogRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -32,6 +33,31 @@ export default function DashboardBlogs() {
   useEffect(() => {
     loadBlogs();
   }, [loadBlogs]);
+
+  async function handleGenerateAi() {
+    if (isGenerating) return;
+    setIsGenerating(true);
+
+    try {
+      const res = await fetch("/api/admin/blogs/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ publishImmediately: true }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || "Failed to generate blog post with AI.");
+      }
+
+      await loadBlogs();
+      alert(`✨ Success! Generated blog post: "${data.data?.title}"`);
+    } catch (err: any) {
+      alert(err.message || "Something went wrong while generating the blog post.");
+    } finally {
+      setIsGenerating(false);
+    }
+  }
 
   async function handleDelete(id: string) {
     if (!confirm("Are you sure you want to delete this blog post? This cannot be undone.")) {
@@ -75,16 +101,37 @@ export default function DashboardBlogs() {
               </div>
             </div>
 
-            <Button
-              asChild
-              type="button"
-              className="inline-flex items-center gap-2 self-start rounded-xl bg-[#0A211F] px-4 py-2 text-[#E9F3E6] hover:bg-[#143531]"
-            >
-              <Link href="/dashboard/blog/new">
-                <Plus className="size-4" />
-                <span>Create New Blog</span>
-              </Link>
-            </Button>
+            <div className="flex flex-wrap items-center gap-2.5">
+              <Button
+                type="button"
+                disabled={isGenerating}
+                onClick={handleGenerateAi}
+                className="inline-flex items-center gap-2 rounded-xl border border-[#0A211F]/15 bg-[#EDF6E8] px-4 py-2 text-[#0A211F] hover:bg-[#d8f782] disabled:opacity-60 transition-all cursor-pointer"
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin text-[#0A211F]" />
+                    <span>Writing Post with AI...</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="size-4 text-[#0A211F]" />
+                    <span>Generate Post with AI</span>
+                  </>
+                )}
+              </Button>
+
+              <Button
+                asChild
+                type="button"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#0A211F] px-4 py-2 text-[#E9F3E6] hover:bg-[#143531]"
+              >
+                <Link href="/dashboard/blog/new">
+                  <Plus className="size-4" />
+                  <span>Create New Blog</span>
+                </Link>
+              </Button>
+            </div>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -166,25 +213,40 @@ export default function DashboardBlogs() {
                 </div>
 
                 <div className="space-y-4 p-4">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Badge className="rounded-full bg-[#D8F782] text-[#0A211F] hover:bg-[#D8F782]">
-                      {post.category}
-                    </Badge>
-                    <span className="rounded-full border border-[#0A211F]/10 bg-white px-3 py-1 text-xs font-medium text-[#0A211F]/62">
-                      /blog/{post.slug}
-                    </span>
-                    {!post.isActive ? (
-                      <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-600">
-                        Draft
-                      </span>
-                    ) : null}
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge className="rounded-full bg-[#D8F782] text-[#0A211F] hover:bg-[#D8F782]">
+                        {post.category}
+                      </Badge>
+                      {!post.isActive ? (
+                        <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-600">
+                          Draft
+                        </span>
+                      ) : null}
+                    </div>
+
+                    {post.createdAt && (
+                      <div className="flex items-center gap-1.5 text-xs text-[#0A211F]/50">
+                        <Calendar className="size-3 text-[#0A211F]/40" />
+                        <span>
+                          {new Date(post.createdAt).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
-                  <div className="space-y-2">
-                    <h3 className="line-clamp-2 text-xl font-semibold text-[#0A211F]">
+                  <div className="space-y-1.5">
+                    <span className="block text-xs font-mono text-[#0A211F]/50 truncate">
+                      /blog/{post.slug}
+                    </span>
+                    <h3 className="line-clamp-2 text-lg font-semibold text-[#0A211F]">
                       {post.title}
                     </h3>
-                    <p className="line-clamp-3 text-sm leading-7 text-[#0A211F]/68">
+                    <p className="line-clamp-2 text-sm leading-6 text-[#0A211F]/68">
                       {post.excerpt}
                     </p>
                   </div>
