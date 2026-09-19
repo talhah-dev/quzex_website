@@ -146,9 +146,9 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             </div>
           </article>
 
-          <div className="mx-auto max-w-5xl">
+          {/* <div className="mx-auto max-w-5xl">
             <BlogCommentsSection />
-          </div>
+          </div> */}
         </div>
       </section>
     </Wrapper>
