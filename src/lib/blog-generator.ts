@@ -157,7 +157,7 @@ Write an insightful, engaging, and in-depth article about this topic:
 Topic: "${chosenTopicInfo.topic}"
 Category: "${chosenTopicInfo.category}"
 
-CRITICAL WRITING STYLE & TONE GUIDELINES:
+CRITICAL WRITING STYLE & BRAND GUIDELINES:
 1. Write 100% like a real human: warm, practical, conversational, authoritative, and direct.
 2. DO NOT SOUND LIKE AN AI OR ROBOT:
    - NEVER use robotic clichés like "In today's fast-paced digital world", "delve into", "tapestry", "revolutionize", "beacon", "testament to", "furthermore", "it is crucial to", "realm of".
@@ -166,8 +166,20 @@ CRITICAL WRITING STYLE & TONE GUIDELINES:
 3. Content length: 900 to 1400 words.
 4. Formatting: Use semantic HTML inside the content string (<h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>, <blockquote>, <code>). DO NOT include <html>, <head>, or <body> tags.
 5. Provide real actionable advice, practical examples, and explain why modern frameworks (Next.js, React, TypeScript) and custom design by agency experts (like Quzex) give businesses a competitive edge.
-6. Provide strong SEO metadata (metaTitle, metaDescription under 160 characters, focusKeyword, ogTitle, ogDescription).
-7. Suggest an image search query (2-4 words) for Unsplash.
+6. BRAND & LINKING RULES (CRITICAL):
+   - The official company website is "quzex.co" (NEVER use "quzex.com").
+   - Internal site links MUST be relative links: "/contact", "/services", "/work", or "https://quzex.co/contact".
+   - For booking a strategy call or consultation, use the official Calendly link: "https://calendly.com/quzex-co/30min".
+7. MANDATORY CONCLUSION & CALL-TO-ACTION SECTION:
+   - At the end of every blog post, you MUST include a dedicated closing section with an <h2> heading (e.g., <h2>Ready to Build or Scale Your Web Project?</h2>).
+   - In the closing paragraph, you MUST include clickable HTML links inviting the reader to get in touch:
+     * Contact link: '<a href="/contact">Contact us today</a>' or '<a href="/contact">Get in touch with our team</a>'
+     * Calendly booking link: '<a href="https://calendly.com/quzex-co/30min" target="_blank" rel="noopener noreferrer">Schedule a Free 30-Minute Call</a>'
+     * Services link: '<a href="/services">Explore our web development services</a>'
+   - Example closing format:
+     '<p>Ready to bring your digital vision to life? Whether you are planning a Next.js web app, an e-commerce platform, or a modern company website, our team at Quzex is here to help. <a href="/contact">Contact us today</a> or <a href="https://calendly.com/quzex-co/30min" target="_blank" rel="noopener noreferrer">book a free 30-minute discovery call</a> to discuss your project.</p>'
+8. Provide strong SEO metadata (metaTitle, metaDescription under 160 characters, focusKeyword, ogTitle, ogDescription).
+9. Suggest an image search query (2-4 words) for Unsplash.
 
 Return a valid JSON object matching this exact schema:
 {
@@ -175,7 +187,7 @@ Return a valid JSON object matching this exact schema:
   "slug": "url-friendly-slug",
   "category": "${chosenTopicInfo.category}",
   "excerpt": "A clear, natural 2-sentence summary explaining what the reader will learn (under 180 characters).",
-  "content": "<p>A relatable, engaging opening hook...</p><h2>First Section Heading</h2><p>Valuable real-world breakdown...</p>",
+  "content": "<p>A relatable, engaging opening hook...</p><h2>First Section Heading</h2><p>Valuable real-world breakdown...</p><h2>Ready to Elevate Your Web Presence?</h2><p>Summary with clickable <a href=\"/contact\">Contact Us</a> and <a href=\"https://calendly.com/quzex-co/30min\" target=\"_blank\" rel=\"noopener noreferrer\">Schedule a Consultation</a> links.</p>",
   "unsplashQuery": "minimalist modern workspace tech",
   "seo": {
     "metaTitle": "Title | Quzex",
@@ -216,7 +228,10 @@ Return a valid JSON object matching this exact schema:
       };
     }
 
-    // Format Slug
+    let sanitizedContent = generatedData.content
+      .replace(/https?:\/\/(www\.)?quzex\.com/gi, "https://quzex.co")
+      .replace(/quzex\.com/gi, "quzex.co");
+
     let baseSlug = (generatedData.slug || generatedData.title)
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
@@ -226,21 +241,17 @@ Return a valid JSON object matching this exact schema:
       baseSlug = `blog-${Date.now()}`;
     }
 
-    // Connect to database
     await connectToDatabase();
 
-    // Check slug uniqueness
     let finalSlug = baseSlug;
     const existing = await BlogModel.findOne({ slug: finalSlug });
     if (existing) {
       finalSlug = `${baseSlug}-${Math.floor(1000 + Math.random() * 9000)}`;
     }
 
-    // Fetch Unsplash image
     const imageQuery = generatedData.unsplashQuery || chosenTopicInfo.query || "web development";
     const imageUrl = await fetchUnsplashImage(imageQuery);
 
-    // Prepare SEO Object
     const seoData: BlogSeo = {
       metaTitle: generatedData.seo?.metaTitle || `${generatedData.title} | Quzex`,
       metaDescription: generatedData.seo?.metaDescription || generatedData.excerpt,
@@ -254,14 +265,13 @@ Return a valid JSON object matching this exact schema:
 
     const publishImmediately = options.publishImmediately !== undefined ? options.publishImmediately : true;
 
-    // Create Blog Post in MongoDB
     const createdBlog = await BlogModel.create({
       title: generatedData.title,
       slug: finalSlug,
       category: generatedData.category || chosenTopicInfo.category,
       image: imageUrl,
       excerpt: generatedData.excerpt,
-      content: generatedData.content,
+      content: sanitizedContent,
       isActive: publishImmediately,
       seo: seoData,
     });

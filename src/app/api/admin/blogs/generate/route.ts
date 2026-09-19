@@ -1,15 +1,47 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ADMIN_SESSION_COOKIE, verifyAdminSessionToken } from "@/lib/auth-session";
 import { generateAndSaveBlogPost } from "@/lib/blog-generator";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/**
- * GET /api/admin/blogs/generate
- * Allows triggering directly in browser or with query params: ?topic=...&category=...&publish=true
- */
+async function isAuthorized(request: NextRequest): Promise<boolean> {
+  const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
+  if (token) {
+    const session = await verifyAdminSessionToken(token);
+    if (session?.role === "admin") {
+      return true;
+    }
+  }
+
+  const authHeader = request.headers.get("authorization");
+  const cronSecret = process.env.CRON_SECRET;
+  if (cronSecret && authHeader === `Bearer ${cronSecret}`) {
+    return true;
+  }
+
+  const searchParams = request.nextUrl.searchParams;
+  const secretParam = searchParams.get("secret");
+  if (cronSecret && secretParam === cronSecret) {
+    return true;
+  }
+
+  return false;
+}
+
 export async function GET(request: NextRequest) {
   try {
+    const authorized = await isAuthorized(request);
+    if (!authorized) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Unauthorized. Admin session or valid secret required.",
+        },
+        { status: 401 }
+      );
+    }
+
     const searchParams = request.nextUrl.searchParams;
     const topic = searchParams.get("topic") || undefined;
     const category = searchParams.get("category") || undefined;
@@ -51,17 +83,24 @@ export async function GET(request: NextRequest) {
   }
 }
 
-/**
- * POST /api/admin/blogs/generate
- * Trigger AI blog post generation manually with optional custom topic, category, and publish state.
- */
 export async function POST(request: NextRequest) {
   try {
+    const authorized = await isAuthorized(request);
+    if (!authorized) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Unauthorized. Admin session or valid secret required.",
+        },
+        { status: 401 }
+      );
+    }
+
     let body: any = {};
     try {
       body = await request.json();
     } catch {
-      // Empty body is acceptable; it will use random rotation
+      // Empty body is handled
     }
 
     const topic = typeof body.topic === "string" ? body.topic.trim() : undefined;
@@ -104,3 +143,4 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
