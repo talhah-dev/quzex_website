@@ -3,6 +3,7 @@ import { generateAndSaveBlogPost } from "@/lib/blog-generator";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 /**
  * GET or POST /api/cron/generate-blog

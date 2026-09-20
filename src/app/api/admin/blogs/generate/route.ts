@@ -4,6 +4,7 @@ import { generateAndSaveBlogPost } from "@/lib/blog-generator";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 async function isAuthorized(request: NextRequest): Promise<boolean> {
   const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
