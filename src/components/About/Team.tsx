@@ -14,32 +14,32 @@ const teamData: TeamMember = [
     {
         name: "Muhammad Talha",
         role: "Full Stack Developer",
-        image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1772854472/talha_du0ahk.png",
+        image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1791617606/Meet_the_Developer_farxe8.png",
     },
     {
         name: "Ammar Khalid",
         role: "CEO",
-        image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1772854503/ammar_ubs1kx.png",
-    },
-    {
-        name: "Muhammad Ali",
-        role: "COO",
-        image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1772853517/ali_wkaonw.png",
+        image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1791617606/mEEt_the_ceo_w9gvlh.png",
     },
     {
         name: "Karan",
         role: "UI/UX Designer",
-        image: "https://px5rxm1szlmbgpc7.public.blob.vercel-storage.com/assets/home/Karan.jpeg",
+        image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1791617606/Designer_evzh9g.png",
+    },
+    {
+        name: "Khurram",
+        role: "Website Analyst",
+        image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1791617606/meet_the_website_analyst_obx4ni.png",
     },
     {
         name: "Hadi",
         role: "Marketing",
-        image: "https://px5rxm1szlmbgpc7.public.blob.vercel-storage.com/assets/home/Hadi.jpeg",
+        image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1791617605/Meet_the_Marketing_Specialist_apzjzb.png",
     },
     {
-        name: "Areeba",
+        name: "Bilal",
         role: "Marketing",
-        image: "https://px5rxm1szlmbgpc7.public.blob.vercel-storage.com/assets/home/areeba.png",
+        image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1791617606/Meet_the_Marketing_Expert_r4t2h3.png",
     },
 ];
 
