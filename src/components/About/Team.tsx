@@ -27,7 +27,7 @@ const teamData: TeamMember = [
         image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1791617606/Designer_evzh9g.png",
     },
     {
-        name: "Khurram",
+        name: "John Wilson",
         role: "Website Analyst",
         image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1791617606/meet_the_website_analyst_obx4ni.png",
     },
@@ -37,7 +37,7 @@ const teamData: TeamMember = [
         image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1791617605/Meet_the_Marketing_Specialist_apzjzb.png",
     },
     {
-        name: "Bilal",
+        name: "Mark Wilson",
         role: "Marketing",
         image: "https://res.cloudinary.com/deo5ex1zo/image/upload/v1791617606/Meet_the_Marketing_Expert_r4t2h3.png",
     },

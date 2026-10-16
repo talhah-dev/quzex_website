@@ -171,7 +171,7 @@ const Footer = () => {
                                 <ul className="flex flex-col gap-3">
                                     <li>
                                         <p className="text-base font-normal text-[#E9F3E6]/85">
-                                            Remote - Available worldwide
+                                            205 E Benson Blvd, Anchorage, AK 99503
                                         </p>
                                     </li>
                                     <li>
