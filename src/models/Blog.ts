@@ -51,6 +51,10 @@ const blogSchema = new Schema<Blog>(
       type: Boolean,
       default: true,
     },
+    views: {
+      type: Number,
+      default: 0,
+    },
     seo: {
       type: blogSeoSchema,
       default: undefined,

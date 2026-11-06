@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import type { CountryCode } from "@/lib/countries";
 import connectToDatabase from "@/lib/dbConnect";
 import TestimonialModel from "@/models/Testimonial";
@@ -126,7 +126,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         profileImage: profileImage || undefined,
         audioUrl: type === "audio" ? audioUrl : undefined,
       },
-      { new: true }
+      { returnDocument: "after" }
     );
 
     if (!updatedTestimonial) {

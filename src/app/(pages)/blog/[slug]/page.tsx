@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Calendar } from "lucide-react";
+import { Calendar, Eye } from "lucide-react";
 import Wrapper from "@/app/Wrapper";
 import BlogCommentsSection from "@/components/Blog/BlogCommentsSection";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
@@ -63,9 +63,25 @@ function formatBlogContent(rawContent: string): string {
     .join("\n");
 }
 
-async function getBlogBySlug(slug: string) {
+async function getBlogBySlug(slug: string, increment = false) {
   try {
     await connectToDatabase();
+
+    if (increment) {
+      const blog = await BlogModel.findOneAndUpdate(
+        { slug, isActive: true },
+        { $inc: { views: 1 } },
+        { returnDocument: "after" }
+      ).lean();
+
+      if (!blog) return null;
+
+      return {
+        ...blog,
+        _id: blog._id.toString(),
+      };
+    }
+
     const blog = await BlogModel.findOne({ slug, isActive: true }).lean();
 
     if (!blog) return null;
@@ -82,7 +98,7 @@ async function getBlogBySlug(slug: string) {
 // ─── Per-post dynamic metadata ────────────────────────────────────────────────
 export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getBlogBySlug(slug);
+  const post = await getBlogBySlug(slug, false);
 
   if (!post) {
     return {
@@ -111,7 +127,7 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { slug } = await params;
-  const post = await getBlogBySlug(slug);
+  const post = await getBlogBySlug(slug, true);
 
   if (!post) {
     notFound();
@@ -168,6 +184,11 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                   >
                     {post.category}
                   </Badge>
+
+                  <div className="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-[#0A211F]/60">
+                    <Eye className="size-3.5 sm:size-4 text-[#0A211F]/45" />
+                    <span>{(post.views ?? 0).toLocaleString()} views</span>
+                  </div>
 
                   {publishedDateStr && (
                     <div className="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-[#0A211F]/60">

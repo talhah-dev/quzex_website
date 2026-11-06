@@ -71,7 +71,7 @@ export async function PUT(request: NextRequest) {
 
     const settings = existingSettings
       ? await SiteSettingsModel.findByIdAndUpdate(existingSettings._id, payload, {
-          new: true,
+          returnDocument: "after",
           runValidators: true,
         })
       : await SiteSettingsModel.create(payload);

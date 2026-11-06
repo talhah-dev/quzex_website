@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { Calendar, FileText, Loader2, Pencil, Plus, Sparkles, Trash2 } from "lucide-react";
+import { Calendar, Eye, FileText, Loader2, Pencil, Plus, Sparkles, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { BlogRecord } from "@/types";
@@ -225,18 +225,25 @@ export default function DashboardBlogs() {
                       ) : null}
                     </div>
 
-                    {post.createdAt && (
+                    <div className="flex items-center gap-3">
                       <div className="flex items-center gap-1.5 text-xs text-[#0A211F]/50">
-                        <Calendar className="size-3 text-[#0A211F]/40" />
-                        <span>
-                          {new Date(post.createdAt).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          })}
-                        </span>
+                        <Eye className="size-3 text-[#0A211F]/40" />
+                        <span>{post.views ?? 0}</span>
                       </div>
-                    )}
+
+                      {post.createdAt && (
+                        <div className="flex items-center gap-1.5 text-xs text-[#0A211F]/50">
+                          <Calendar className="size-3 text-[#0A211F]/40" />
+                          <span>
+                            {new Date(post.createdAt).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            })}
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div className="space-y-1.5">

@@ -17,7 +17,11 @@ export async function GET(_request: NextRequest, context: RouteContext) {
 
     await connectToDatabase();
 
-    const blog = await BlogModel.findOne({ slug, isActive: true }).lean();
+    const blog = await BlogModel.findOneAndUpdate(
+      { slug, isActive: true },
+      { $inc: { views: 1 } },
+      { returnDocument: "after" }
+    ).lean();
 
     if (!blog) {
       return NextResponse.json(

@@ -48,7 +48,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
     const inquiry = await ContactInquiryModel.findByIdAndUpdate(
       id,
       { status: body.status },
-      { new: true, runValidators: true }
+      { returnDocument: "after", runValidators: true }
     );
 
     if (!inquiry) {

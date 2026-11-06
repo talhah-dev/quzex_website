@@ -1,12 +1,16 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Variants } from 'framer-motion'
 import { ArrowRight, ArrowUpRight, Pause, Play, Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import ShinyText from '@/components/ShinyText'
 import { AnimatedGroup } from '../ui/animated-group'
+
+const AeroShards = dynamic(() => import('@/components/AeroShards'), { ssr: false })
 import { TextEffect } from '../ui/text-effect'
 import { AnimatedButton } from '../ui/AnimatedButton'
 
@@ -26,7 +30,7 @@ export default function HeroSection() {
     const mainRef = useRef<HTMLElement | null>(null)
     const videoWrapperRef = useRef<HTMLDivElement | null>(null)
     const videoElRef = useRef<HTMLVideoElement | null>(null)
-    const [fadeStart, setFadeStart] = useState(900)
+    const [fadeStart, setFadeStart] = useState(1100)
     const [isPlaying, setIsPlaying] = useState(false)
 
     useEffect(() => {
@@ -36,7 +40,7 @@ export default function HeroSection() {
             if (!main || !video) return
             const mainRect = main.getBoundingClientRect()
             const videoRect = video.getBoundingClientRect()
-            const start = videoRect.top - mainRect.top + videoRect.height / 2
+            const start = videoRect.top - mainRect.top + Math.round(videoRect.height * 0.8)
             setFadeStart(Math.max(0, Math.round(start)))
         }
 
@@ -66,11 +70,24 @@ export default function HeroSection() {
                 style={{ height: fadeStart }}
             >
                 <div className="absolute inset-0 bg-[#0A211F]" />
-                <div className="absolute inset-0 isolate hidden opacity-65 contain-strict lg:block">
+                <AeroShards
+                    className="absolute inset-0 h-full w-full pointer-events-auto opacity-35 sm:opacity-55 md:opacity-75 transition-opacity duration-300"
+                    backgroundColor="transparent"
+                    shardColor="#143e39"
+                    accentColor="#8AF7B7"
+                    count={900}
+                    speed={0.8}
+                    glow={0.35}
+                    vignette={0.35}
+                    material="glass"
+                    markers="plus"
+                />
+                <div className="absolute inset-0 isolate hidden opacity-40 contain-strict lg:block pointer-events-none">
                     <div className="w-140 h-320 -translate-y-87.5 absolute left-0 top-0 -rotate-45 rounded-full bg-[radial-gradient(68.54%_68.72%_at_55.02%_31.46%,rgba(138,247,183,.14)_0,rgba(94,163,131,.06)_50%,rgba(10,33,31,0)_80%)]" />
                     <div className="h-320 absolute left-0 top-0 w-60 -rotate-45 rounded-full bg-[radial-gradient(50%_50%_at_50%_50%,rgba(216,247,130,.10)_0,rgba(94,163,131,.06)_80%,transparent_100%)] [translate:5%_-50%]" />
                     <div className="h-320 -translate-y-87.5 absolute left-0 top-0 w-60 -rotate-45 bg-[radial-gradient(50%_50%_at_50%_50%,rgba(138,247,183,.08)_0,rgba(94,163,131,.05)_80%,transparent_100%)]" />
                 </div>
+                <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-b from-transparent to-[#0A211F] pointer-events-none" />
             </div>
 
             <div
@@ -107,7 +124,13 @@ export default function HeroSection() {
                                 <span className="font-accent">Powerful Digital Brands.</span>
                             </h1>
                             <p className="mx-auto mt-8 max-w-2xl text-lg text-[#E9F3E6]/80">
-                                Your dedicated web development team in Pakistan — from custom website builds and redesigns to full-stack apps and AI integrations. From the first line of code to your launch, we&apos;ve got you covered.
+                                <ShinyText
+                                    text="Your dedicated web development team in Pakistan — from custom website builds and redesigns to full-stack apps and AI integrations. From the first line of code to your launch, we've got you covered."
+                                    color="rgba(233, 243, 230, 0.85)"
+                                    shineColor="#ffffff"
+                                    speed={3}
+                                    direction="right"
+                                />
                             </p>
 
                             <AnimatedGroup

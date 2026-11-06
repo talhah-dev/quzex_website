@@ -161,7 +161,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         showOnHome,
       },
       {
-        new: true,
+        returnDocument: "after",
         runValidators: true,
       }
     );

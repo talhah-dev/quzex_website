@@ -114,7 +114,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         isActive,
         seo,
       },
-      { new: true }
+      { returnDocument: "after" }
     ).lean();
 
     if (!updatedBlog) {

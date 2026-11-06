@@ -46,7 +46,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         src: url,
       },
       {
-        new: true,
+        returnDocument: "after",
         runValidators: true,
       }
     );

@@ -18,6 +18,7 @@ export type Blog = {
   excerpt: string;
   content: string;
   isActive: boolean;
+  views?: number;
   seo?: BlogSeo;
   createdAt?: Date | string;
   updatedAt?: Date | string;

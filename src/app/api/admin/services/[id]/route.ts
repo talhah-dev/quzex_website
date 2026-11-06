@@ -125,7 +125,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         showOnServicesPage: Boolean(body.showOnServicesPage),
         priority: typeof body.priority === "number" ? body.priority : 1,
       },
-      { new: true }
+      { returnDocument: "after" }
     );
 
     if (!updatedService) {

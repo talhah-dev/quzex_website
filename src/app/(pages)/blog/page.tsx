@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, FileText } from "lucide-react";
+import { Calendar, Eye, FileText } from "lucide-react";
 import Wrapper from "@/app/Wrapper";
 import HeroSection from "@/components/common/HeroSection";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +11,13 @@ import type { BlogRecord } from "@/types";
 import { buildBreadcrumbSchema, buildPageMetadata, stringifyJsonLd } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+function formatViews(views?: number) {
+  const count = views ?? 0;
+  if (count >= 1000000) return `${(count / 1000000).toFixed(1).replace(/\.0$/, "")}M`;
+  if (count >= 1000) return `${(count / 1000).toFixed(1).replace(/\.0$/, "")}k`;
+  return count.toLocaleString();
+}
 
 function formatPublishedDate(date?: Date | string) {
   if (!date) return null;
@@ -126,12 +133,22 @@ export default async function BlogPage() {
                           {post.category}
                         </Badge>
 
-                        {post.createdAt && (
-                          <div className="flex items-center gap-1.5 text-xs font-medium text-[#0A211F]/55">
-                            <Calendar className="size-3.5 text-[#0A211F]/45" />
-                            <span>{formatPublishedDate(post.createdAt)}</span>
+                        <div className="flex items-center gap-3 text-xs font-medium text-[#0A211F]/55">
+                          <div
+                            className="flex items-center gap-1.5"
+                            title={`${(post.views ?? 0).toLocaleString()} views`}
+                          >
+                            <Eye className="size-3.5 text-[#0A211F]/45" />
+                            <span>{formatViews(post.views)}</span>
                           </div>
-                        )}
+
+                          {post.createdAt && (
+                            <div className="flex items-center gap-1.5">
+                              <Calendar className="size-3.5 text-[#0A211F]/45" />
+                              <span>{formatPublishedDate(post.createdAt)}</span>
+                            </div>
+                          )}
+                        </div>
                       </div>
 
                       <div className="space-y-3">
