@@ -30,7 +30,7 @@ export function buildPageMetadata({
   modifiedTime,
 }: BuildPageMetadataOptions): Metadata {
   const canonical = path === "/" ? SITE_CONFIG.siteUrl : `${SITE_CONFIG.siteUrl}${path}`;
-  const absoluteImage = image.startsWith("http") ? image : `${SITE_CONFIG.siteUrl}${image}`;
+  const absoluteImage = image.startsWith("http") ? image : `${SITE_CONFIG.siteUrl}${image.startsWith("/") ? image : `/${image}`}`;
 
   return {
     title,
@@ -72,44 +72,72 @@ export function buildOrganizationSchema() {
     "@type": ["Organization", "ProfessionalService"],
     "@id": `${SITE_CONFIG.siteUrl}/#organization`,
     name: "Quzex",
+    alternateName: "Quzex Web Development Agency",
     url: SITE_CONFIG.siteUrl,
     logo: {
       "@type": "ImageObject",
+      "@id": `${SITE_CONFIG.siteUrl}/#logo`,
       url: `${SITE_CONFIG.siteUrl}/quzex.png`,
+      caption: "Quzex Logo",
       width: 512,
       height: 512,
     },
+    image: `${SITE_CONFIG.siteUrl}/22.png`,
     email: SITE_CONFIG.email,
     telephone: SITE_CONFIG.phone,
+    priceRange: "$$",
+    currenciesAccepted: "USD, PKR",
+    paymentAccepted: "Wire Transfer, Credit Card, Online",
+    foundingDate: "2024",
     description:
-      "Quzex is a professional website development agency based in Pakistan, serving businesses in Karachi, Lahore, and worldwide. We build modern websites, redesign outdated sites, and deliver digital solutions focused on speed, clarity, and growth.",
+      "Quzex is a premier web development and software engineering agency in Pakistan, serving businesses in Karachi, Lahore, and worldwide with modern Next.js websites, full-stack applications, website redesigns, and AI integrations.",
     address: {
       "@type": "PostalAddress",
       addressCountry: "PK",
       addressRegion: "Sindh",
       addressLocality: "Karachi",
     },
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: SITE_CONFIG.phone,
+        contactType: "customer service",
+        email: SITE_CONFIG.email,
+        availableLanguage: ["English", "Urdu"],
+      },
+    ],
     founder: {
       "@type": "Person",
+      "@id": `${SITE_CONFIG.siteUrl}/#founder`,
       name: SITE_CONFIG.ownerName,
+      jobTitle: "Founder & Lead Engineer",
+      url: `${SITE_CONFIG.siteUrl}/about`,
+      sameAs: [
+        "https://www.linkedin.com/in/quzex-agency-7632aa407/",
+      ],
+      worksFor: {
+        "@id": `${SITE_CONFIG.siteUrl}/#organization`,
+      },
     },
     areaServed: [
-      {
-        "@type": "City",
-        name: "Karachi",
-      },
-      {
-        "@type": "City",
-        name: "Lahore",
-      },
-      {
-        "@type": "Country",
-        name: "Pakistan",
-      },
-      {
-        "@type": "Text",
-        name: "Worldwide",
-      },
+      { "@type": "City", name: "Karachi" },
+      { "@type": "City", name: "Lahore" },
+      { "@type": "Country", name: "Pakistan" },
+      { "@type": "AdministrativeArea", name: "Worldwide" },
+    ],
+    knowsAbout: [
+      "Website Development",
+      "Next.js App Router",
+      "React.js",
+      "Full-Stack Web Development",
+      "Website Redesign",
+      "Search Engine Optimization (SEO)",
+      "Generative Engine Optimization (GEO)",
+      "Answer Engine Optimization (AEO)",
+      "AI Integration & Automation",
+      "TypeScript",
+      "Tailwind CSS",
+      "Core Web Vitals Optimization",
     ],
     serviceType: [
       "Website Development",
@@ -123,6 +151,7 @@ export function buildOrganizationSchema() {
       "https://www.linkedin.com/in/quzex-agency-7632aa407/",
       "https://www.youtube.com/@quzex-official",
       "https://www.facebook.com/quzex",
+      "https://x.com/quzex",
     ],
   };
 }
@@ -170,6 +199,7 @@ export function buildArticleSchema({
   image,
   publishedAt,
   updatedAt,
+  category,
 }: {
   title: string;
   description: string;
@@ -177,30 +207,47 @@ export function buildArticleSchema({
   image: string;
   publishedAt?: string;
   updatedAt?: string;
+  category?: string;
 }) {
+  const postUrl = `${SITE_CONFIG.siteUrl}/blog/${slug}`;
+  const absoluteImage = image.startsWith("http")
+    ? image
+    : `${SITE_CONFIG.siteUrl}${image.startsWith("/") ? image : `/${image}`}`;
+
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "@id": `${SITE_CONFIG.siteUrl}/blog/${slug}`,
+    "@id": `${postUrl}#article`,
     headline: title,
     description,
-    image,
-    url: `${SITE_CONFIG.siteUrl}/blog/${slug}`,
+    image: absoluteImage,
+    url: postUrl,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": postUrl,
+    },
+    inLanguage: "en",
+    author: {
+      "@type": "Person",
+      "@id": `${SITE_CONFIG.siteUrl}/#founder`,
+      name: SITE_CONFIG.ownerName,
+      jobTitle: "Founder & Lead Engineer",
+      url: `${SITE_CONFIG.siteUrl}/about`,
+    },
     publisher: {
       "@id": `${SITE_CONFIG.siteUrl}/#organization`,
     },
-    author: {
-      "@type": "Organization",
-      name: "Quzex",
-      url: SITE_CONFIG.siteUrl,
-    },
+    ...(category ? { articleSection: category } : {}),
     ...(publishedAt ? { datePublished: publishedAt } : {}),
     ...(updatedAt ? { dateModified: updatedAt } : {}),
-    inLanguage: "en",
     isPartOf: {
       "@type": "Blog",
       "@id": `${SITE_CONFIG.siteUrl}/blog`,
       name: "Quzex Blog",
+    },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".blog-content p:first-of-type"],
     },
   };
 }
@@ -220,6 +267,85 @@ export function buildAggregateRatingSchema() {
       ratingCount: "20",
       reviewCount: "20",
     },
+  };
+}
+
+export function buildIndividualServiceSchema(service: {
+  title: string;
+  description: string;
+  slug: string;
+  image?: string;
+  category?: string;
+  pricingPlans?: Array<{
+    name: string;
+    price: number;
+    description: string;
+    deliveryTime?: string;
+    features?: string[];
+  }>;
+}) {
+  const serviceUrl = `${SITE_CONFIG.siteUrl}/services/${service.slug}`;
+  const absoluteImage = service.image
+    ? service.image.startsWith("http")
+      ? service.image
+      : `${SITE_CONFIG.siteUrl}${service.image.startsWith("/") ? service.image : `/${service.image}`}`
+    : `${SITE_CONFIG.siteUrl}/22.png`;
+
+  const offers = (service.pricingPlans || []).map((plan) => ({
+    "@type": "Offer",
+    name: plan.name,
+    description: plan.description,
+    price: plan.price,
+    priceCurrency: "USD",
+    url: serviceUrl,
+    availability: "https://schema.org/InStock",
+    eligibleRegion: {
+      "@type": "AdministrativeArea",
+      name: "Worldwide",
+    },
+  }));
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${serviceUrl}#service`,
+    name: service.title,
+    description: service.description,
+    url: serviceUrl,
+    image: absoluteImage,
+    category: service.category || "Web Development",
+    provider: {
+      "@id": `${SITE_CONFIG.siteUrl}/#organization`,
+    },
+    serviceType: service.title,
+    areaServed: {
+      "@type": "AdministrativeArea",
+      name: "Worldwide",
+    },
+    ...(offers.length > 0
+      ? {
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: `${service.title} Pricing Plans`,
+            itemListElement: offers,
+          },
+        }
+      : {}),
+  };
+}
+
+export function buildFaqSchema(faqs: Array<{ question: string; answer: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
   };
 }
 

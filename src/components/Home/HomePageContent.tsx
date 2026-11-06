@@ -8,14 +8,19 @@ import PortfolioSection from "@/components/Home/PortfolioSection";
 import SuccessInNumbers from "@/components/Home/SuccessInNumbers";
 import Testimonials from "@/components/Home/Testimonials";
 import TrustedMarquee from "@/components/Home/TrustedMarquee";
-import type { TestimonialRecord } from "@/types";
+import type { PortfolioCardRecord, TestimonialRecord } from "@/types";
 
 type HomePageContentProps = {
   selectedCategory?: string;
   initialReviews?: TestimonialRecord[];
+  initialPortfolio?: PortfolioCardRecord[];
 };
 
-export default function HomePageContent({ selectedCategory, initialReviews = [] }: HomePageContentProps) {
+export default function HomePageContent({
+  selectedCategory,
+  initialReviews = [],
+  initialPortfolio = [],
+}: HomePageContentProps) {
   return (
     <div>
       <Wrapper>
@@ -23,7 +28,7 @@ export default function HomePageContent({ selectedCategory, initialReviews = [] 
         <div className="bg-[#f7f9f2]">
           <TrustedMarquee />
           <AboutSection />
-          <PortfolioSection selectedCategory={selectedCategory} />
+          <PortfolioSection selectedCategory={selectedCategory} initialCards={initialPortfolio} />
           <SuccessInNumbers />
           <HowWeWork />
           <div className="py-2 md:py-5"></div>

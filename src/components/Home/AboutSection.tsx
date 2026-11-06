@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
 import { AnimatedButton } from "../ui/AnimatedButton";
@@ -21,8 +21,8 @@ export default function AboutSection({
     eyebrow = "ABOUT QUZEX",
     heading = "Everything your brand needs to lead",
     accent = "all in one place.",
-    description = "We aren’t just a dev shop, we’re your full-stack digital partners. From high-performance code and sleek UI design to strategic marketing and AI-driven automation, we build the engine that powers your growth.",
-    helper = "With 6+ years of experience, we’ve learned that a great website is only the beginning. You need a cohesive strategy. We combine clean development with bold branding and the latest AI tools to ensure your business doesn't just exist online, it dominates.",
+    description = "Quzex is a specialized full-stack web development agency based in Karachi, Pakistan, building high-performance web applications, modern corporate websites, and conversion-focused digital platforms for businesses worldwide.",
+    helper = "Engineered on Next.js, React, Node.js, and MongoDB, Quzex delivers custom websites, web redesigns, and AI integrations with rapid 3-to-4-day turnaround times, 99% on-time completion, and dedicated 24-hour SLA technical support.",
     ctaText = "Start your website project",
     ctaHref = "/contact",
     // imageSrc = "https://images.unsplash.com/photo-1650661926447-9efb2610f64c?q=80&w=1173&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",

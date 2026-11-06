@@ -1,5 +1,6 @@
 import { buildPageMetadata } from "@/lib/seo";
 import HomePageContent from "@/components/Home/HomePageContent";
+import { getPortfolioCardsServer } from "@/lib/server/portfolio";
 import { getTestimonialsServer } from "@/lib/server/testimonials";
 
 export const metadata = buildPageMetadata({
@@ -30,7 +31,16 @@ type HomeProps = {
 
 export default async function Home({ searchParams }: HomeProps) {
   const { category } = await searchParams;
-  const initialReviews = await getTestimonialsServer();
+  const [initialReviews, initialPortfolio] = await Promise.all([
+    getTestimonialsServer(),
+    getPortfolioCardsServer(),
+  ]);
 
-  return <HomePageContent selectedCategory={category} initialReviews={initialReviews} />;
+  return (
+    <HomePageContent
+      selectedCategory={category}
+      initialReviews={initialReviews}
+      initialPortfolio={initialPortfolio}
+    />
+  );
 }

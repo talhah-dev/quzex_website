@@ -8,16 +8,36 @@ import { Button } from "@/components/ui/button";
 import { getPortfolioCards } from "@/lib/api/portfolio";
 import PortfolioSectionSkeleton from "@/components/Home/PortfolioSectionSkeleton";
 import { PortfolioCard } from "../ui/PortfolioCard";
+import type { PortfolioCardRecord } from "@/types";
 
 type PortfolioSectionProps = {
     selectedCategory?: string;
+    initialCards?: PortfolioCardRecord[];
 };
 
-export default function PortfolioSection({ selectedCategory = "" }: PortfolioSectionProps) {
+export default function PortfolioSection({ selectedCategory = "", initialCards }: PortfolioSectionProps) {
     const activeCategory = selectedCategory;
+    const initialData = useMemo(() => {
+        if (!initialCards || initialCards.length === 0) return undefined;
+        return {
+            items: initialCards,
+            categories: Array.from(new Set(initialCards.map((c) => c.category))),
+            homeVisibleCount: initialCards.filter((c) => c.showOnHome).length,
+            pagination: {
+                page: 1,
+                limit: 10000,
+                totalItems: initialCards.length,
+                totalPages: 1,
+                hasNextPage: false,
+                hasPreviousPage: false,
+            },
+        };
+    }, [initialCards]);
+
     const { data, isLoading, isError } = useQuery({
         queryKey: ["portfolio-cards", "home"],
         queryFn: () => getPortfolioCards(undefined, { page: 1, limit: 10000 }),
+        initialData,
     });
     const portfolioCards = useMemo(() => data?.items ?? [], [data]);
     const homePortfolioCards = useMemo(

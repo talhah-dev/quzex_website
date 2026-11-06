@@ -10,7 +10,12 @@ import PricingSection from "@/components/Home/PricingSection";
 import { Button } from "@/components/ui/button";
 import connectToDatabase from "@/lib/dbConnect";
 import type { PricingPlan } from "@/lib/pricing";
-import { buildBreadcrumbSchema, buildPageMetadata, stringifyJsonLd } from "@/lib/seo";
+import {
+  buildBreadcrumbSchema,
+  buildIndividualServiceSchema,
+  buildPageMetadata,
+  stringifyJsonLd,
+} from "@/lib/seo";
 import ServiceModel from "@/models/Service";
 
 export const dynamic = "force-dynamic";
@@ -136,12 +141,30 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
     { name: "Services", path: "/services" },
     { name: service.title, path: `/services/${service.slug}` },
   ]);
+  const serviceSchema = buildIndividualServiceSchema({
+    title: service.title,
+    description: service.description,
+    slug: service.slug,
+    image: service.image,
+    category: service.category,
+    pricingPlans: pricingPlans.map((p) => ({
+      name: p.title,
+      price: p.priceUsd,
+      description: p.summary,
+      deliveryTime: p.delivery,
+      features: (p.features || []).map((f: any) => (typeof f === "string" ? f : f.label)),
+    })),
+  });
 
   return (
     <Wrapper>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: stringifyJsonLd(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: stringifyJsonLd(serviceSchema) }}
       />
       <HeroSection
         heading={service.title}

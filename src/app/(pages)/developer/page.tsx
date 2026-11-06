@@ -3,7 +3,7 @@ import Wrapper from "@/app/Wrapper";
 import HeroSection from "@/components/common/HeroSection";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildBreadcrumbSchema, buildPageMetadata, stringifyJsonLd } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
   title: "Quzex Developer & Agent API Documentation",
@@ -22,8 +22,17 @@ export const metadata = buildPageMetadata({
 });
 
 export default function DeveloperPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Developer Resources", path: "/developer" },
+  ]);
+
   return (
     <Wrapper>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: stringifyJsonLd(breadcrumbSchema) }}
+      />
       <HeroSection
         heading="Quzex Developer & Agent Resources"
         paragraph="API specifications (v1), RFC 9457 typed error schemas, machine-readable documentation, llms.txt index, and guidance for developers and AI agents integrating with Quzex."
